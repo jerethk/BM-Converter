@@ -18,13 +18,19 @@ namespace BM_Converter
         List<Bitmap> Images;
         int SubBMSelected = 0;
 
-        public Form1()
+        public Form1(string[] args)
         {
             InitializeComponent();
 
             palette = new DFPal();
             BM = new DFBM();
             Images = new List<Bitmap>();
+
+            if (args.Length > 0)
+            {
+                // Attempt to load file that has been passed in from command line
+                LoadBM(args[0]);
+            }
         }
 
         private void buttonHelp_Click(object sender, EventArgs e)
@@ -61,7 +67,12 @@ namespace BM_Converter
 
         private void OpenBMDialog_FileOk(object sender, CancelEventArgs e)
         {
-            if (!BM.loadFromFile(OpenBMDialog.FileName))
+            LoadBM(OpenBMDialog.FileName);
+        }
+
+        private void LoadBM(string path)
+        {
+            if (!BM.loadFromFile(path))
             {
                 MessageBox.Show("Error loading BM file. Please check that it is a valid DF BM file and not open in another program.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -69,7 +80,8 @@ namespace BM_Converter
             {
                 // Display Info
                 string transparency;
-                switch (BM.transparent) {
+                switch (BM.transparent)
+                {
                     case 0x36:
                         transparency = "Non-transparent";
                         break;
