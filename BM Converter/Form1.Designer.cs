@@ -67,15 +67,15 @@ namespace BM_Converter
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(664, 47);
+            this.panel1.Size = new System.Drawing.Size(784, 65);
             this.panel1.TabIndex = 0;
             // 
             // btnCreateBM
             // 
             this.btnCreateBM.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnCreateBM.Location = new System.Drawing.Point(423, 11);
+            this.btnCreateBM.Location = new System.Drawing.Point(486, 12);
             this.btnCreateBM.Name = "btnCreateBM";
-            this.btnCreateBM.Size = new System.Drawing.Size(123, 24);
+            this.btnCreateBM.Size = new System.Drawing.Size(123, 32);
             this.btnCreateBM.TabIndex = 4;
             this.btnCreateBM.Text = "Create BM";
             this.btnCreateBM.UseVisualStyleBackColor = true;
@@ -84,9 +84,9 @@ namespace BM_Converter
             // buttonHelp
             // 
             this.buttonHelp.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.buttonHelp.Location = new System.Drawing.Point(623, 12);
+            this.buttonHelp.Location = new System.Drawing.Point(736, 12);
             this.buttonHelp.Name = "buttonHelp";
-            this.buttonHelp.Size = new System.Drawing.Size(23, 23);
+            this.buttonHelp.Size = new System.Drawing.Size(30, 32);
             this.buttonHelp.TabIndex = 3;
             this.buttonHelp.Text = "?";
             this.buttonHelp.UseVisualStyleBackColor = true;
@@ -96,7 +96,7 @@ namespace BM_Converter
             // 
             this.btnBulkConvert.Location = new System.Drawing.Point(235, 12);
             this.btnBulkConvert.Name = "btnBulkConvert";
-            this.btnBulkConvert.Size = new System.Drawing.Size(117, 23);
+            this.btnBulkConvert.Size = new System.Drawing.Size(117, 32);
             this.btnBulkConvert.TabIndex = 2;
             this.btnBulkConvert.Text = "Bulk Convert";
             this.btnBulkConvert.UseVisualStyleBackColor = true;
@@ -104,9 +104,9 @@ namespace BM_Converter
             // 
             // BtnLoadBM
             // 
-            this.BtnLoadBM.Location = new System.Drawing.Point(93, 12);
+            this.BtnLoadBM.Location = new System.Drawing.Point(106, 12);
             this.BtnLoadBM.Name = "BtnLoadBM";
-            this.BtnLoadBM.Size = new System.Drawing.Size(75, 23);
+            this.BtnLoadBM.Size = new System.Drawing.Size(81, 32);
             this.BtnLoadBM.TabIndex = 1;
             this.BtnLoadBM.Text = "Load BM";
             this.BtnLoadBM.UseVisualStyleBackColor = true;
@@ -116,7 +116,7 @@ namespace BM_Converter
             // 
             this.BtnLoadPAL.Location = new System.Drawing.Point(12, 12);
             this.BtnLoadPAL.Name = "BtnLoadPAL";
-            this.BtnLoadPAL.Size = new System.Drawing.Size(75, 23);
+            this.BtnLoadPAL.Size = new System.Drawing.Size(79, 32);
             this.BtnLoadPAL.TabIndex = 0;
             this.BtnLoadPAL.Text = "Load PAL";
             this.BtnLoadPAL.UseVisualStyleBackColor = true;
@@ -126,9 +126,9 @@ namespace BM_Converter
             // 
             this.btnExport.Enabled = false;
             this.btnExport.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnExport.Location = new System.Drawing.Point(58, 446);
+            this.btnExport.Location = new System.Drawing.Point(58, 462);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(111, 23);
+            this.btnExport.Size = new System.Drawing.Size(111, 32);
             this.btnExport.TabIndex = 2;
             this.btnExport.Text = "Export PNG";
             this.btnExport.UseVisualStyleBackColor = true;
@@ -168,15 +168,15 @@ namespace BM_Converter
             this.panel2.Controls.Add(this.labelPal);
             this.panel2.Controls.Add(this.textBoxBMInfo);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 47);
+            this.panel2.Location = new System.Drawing.Point(0, 65);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(664, 514);
+            this.panel2.Size = new System.Drawing.Size(784, 536);
             this.panel2.TabIndex = 1;
             // 
             // checkBoxZoom
             // 
             this.checkBoxZoom.AutoSize = true;
-            this.checkBoxZoom.Location = new System.Drawing.Point(550, 37);
+            this.checkBoxZoom.Location = new System.Drawing.Point(247, 44);
             this.checkBoxZoom.Name = "checkBoxZoom";
             this.checkBoxZoom.Size = new System.Drawing.Size(86, 19);
             this.checkBoxZoom.TabIndex = 8;
@@ -187,7 +187,7 @@ namespace BM_Converter
             // btnNextSub
             // 
             this.btnNextSub.Enabled = false;
-            this.btnNextSub.Location = new System.Drawing.Point(128, 249);
+            this.btnNextSub.Location = new System.Drawing.Point(128, 265);
             this.btnNextSub.Name = "btnNextSub";
             this.btnNextSub.Size = new System.Drawing.Size(28, 29);
             this.btnNextSub.TabIndex = 7;
@@ -198,7 +198,7 @@ namespace BM_Converter
             // btnPrevSub
             // 
             this.btnPrevSub.Enabled = false;
-            this.btnPrevSub.Location = new System.Drawing.Point(84, 249);
+            this.btnPrevSub.Location = new System.Drawing.Point(84, 265);
             this.btnPrevSub.Name = "btnPrevSub";
             this.btnPrevSub.Size = new System.Drawing.Size(28, 29);
             this.btnPrevSub.TabIndex = 6;
@@ -209,7 +209,7 @@ namespace BM_Converter
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 249);
+            this.label2.Location = new System.Drawing.Point(13, 265);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 15);
             this.label2.TabIndex = 5;
@@ -217,7 +217,7 @@ namespace BM_Converter
             // 
             // textBoxSubBMInfo
             // 
-            this.textBoxSubBMInfo.Location = new System.Drawing.Point(13, 284);
+            this.textBoxSubBMInfo.Location = new System.Drawing.Point(13, 300);
             this.textBoxSubBMInfo.Multiline = true;
             this.textBoxSubBMInfo.Name = "textBoxSubBMInfo";
             this.textBoxSubBMInfo.ReadOnly = true;
@@ -231,16 +231,16 @@ namespace BM_Converter
             | System.Windows.Forms.AnchorStyles.Right)));
             this.displayBox.BackColor = System.Drawing.Color.Black;
             this.displayBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.displayBox.Location = new System.Drawing.Point(247, 66);
+            this.displayBox.Location = new System.Drawing.Point(247, 82);
             this.displayBox.Name = "displayBox";
-            this.displayBox.Size = new System.Drawing.Size(400, 403);
+            this.displayBox.Size = new System.Drawing.Size(520, 425);
             this.displayBox.TabIndex = 3;
             this.displayBox.TabStop = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 48);
+            this.label1.Location = new System.Drawing.Point(13, 64);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 15);
             this.label1.TabIndex = 2;
@@ -257,7 +257,7 @@ namespace BM_Converter
             // 
             // textBoxBMInfo
             // 
-            this.textBoxBMInfo.Location = new System.Drawing.Point(13, 66);
+            this.textBoxBMInfo.Location = new System.Drawing.Point(13, 82);
             this.textBoxBMInfo.Multiline = true;
             this.textBoxBMInfo.Name = "textBoxBMInfo";
             this.textBoxBMInfo.ReadOnly = true;
@@ -278,13 +278,13 @@ namespace BM_Converter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(664, 561);
+            this.ClientSize = new System.Drawing.Size(784, 601);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(680, 600);
+            this.MinimumSize = new System.Drawing.Size(800, 640);
             this.Name = "Form1";
-            this.Text = "BM Converter (version 1.2.1)";
+            this.Text = "BM Converter (version 1.2.2)";
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();

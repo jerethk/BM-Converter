@@ -46,7 +46,7 @@ namespace BM_Converter
             // 
             this.btnLoadPal.Location = new System.Drawing.Point(11, 14);
             this.btnLoadPal.Name = "btnLoadPal";
-            this.btnLoadPal.Size = new System.Drawing.Size(93, 23);
+            this.btnLoadPal.Size = new System.Drawing.Size(97, 33);
             this.btnLoadPal.TabIndex = 0;
             this.btnLoadPal.Text = "Load PAL";
             this.btnLoadPal.UseVisualStyleBackColor = true;
@@ -61,13 +61,13 @@ namespace BM_Converter
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(744, 47);
+            this.panel1.Size = new System.Drawing.Size(824, 65);
             this.panel1.TabIndex = 1;
             // 
             // checkBoxIncludeIlluminated
             // 
             this.checkBoxIncludeIlluminated.AutoSize = true;
-            this.checkBoxIncludeIlluminated.Location = new System.Drawing.Point(120, 17);
+            this.checkBoxIncludeIlluminated.Location = new System.Drawing.Point(138, 22);
             this.checkBoxIncludeIlluminated.Name = "checkBoxIncludeIlluminated";
             this.checkBoxIncludeIlluminated.Size = new System.Drawing.Size(170, 19);
             this.checkBoxIncludeIlluminated.TabIndex = 2;
@@ -77,9 +77,9 @@ namespace BM_Converter
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(634, 13);
+            this.btnExit.Location = new System.Drawing.Point(722, 14);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(63, 24);
+            this.btnExit.Size = new System.Drawing.Size(76, 34);
             this.btnExit.TabIndex = 1;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = true;
@@ -112,7 +112,7 @@ namespace BM_Converter
             // 
             this.radioBtnSingleBM.AutoSize = true;
             this.radioBtnSingleBM.Checked = true;
-            this.radioBtnSingleBM.Location = new System.Drawing.Point(20, 22);
+            this.radioBtnSingleBM.Location = new System.Drawing.Point(20, 26);
             this.radioBtnSingleBM.Name = "radioBtnSingleBM";
             this.radioBtnSingleBM.Size = new System.Drawing.Size(78, 19);
             this.radioBtnSingleBM.TabIndex = 3;
@@ -128,7 +128,7 @@ namespace BM_Converter
             this.groupTypeBM.Controls.Add(this.radioBtnSingleBM);
             this.groupTypeBM.Location = new System.Drawing.Point(11, 42);
             this.groupTypeBM.Name = "groupTypeBM";
-            this.groupTypeBM.Size = new System.Drawing.Size(207, 52);
+            this.groupTypeBM.Size = new System.Drawing.Size(240, 63);
             this.groupTypeBM.TabIndex = 4;
             this.groupTypeBM.TabStop = false;
             this.groupTypeBM.Text = "Type of BM";
@@ -136,7 +136,7 @@ namespace BM_Converter
             // radioBtnMultiBM
             // 
             this.radioBtnMultiBM.AutoSize = true;
-            this.radioBtnMultiBM.Location = new System.Drawing.Point(119, 22);
+            this.radioBtnMultiBM.Location = new System.Drawing.Point(133, 26);
             this.radioBtnMultiBM.Name = "radioBtnMultiBM";
             this.radioBtnMultiBM.Size = new System.Drawing.Size(74, 19);
             this.radioBtnMultiBM.TabIndex = 5;
@@ -158,17 +158,17 @@ namespace BM_Converter
             this.panel2.Controls.Add(this.labelPal);
             this.panel2.Controls.Add(this.groupTypeBM);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 47);
+            this.panel2.Location = new System.Drawing.Point(0, 65);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(744, 554);
+            this.panel2.Size = new System.Drawing.Size(824, 696);
             this.panel2.TabIndex = 5;
             // 
             // btnCreateBM
             // 
             this.btnCreateBM.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnCreateBM.Location = new System.Drawing.Point(592, 42);
+            this.btnCreateBM.Location = new System.Drawing.Point(689, 47);
             this.btnCreateBM.Name = "btnCreateBM";
-            this.btnCreateBM.Size = new System.Drawing.Size(106, 40);
+            this.btnCreateBM.Size = new System.Drawing.Size(110, 49);
             this.btnCreateBM.TabIndex = 12;
             this.btnCreateBM.Text = "Create BM";
             this.btnCreateBM.UseVisualStyleBackColor = true;
@@ -177,7 +177,7 @@ namespace BM_Converter
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(280, 118);
+            this.label1.Location = new System.Drawing.Point(280, 129);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(132, 15);
             this.label1.TabIndex = 11;
@@ -186,7 +186,7 @@ namespace BM_Converter
             // numericFramerate
             // 
             this.numericFramerate.Enabled = false;
-            this.numericFramerate.Location = new System.Drawing.Point(437, 116);
+            this.numericFramerate.Location = new System.Drawing.Point(280, 156);
             this.numericFramerate.Name = "numericFramerate";
             this.numericFramerate.Size = new System.Drawing.Size(78, 23);
             this.numericFramerate.TabIndex = 10;
@@ -194,7 +194,7 @@ namespace BM_Converter
             // checkBoxCompressed
             // 
             this.checkBoxCompressed.AutoSize = true;
-            this.checkBoxCompressed.Location = new System.Drawing.Point(592, 120);
+            this.checkBoxCompressed.Location = new System.Drawing.Point(481, 157);
             this.checkBoxCompressed.Name = "checkBoxCompressed";
             this.checkBoxCompressed.Size = new System.Drawing.Size(92, 19);
             this.checkBoxCompressed.TabIndex = 9;
@@ -206,9 +206,9 @@ namespace BM_Converter
             this.groupBox1.Controls.Add(this.radioBtnWeapon);
             this.groupBox1.Controls.Add(this.radioBtnTransparent);
             this.groupBox1.Controls.Add(this.radioBtnOpaque);
-            this.groupBox1.Location = new System.Drawing.Point(235, 42);
+            this.groupBox1.Location = new System.Drawing.Point(280, 42);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(288, 52);
+            this.groupBox1.Size = new System.Drawing.Size(323, 63);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Transparency";
@@ -216,7 +216,7 @@ namespace BM_Converter
             // radioBtnWeapon
             // 
             this.radioBtnWeapon.AutoSize = true;
-            this.radioBtnWeapon.Location = new System.Drawing.Point(202, 22);
+            this.radioBtnWeapon.Location = new System.Drawing.Point(224, 26);
             this.radioBtnWeapon.Name = "radioBtnWeapon";
             this.radioBtnWeapon.Size = new System.Drawing.Size(69, 19);
             this.radioBtnWeapon.TabIndex = 6;
@@ -226,7 +226,7 @@ namespace BM_Converter
             // radioBtnTransparent
             // 
             this.radioBtnTransparent.AutoSize = true;
-            this.radioBtnTransparent.Location = new System.Drawing.Point(104, 22);
+            this.radioBtnTransparent.Location = new System.Drawing.Point(112, 26);
             this.radioBtnTransparent.Name = "radioBtnTransparent";
             this.radioBtnTransparent.Size = new System.Drawing.Size(86, 19);
             this.radioBtnTransparent.TabIndex = 5;
@@ -237,7 +237,7 @@ namespace BM_Converter
             // 
             this.radioBtnOpaque.AutoSize = true;
             this.radioBtnOpaque.Checked = true;
-            this.radioBtnOpaque.Location = new System.Drawing.Point(19, 22);
+            this.radioBtnOpaque.Location = new System.Drawing.Point(16, 26);
             this.radioBtnOpaque.Name = "radioBtnOpaque";
             this.radioBtnOpaque.Size = new System.Drawing.Size(67, 19);
             this.radioBtnOpaque.TabIndex = 3;
@@ -252,17 +252,17 @@ namespace BM_Converter
             | System.Windows.Forms.AnchorStyles.Right)));
             this.displayBox.BackColor = System.Drawing.Color.Black;
             this.displayBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.displayBox.Location = new System.Drawing.Point(280, 145);
+            this.displayBox.Location = new System.Drawing.Point(280, 200);
             this.displayBox.Name = "displayBox";
-            this.displayBox.Size = new System.Drawing.Size(418, 394);
+            this.displayBox.Size = new System.Drawing.Size(519, 481);
             this.displayBox.TabIndex = 8;
             this.displayBox.TabStop = false;
             // 
             // btnRemoveImage
             // 
-            this.btnRemoveImage.Location = new System.Drawing.Point(118, 116);
+            this.btnRemoveImage.Location = new System.Drawing.Point(136, 129);
             this.btnRemoveImage.Name = "btnRemoveImage";
-            this.btnRemoveImage.Size = new System.Drawing.Size(100, 28);
+            this.btnRemoveImage.Size = new System.Drawing.Size(104, 55);
             this.btnRemoveImage.TabIndex = 7;
             this.btnRemoveImage.Text = "Remove Image";
             this.btnRemoveImage.UseVisualStyleBackColor = true;
@@ -270,9 +270,9 @@ namespace BM_Converter
             // 
             // btnAddImage
             // 
-            this.btnAddImage.Location = new System.Drawing.Point(12, 116);
+            this.btnAddImage.Location = new System.Drawing.Point(12, 129);
             this.btnAddImage.Name = "btnAddImage";
-            this.btnAddImage.Size = new System.Drawing.Size(95, 28);
+            this.btnAddImage.Size = new System.Drawing.Size(104, 55);
             this.btnAddImage.TabIndex = 6;
             this.btnAddImage.Text = "Add Image";
             this.btnAddImage.UseVisualStyleBackColor = true;
@@ -282,9 +282,9 @@ namespace BM_Converter
             // 
             this.listBoxImages.FormattingEnabled = true;
             this.listBoxImages.ItemHeight = 15;
-            this.listBoxImages.Location = new System.Drawing.Point(12, 160);
+            this.listBoxImages.Location = new System.Drawing.Point(12, 200);
             this.listBoxImages.Name = "listBoxImages";
-            this.listBoxImages.Size = new System.Drawing.Size(206, 379);
+            this.listBoxImages.Size = new System.Drawing.Size(228, 379);
             this.listBoxImages.TabIndex = 5;
             this.listBoxImages.SelectedIndexChanged += new System.EventHandler(this.listBoxImages_SelectedIndexChanged);
             // 
@@ -297,12 +297,12 @@ namespace BM_Converter
             // 
             // Form2
             // 
-            this.ClientSize = new System.Drawing.Size(744, 601);
+            this.ClientSize = new System.Drawing.Size(824, 761);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(760, 640);
+            this.MinimumSize = new System.Drawing.Size(840, 800);
             this.Name = "Form2";
             this.Text = "Create BM";
             this.panel1.ResumeLayout(false);
