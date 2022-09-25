@@ -176,7 +176,7 @@ namespace BM_Converter
             // checkBoxZoom
             // 
             this.checkBoxZoom.AutoSize = true;
-            this.checkBoxZoom.Location = new System.Drawing.Point(247, 44);
+            this.checkBoxZoom.Location = new System.Drawing.Point(247, 57);
             this.checkBoxZoom.Name = "checkBoxZoom";
             this.checkBoxZoom.Size = new System.Drawing.Size(86, 19);
             this.checkBoxZoom.TabIndex = 8;

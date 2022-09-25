@@ -78,6 +78,8 @@ namespace BM_Converter
             }
             else // successful load!
             {
+                OpenBMDialog.FileName = path;
+
                 // Display Info
                 string transparency;
                 switch (BM.transparent)
@@ -97,7 +99,7 @@ namespace BM_Converter
                 }
 
                 string[] s = new string[18];
-                s[0] = Path.GetFileName(OpenBMDialog.FileName);
+                s[0] = Path.GetFileName(path);
                 s[2] = $"SizeX: {BM.SizeX}";
                 s[3] = $"SizeY: {BM.SizeY}";
                 s[4] = $"Compressed: {BM.compressed}";
