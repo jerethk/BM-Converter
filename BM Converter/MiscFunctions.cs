@@ -20,7 +20,7 @@ namespace BM_Converter
         }
         
         // Builds a BM object from source images
-        public static DFBM buildBM(bool multiBM, DFPal pal, List<Bitmap> SourceImages, char transparency, byte FRate, bool IncludeIlluminated, bool compress)
+        public static DFBM buildBM(bool multiBM, DFPal pal, List<Bitmap> SourceImages, char transparency, byte FRate, bool includeIlluminated, bool commonColoursOnly, bool compress)
         {
             DFBM newBM = new DFBM();
 
@@ -65,7 +65,7 @@ namespace BM_Converter
                 }
 
                 // Create BM image data
-                newBM.PixelData = DFBM.BitmaptoBM(source, pal, IncludeIlluminated);
+                newBM.PixelData = DFBM.BitmaptoBM(source, pal, includeIlluminated, commonColoursOnly);
 
                 if (compress)
                 {
@@ -124,7 +124,7 @@ namespace BM_Converter
                         newSubBM.logSizeY = 0;
                     }
 
-                    newSubBM.PixelData = DFBM.BitmaptoBM(SourceImages[i], pal, IncludeIlluminated);
+                    newSubBM.PixelData = DFBM.BitmaptoBM(SourceImages[i], pal, includeIlluminated, commonColoursOnly);
                     newBM.SubBMs.Add(newSubBM);
                 }
 
@@ -145,7 +145,7 @@ namespace BM_Converter
         }
 
         // Color matches to the PAL using Euclidean distance technique
-        public static byte matchPixeltoPal(Color pixelColour, DFPal palette, bool includeIlluminatedColours)
+        public static byte matchPixeltoPal(Color pixelColour, DFPal palette, bool includeIlluminatedColours, bool commonColoursOnly)
         {
             int sourceRed = pixelColour.R;
             int sourceGreen = pixelColour.G;
@@ -161,10 +161,20 @@ namespace BM_Converter
                 startColour = 32;
             }
 
+            int endColour;
+            if (commonColoursOnly)
+            {
+                endColour = 207;        // first 208 colours are common to all palettes
+            }
+            else
+            {
+                endColour = 255;
+            }
+
             double smallestDistance = 500;
             int bestMatch = 0;
 
-            for (int i = startColour; i < 256; i++)
+            for (int i = startColour; i <= endColour; i++)
             {
                 int deltaRed = sourceRed - palette.Colours[i].R;
                 int deltaGreen = sourceGreen - palette.Colours[i].G;

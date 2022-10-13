@@ -34,6 +34,7 @@ namespace BM_Converter
             this.btnAddImage = new System.Windows.Forms.Button();
             this.listBoxImages = new System.Windows.Forms.ListBox();
             this.saveBMDialog = new System.Windows.Forms.SaveFileDialog();
+            this.checkBoxCommonColours = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.groupTypeBM.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -55,6 +56,7 @@ namespace BM_Converter
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.checkBoxCommonColours);
             this.panel1.Controls.Add(this.checkBoxIncludeIlluminated);
             this.panel1.Controls.Add(this.btnExit);
             this.panel1.Controls.Add(this.btnLoadPal);
@@ -160,7 +162,7 @@ namespace BM_Converter
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 65);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(824, 696);
+            this.panel2.Size = new System.Drawing.Size(824, 719);
             this.panel2.TabIndex = 5;
             // 
             // btnCreateBM
@@ -254,7 +256,7 @@ namespace BM_Converter
             this.displayBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.displayBox.Location = new System.Drawing.Point(280, 200);
             this.displayBox.Name = "displayBox";
-            this.displayBox.Size = new System.Drawing.Size(519, 481);
+            this.displayBox.Size = new System.Drawing.Size(519, 504);
             this.displayBox.TabIndex = 8;
             this.displayBox.TabStop = false;
             // 
@@ -295,9 +297,20 @@ namespace BM_Converter
             this.saveBMDialog.Title = "Save BM";
             this.saveBMDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveBMDialog_FileOk);
             // 
+            // checkBoxCommonColours
+            // 
+            this.checkBoxCommonColours.AutoSize = true;
+            this.checkBoxCommonColours.Location = new System.Drawing.Point(351, 22);
+            this.checkBoxCommonColours.Name = "checkBoxCommonColours";
+            this.checkBoxCommonColours.Size = new System.Drawing.Size(145, 19);
+            this.checkBoxCommonColours.TabIndex = 3;
+            this.checkBoxCommonColours.Text = "Common colours only";
+            this.checkBoxCommonColours.UseVisualStyleBackColor = true;
+            this.checkBoxCommonColours.CheckedChanged += new System.EventHandler(this.checkBoxCommonColours_CheckedChanged);
+            // 
             // Form2
             // 
-            this.ClientSize = new System.Drawing.Size(824, 761);
+            this.ClientSize = new System.Drawing.Size(824, 784);
             this.ControlBox = false;
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -343,5 +356,6 @@ namespace BM_Converter
         private Button btnCreateBM;
         private SaveFileDialog saveBMDialog;
         private CheckBox checkBoxIncludeIlluminated;
+        private CheckBox checkBoxCommonColours;
     }
 }

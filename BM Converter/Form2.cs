@@ -46,6 +46,14 @@ namespace BM_Converter
             }
         }
 
+        private void checkBoxCommonColours_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxCommonColours.Checked)
+            {
+                MessageBox.Show("Only common PAL colours (up to index 207) will be used for colour matching.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         private void btnExit_Click(object sender, EventArgs e)
         {
             DialogResult answer = MessageBox.Show("Are you sure you want to leave? You will lose any work you have done.", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning); 
@@ -178,7 +186,7 @@ namespace BM_Converter
                 transparency = 'w';
             }
 
-            DFBM newBM = MiscFunctions.buildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, (byte) numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCompressed.Checked);
+            DFBM newBM = MiscFunctions.buildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, (byte) numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
             
             if (newBM.SaveToFile(saveBMDialog.FileName))
             {

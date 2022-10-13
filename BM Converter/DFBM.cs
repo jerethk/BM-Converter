@@ -193,7 +193,7 @@ namespace BM_Converter
         }
 
         // Static method to convert a Bitmap object into a BM image
-        public static byte[,] BitmaptoBM(Bitmap bitmap, DFPal pal, bool IncludeIlluminated)
+        public static byte[,] BitmaptoBM(Bitmap bitmap, DFPal pal, bool includeIlluminated, bool commonColoursOnly)
         {
             bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
@@ -212,7 +212,7 @@ namespace BM_Converter
                     }
                     else
                     {
-                        palIndex = MiscFunctions.matchPixeltoPal(pixelColour, pal, IncludeIlluminated);
+                        palIndex = MiscFunctions.matchPixeltoPal(pixelColour, pal, includeIlluminated, commonColoursOnly);
                     }
 
                     PixelArray[x, y] = palIndex;
