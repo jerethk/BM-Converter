@@ -11,12 +11,7 @@ namespace BM_Converter
         {
             double log = Math.Log2(number);
             double remainder = log % 1;
-
-            if (remainder == 0)
-            {
-                return true;
-            }
-            else return false;
+            return remainder == 0 ? true : false;
         }
         
         // Builds a BM object from source images
@@ -161,21 +156,13 @@ namespace BM_Converter
                 startColour = 32;
             }
 
-            int endColour;
-            if (commonColoursOnly)
-            {
-                endColour = 207;        // first 208 colours are common to all palettes
-            }
-            else
-            {
-                endColour = 255;
-            }
-
             double smallestDistance = 500;
             int bestMatch = 0;
 
-            for (int i = startColour; i <= endColour; i++)
+            for (int i = startColour; i <= 255; i++)
             {
+                if (commonColoursOnly && i >= 208 && i <= 254) continue;    // colours 208-254 are different in different PALs
+
                 int deltaRed = sourceRed - palette.Colours[i].R;
                 int deltaGreen = sourceGreen - palette.Colours[i].G;
                 int deltaBlue = sourceBlue - palette.Colours[i].B;

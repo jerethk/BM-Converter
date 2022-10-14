@@ -50,7 +50,7 @@ namespace BM_Converter
         {
             if (checkBoxCommonColours.Checked)
             {
-                MessageBox.Show("Only common PAL colours (up to index 207) will be used for colour matching.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Only common PAL colours (excluding 208-254) will be used for colour matching. This makes your texture suitable for use with all PALs.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
