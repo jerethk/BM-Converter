@@ -7,7 +7,7 @@ namespace BM_Converter
 {
     static class MiscFunctions
     {
-        public static bool isPowerOfTwo(int number)
+        public static bool IsPowerOfTwo(int number)
         {
             double log = Math.Log2(number);
             double remainder = log % 1;
@@ -15,7 +15,7 @@ namespace BM_Converter
         }
         
         // Builds a BM object from source images
-        public static DFBM buildBM(bool multiBM, DFPal pal, List<Bitmap> SourceImages, char transparency, byte FRate, bool includeIlluminated, bool commonColoursOnly, bool compress)
+        public static DFBM BuildBM(bool multiBM, DFPal pal, List<Bitmap> SourceImages, char transparency, byte FRate, bool includeIlluminated, bool commonColoursOnly, bool compress)
         {
             DFBM newBM = new DFBM();
 
@@ -39,7 +39,7 @@ namespace BM_Converter
             if (!multiBM)
             {
                 // Single BM
-                newBM.multiBM = false;
+                newBM.IsMultiBM = false;
                 Bitmap source = SourceImages[0];
 
                 // Create BM header. The FileID is automatically created by the object constructor
@@ -49,7 +49,7 @@ namespace BM_Converter
                 newBM.idemY = newBM.SizeY;
                 newBM.transparent = trn;                
 
-                if (isPowerOfTwo(newBM.SizeY))
+                if (IsPowerOfTwo(newBM.SizeY))
                 {
                     newBM.logSizeY = (byte)Math.Log2(newBM.SizeY);
                 }
@@ -67,12 +67,12 @@ namespace BM_Converter
                     if (transparency == 'o')
                     {
                         newBM.compressed = 1;   // RLE compression for non-transparent texture
-                        newBM.compressRLE();
+                        newBM.CompressRLE();
                     }
                     else
                     {
                         newBM.compressed = 2;   // RLE0 compression for transparent texture
-                        newBM.compressRLE0();
+                        newBM.CompressRLE0();
                     }
                 }
                 else
@@ -85,22 +85,22 @@ namespace BM_Converter
             else
             {
                 // Multi BM
-                newBM.multiBM = true;
-                newBM.numImages = SourceImages.Count;
+                newBM.IsMultiBM = true;
+                newBM.NumImages = SourceImages.Count;
                 
                 newBM.SizeX = 1;
                 newBM.idemX = -2;
-                newBM.idemY = (short)newBM.numImages;
+                newBM.idemY = (short)newBM.NumImages;
                 newBM.transparent = trn;
                 newBM.compressed = 0;
                 newBM.DataSize = 0;
                 newBM.FrameRate = FRate;
                 newBM.SecondByte = 2;
 
-                newBM.Offsets = new int[newBM.numImages];
+                newBM.Offsets = new int[newBM.NumImages];
                 newBM.SubBMs = new List<SubBM>();
 
-                for (int i = 0; i < newBM.numImages; i++)
+                for (int i = 0; i < newBM.NumImages; i++)
                 {
                     SubBM newSubBM = new SubBM();
                     newSubBM.SizeX = (short)SourceImages[i].Width;
@@ -110,7 +110,7 @@ namespace BM_Converter
                     newSubBM.DataSize = newSubBM.SizeX * newSubBM.SizeY;
                     newSubBM.transparent = trn;
 
-                    if (isPowerOfTwo (newSubBM.SizeY))
+                    if (IsPowerOfTwo (newSubBM.SizeY))
                     {
                         newSubBM.logSizeY = (byte)Math.Log2(newSubBM.SizeY);
                     }
@@ -126,8 +126,8 @@ namespace BM_Converter
                 newBM.logSizeY = newBM.SubBMs[0].logSizeY;  // sub BMs should all be the same size
 
                 // calculate the "sizeY" value, which in a multi BM is the length of the entire file minus the header (32 bytes). Also work out the sub BM offsets.
-                int counter = (2 + 4 * newBM.numImages);    // the 2 bytes following the header + the table of offsets
-                for (int i=0; i < newBM.numImages; i++)
+                int counter = (2 + 4 * newBM.NumImages);    // the 2 bytes following the header + the table of offsets
+                for (int i=0; i < newBM.NumImages; i++)
                 {
                     newBM.Offsets[i] = counter - 2;
                     counter += 28;  // len of sub BM header = 28
@@ -140,7 +140,7 @@ namespace BM_Converter
         }
 
         // Color matches to the PAL using Euclidean distance technique
-        public static byte matchPixeltoPal(Color pixelColour, DFPal palette, bool includeIlluminatedColours, bool commonColoursOnly)
+        public static byte MatchPixeltoPal(Color pixelColour, DFPal palette, bool includeIlluminatedColours, bool commonColoursOnly)
         {
             int sourceRed = pixelColour.R;
             int sourceGreen = pixelColour.G;

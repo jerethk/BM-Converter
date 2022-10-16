@@ -110,7 +110,7 @@ namespace BM_Converter
                 bool proceed = false;
 
                 // Check image wd&ht is power of 2
-                if (!MiscFunctions.isPowerOfTwo(newImage.Width) || !MiscFunctions.isPowerOfTwo(newImage.Height))
+                if (!MiscFunctions.IsPowerOfTwo(newImage.Width) || !MiscFunctions.IsPowerOfTwo(newImage.Height))
                 {
                     DialogResult answer = MessageBox.Show("Your image width or height is not a power of 2. This is only allowed for weapon textures. Continue?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     if (answer == DialogResult.Yes)
@@ -186,7 +186,7 @@ namespace BM_Converter
                 transparency = 'w';
             }
 
-            DFBM newBM = MiscFunctions.buildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, (byte) numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
+            DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, (byte) numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
             
             if (newBM.SaveToFile(saveBMDialog.FileName))
             {

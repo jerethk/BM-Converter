@@ -29,9 +29,10 @@ namespace BM_Converter
         public int[] Offsets { get; set; }
         public List<SubBM> SubBMs { get; set; }
 
-        public bool multiBM { get; set; }       // custom fields for convenience, not used in an actual BM file
-        public int fileLength { get; set; }    
-        public int numImages { get; set; }     
+        // custom fields for convenience, not used in an actual BM file
+        public bool IsMultiBM { get; set; }
+        private int fileLength;
+        public int NumImages { get; set; }
 
 
         // Constructor        
@@ -41,7 +42,7 @@ namespace BM_Converter
             pad = new byte[12];
         }
 
-        public bool loadFromFile(string FileName)
+        public bool LoadFromFile(string FileName)
         {
             bool result = false;
 
@@ -68,27 +69,27 @@ namespace BM_Converter
                     this.DataSize = reader.ReadInt32();
                     this.pad = reader.ReadBytes(12);
 
-                    this.multiBM = false;
-                    this.numImages = 1;
+                    this.IsMultiBM = false;
+                    this.NumImages = 1;
 
                     if (this.SizeX == 1 && this.SizeY > 1)
                     {
                         // multi BM !
-                        this.multiBM = true;
-                        this.numImages = this.idemY;
+                        this.IsMultiBM = true;
+                        this.NumImages = this.idemY;
                         this.fileLength = this.SizeY + 32;
 
                         this.FrameRate = reader.ReadByte();
                         this.SecondByte = reader.ReadByte();
 
-                        this.Offsets = new int[this.numImages];
-                        for (int i = 0; i < this.numImages; i++)
+                        this.Offsets = new int[this.NumImages];
+                        for (int i = 0; i < this.NumImages; i++)
                         {
                             this.Offsets[i] = reader.ReadInt32();
                         }
 
                         this.SubBMs = new List<SubBM>();
-                        for (int i = 0; i < this.numImages; i++)
+                        for (int i = 0; i < this.NumImages; i++)
                         {
                             SubBM newSubBM = new SubBM();
                             newSubBM.SizeX = reader.ReadInt16();
@@ -147,11 +148,11 @@ namespace BM_Converter
 
                         if (this.compressed == 1)
                         {
-                            uncompressRLE();
+                            UncompressRLE();
                         }
                         else if (this.compressed == 2)
                         {
-                            uncompressRLE0();
+                            UncompressRLE0();
                         }
 
                     }
@@ -212,7 +213,7 @@ namespace BM_Converter
                     }
                     else
                     {
-                        palIndex = MiscFunctions.matchPixeltoPal(pixelColour, pal, includeIlluminated, commonColoursOnly);
+                        palIndex = MiscFunctions.MatchPixeltoPal(pixelColour, pal, includeIlluminated, commonColoursOnly);
                     }
 
                     PixelArray[x, y] = palIndex;
@@ -244,7 +245,7 @@ namespace BM_Converter
                 writer.Write(this.DataSize);
                 foreach (byte b in this.pad) writer.Write(b);
 
-                if (!this.multiBM)
+                if (!this.IsMultiBM)
                 {
                     // single BM image
                     
@@ -312,7 +313,7 @@ namespace BM_Converter
         }
 
         // Uncompress image encoded with RLE method (header.compressed == 1)
-        private void uncompressRLE()
+        private void UncompressRLE()
         {
             int dataPosition = 0;
 
@@ -356,7 +357,7 @@ namespace BM_Converter
         }
 
         // Uncompress image encoded with RLE0 method (header.compressed == 2)
-        private void uncompressRLE0()
+        private void UncompressRLE0()
         {
             int dataPosition = 0;
 
@@ -396,7 +397,7 @@ namespace BM_Converter
         }
 
         // compress BM image by RLE method.
-        public void compressRLE()
+        public void CompressRLE()
         {
             List<byte>[] compressedColumns = new List<byte>[this.SizeX];
             
@@ -453,11 +454,11 @@ namespace BM_Converter
                 compressedColumns[x] = thisColumn;
             }
 
-            assembleCompressedData(compressedColumns);
+            AssembleCompressedData(compressedColumns);
         }
 
         // compress BM image by RLE0 method (transparency)
-        public void compressRLE0()
+        public void CompressRLE0()
         {
             List<byte>[] compressedColumns = new List<byte>[this.SizeX];
 
@@ -512,11 +513,11 @@ namespace BM_Converter
                 compressedColumns[x] = thisColumn;
             }
 
-            assembleCompressedData(compressedColumns);
+            AssembleCompressedData(compressedColumns);
         }
 
         // Assembles compressed columns into a single array of bytes (CompressedData) and creates the table of ColumnStarts
-        private void assembleCompressedData(List<byte>[] compressedColumns)
+        private void AssembleCompressedData(List<byte>[] compressedColumns)
         {
             // Calculate DataSize
             this.DataSize = 0;

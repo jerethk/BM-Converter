@@ -72,7 +72,7 @@ namespace BM_Converter
 
         private void LoadBM(string path)
         {
-            if (!BM.loadFromFile(path))
+            if (!BM.LoadFromFile(path))
             {
                 MessageBox.Show("Error loading BM file. Please check that it is a valid DF BM file and not open in another program.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -105,9 +105,9 @@ namespace BM_Converter
                 s[4] = $"Compressed: {BM.compressed}";
                 s[5] = $"Transparency: {transparency}";
 
-                if (BM.multiBM)
+                if (BM.IsMultiBM)
                 {
-                    s[6] = $"Number of sub BMs: {BM.numImages}";
+                    s[6] = $"Number of sub BMs: {BM.NumImages}";
                     s[7] = $"Frame rate: {BM.FrameRate}";
                     //s[8] = $"{BM.SecondByte}";
                 }
@@ -120,7 +120,7 @@ namespace BM_Converter
 
                 // Convert image(s) to Bitmap(s) and store in List
                 Images.Clear();
-                if (!BM.multiBM)
+                if (!BM.IsMultiBM)
                 {
                     Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette);
                     Images.Add(newBitmap);
@@ -128,7 +128,7 @@ namespace BM_Converter
                 }
                 else
                 {
-                    for (int i = 0; i < BM.numImages; i++)
+                    for (int i = 0; i < BM.NumImages; i++)
                     {
                         Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette);
                         Images.Add(newBitmap);
@@ -137,7 +137,7 @@ namespace BM_Converter
 
                 // Set up multi BM interface
                 SubBMSelected = 0;
-                if (BM.multiBM)
+                if (BM.IsMultiBM)
                 {
                     btnPrevSub.Enabled = true;
                     btnNextSub.Enabled = true;
@@ -176,7 +176,7 @@ namespace BM_Converter
 
         private void btnNextSub_Click(object sender, EventArgs e)
         {
-            if (SubBMSelected < BM.numImages - 1)
+            if (SubBMSelected < BM.NumImages - 1)
             {
                 SubBMSelected++;
                 UpdateSubBMInfo();
@@ -205,7 +205,7 @@ namespace BM_Converter
             }
 
             string[] s = new string[10];
-            s[0] = $"Sub BM {SubBMSelected + 1} of {BM.numImages}";
+            s[0] = $"Sub BM {SubBMSelected + 1} of {BM.NumImages}";
             s[1] = $"SizeX: {BM.SubBMs[a].SizeX}";
             s[2] = $"SizeY: {BM.SubBMs[a].SizeY}";
             s[3] = $"Transparency: {transparency}";
@@ -228,7 +228,7 @@ namespace BM_Converter
 
         private void saveBMPDialog_FileOk(object sender, CancelEventArgs e)
         {
-            if (!BM.multiBM)
+            if (!BM.IsMultiBM)
             {
                 // single BM
                 try
@@ -249,7 +249,7 @@ namespace BM_Converter
 
                 try
                 {
-                    for (int i = 0; i < BM.numImages; i++)
+                    for (int i = 0; i < BM.NumImages; i++)
                     {
                         string saveName = $"{dir}/{fil}_{i}.png";
                         Images[i].Save(saveName, System.Drawing.Imaging.ImageFormat.Png);
@@ -284,9 +284,9 @@ namespace BM_Converter
                     string exportFile = $"{dir}/{fname}.png";
 
                     DFBM ConvertingBM = new DFBM();
-                    if (ConvertingBM.loadFromFile(BMFile))
+                    if (ConvertingBM.LoadFromFile(BMFile))
                     {
-                        if (ConvertingBM.multiBM)
+                        if (ConvertingBM.IsMultiBM)
                         {
                             // multi BM so skip it. Don't increment either success or fail counter
                             continue;
