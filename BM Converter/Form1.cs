@@ -13,10 +13,10 @@ namespace BM_Converter
 {
     public partial class Form1 : Form
     {
-        DFPal palette;
-        DFBM BM;
-        List<Bitmap> Images;
-        int SubBMSelected = 0;
+        private DFPal palette;
+        private DFBM BM;
+        private List<Bitmap> Images;
+        private int subBMSelected = 0;
 
         public Form1(string[] args)
         {
@@ -48,6 +48,18 @@ namespace BM_Converter
         {
             if (this.palette.LoadfromFile(OpenPALDialog.FileName))
             {
+                if (BM.PixelData != null || BM.SubBMs != null)
+                {
+                    GenerateImages();
+                    displayBox.Image = Images[0];
+                    
+                    if (BM.IsMultiBM)
+                    {
+                        this.UpdateSubBMInfo();
+                    }
+                    
+                }
+
                 MessageBox.Show("PAL Loaded.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 labelPal.Text = $"PAL: {Path.GetFileName(OpenPALDialog.FileName)}";
                 BtnLoadBM.Enabled = true;
@@ -118,25 +130,10 @@ namespace BM_Converter
                 s[13] = $"DataSize: {BM.DataSize.ToString()}";
                 textBoxBMInfo.Lines = s;
 
-                // Convert image(s) to Bitmap(s) and store in List
-                Images.Clear();
-                if (!BM.IsMultiBM)
-                {
-                    Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette);
-                    Images.Add(newBitmap);
-                    displayBox.Image = Images[0];
-                }
-                else
-                {
-                    for (int i = 0; i < BM.NumImages; i++)
-                    {
-                        Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette);
-                        Images.Add(newBitmap);
-                    }
-                }
+                GenerateImages();
 
                 // Set up multi BM interface
-                SubBMSelected = 0;
+                subBMSelected = 0;
                 if (BM.IsMultiBM)
                 {
                     btnPrevSub.Enabled = true;
@@ -155,6 +152,26 @@ namespace BM_Converter
             }
         }
         
+        private void GenerateImages()
+        {
+            // Convert image(s) to Bitmap(s) and store in List
+            Images.Clear();
+            if (!BM.IsMultiBM)
+            {
+                Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette);
+                Images.Add(newBitmap);
+                displayBox.Image = Images[0];
+            }
+            else
+            {
+                for (int i = 0; i < BM.NumImages; i++)
+                {
+                    Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette);
+                    Images.Add(newBitmap);
+                }
+            }
+        }
+
         private void checkBoxZoom_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxZoom.Checked)
@@ -167,25 +184,25 @@ namespace BM_Converter
         // Multi BM Interface ------------------------------------------------------------
         private void btnPrevSub_Click(object sender, EventArgs e)
         {
-            if (SubBMSelected > 0)
+            if (subBMSelected > 0)
             {
-                SubBMSelected--;
+                subBMSelected--;
                 UpdateSubBMInfo();
             }
         }
 
         private void btnNextSub_Click(object sender, EventArgs e)
         {
-            if (SubBMSelected < BM.NumImages - 1)
+            if (subBMSelected < BM.NumImages - 1)
             {
-                SubBMSelected++;
+                subBMSelected++;
                 UpdateSubBMInfo();
             }
         }
 
         private void UpdateSubBMInfo()
         {
-            int a = SubBMSelected;
+            int a = subBMSelected;
 
             string transparency;
             switch (BM.SubBMs[a].transparent)
@@ -205,7 +222,7 @@ namespace BM_Converter
             }
 
             string[] s = new string[10];
-            s[0] = $"Sub BM {SubBMSelected + 1} of {BM.NumImages}";
+            s[0] = $"Sub BM {subBMSelected + 1} of {BM.NumImages}";
             s[1] = $"SizeX: {BM.SubBMs[a].SizeX}";
             s[2] = $"SizeY: {BM.SubBMs[a].SizeY}";
             s[3] = $"Transparency: {transparency}";
@@ -321,8 +338,6 @@ namespace BM_Converter
         // Create BM ------------------------------------------------------------------------------
         private void btnCreateBM_Click(object sender, EventArgs e)
         {
-            // MessageBox.Show("Not yet implemented!", "!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
             Form2 BMCreator = new Form2();
             BMCreator.Show();
         }
