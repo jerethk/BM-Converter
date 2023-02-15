@@ -20,6 +20,24 @@ namespace BM_Converter
             palette = new DFPal();
         }
 
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            comboBoxTransparentColour.SelectedIndex = 0;
+            radioBtnSingleBM.Checked = true;
+            radioBtnOpaque.Checked = true;
+            comboBoxTransparentColour.Enabled = false;
+        }
+
+        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult answer = MessageBox.Show("Are you sure you want to leave? You will lose any work you have done.", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (answer == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
+
         private void btnLoadPal_Click(object sender, EventArgs e)
         {
             openPALDialog.ShowDialog();
@@ -56,14 +74,10 @@ namespace BM_Converter
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            DialogResult answer = MessageBox.Show("Are you sure you want to leave? You will lose any work you have done.", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning); 
-
-            if (answer == DialogResult.Yes)
-            {
-                this.Close();
-                this.Dispose();
-            }
+            this.Close();
         }
+
+        // BM Options --------------------------------------------------------------------------------------------------------
 
         private void radioBtnSingleBM_Click(object sender, EventArgs e)
         {
@@ -89,6 +103,16 @@ namespace BM_Converter
             numericFramerate.Value = 0;
             radioBtnOpaque.Checked = true;
             radioBtnWeapon.Enabled = false;
+        }
+
+        private void radioBtnOpaque_CheckedChanged(object sender, EventArgs e)
+        {
+            comboBoxTransparentColour.Enabled = !radioBtnOpaque.Checked;
+            
+            if (radioBtnOpaque.Checked)
+            {
+                comboBoxTransparentColour.SelectedIndex = 0;
+            }
         }
 
         // Add & remove image ------------------------------------------------------------------------------------
@@ -186,7 +210,11 @@ namespace BM_Converter
                 transparency = 'w';
             }
 
-            DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, (byte) numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
+            string transparentColour = comboBoxTransparentColour.SelectedIndex == 0
+                ? "black"
+                : "alpha";
+
+            DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, transparentColour, (byte) numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
             
             if (newBM.SaveToFile(saveBMDialog.FileName))
             {

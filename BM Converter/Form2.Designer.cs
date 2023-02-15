@@ -12,6 +12,7 @@ namespace BM_Converter
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.btnLoadPal = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxCommonColours = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeIlluminated = new System.Windows.Forms.CheckBox();
             this.btnExit = new System.Windows.Forms.Button();
             this.openPALDialog = new System.Windows.Forms.OpenFileDialog();
@@ -26,6 +27,8 @@ namespace BM_Converter
             this.numericFramerate = new System.Windows.Forms.NumericUpDown();
             this.checkBoxCompressed = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBoxTransparentColour = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.radioBtnWeapon = new System.Windows.Forms.RadioButton();
             this.radioBtnTransparent = new System.Windows.Forms.RadioButton();
             this.radioBtnOpaque = new System.Windows.Forms.RadioButton();
@@ -34,7 +37,6 @@ namespace BM_Converter
             this.btnAddImage = new System.Windows.Forms.Button();
             this.listBoxImages = new System.Windows.Forms.ListBox();
             this.saveBMDialog = new System.Windows.Forms.SaveFileDialog();
-            this.checkBoxCommonColours = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.groupTypeBM.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -65,6 +67,17 @@ namespace BM_Converter
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(824, 65);
             this.panel1.TabIndex = 1;
+            // 
+            // checkBoxCommonColours
+            // 
+            this.checkBoxCommonColours.AutoSize = true;
+            this.checkBoxCommonColours.Location = new System.Drawing.Point(360, 22);
+            this.checkBoxCommonColours.Name = "checkBoxCommonColours";
+            this.checkBoxCommonColours.Size = new System.Drawing.Size(145, 19);
+            this.checkBoxCommonColours.TabIndex = 3;
+            this.checkBoxCommonColours.Text = "Common colours only";
+            this.checkBoxCommonColours.UseVisualStyleBackColor = true;
+            this.checkBoxCommonColours.CheckedChanged += new System.EventHandler(this.checkBoxCommonColours_CheckedChanged);
             // 
             // checkBoxIncludeIlluminated
             // 
@@ -128,7 +141,7 @@ namespace BM_Converter
             // 
             this.groupTypeBM.Controls.Add(this.radioBtnMultiBM);
             this.groupTypeBM.Controls.Add(this.radioBtnSingleBM);
-            this.groupTypeBM.Location = new System.Drawing.Point(11, 42);
+            this.groupTypeBM.Location = new System.Drawing.Point(11, 47);
             this.groupTypeBM.Name = "groupTypeBM";
             this.groupTypeBM.Size = new System.Drawing.Size(240, 63);
             this.groupTypeBM.TabIndex = 4;
@@ -168,9 +181,9 @@ namespace BM_Converter
             // btnCreateBM
             // 
             this.btnCreateBM.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnCreateBM.Location = new System.Drawing.Point(689, 47);
+            this.btnCreateBM.Location = new System.Drawing.Point(681, 47);
             this.btnCreateBM.Name = "btnCreateBM";
-            this.btnCreateBM.Size = new System.Drawing.Size(110, 49);
+            this.btnCreateBM.Size = new System.Drawing.Size(118, 49);
             this.btnCreateBM.TabIndex = 12;
             this.btnCreateBM.Text = "Create BM";
             this.btnCreateBM.UseVisualStyleBackColor = true;
@@ -179,7 +192,7 @@ namespace BM_Converter
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(280, 129);
+            this.label1.Location = new System.Drawing.Point(280, 145);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(132, 15);
             this.label1.TabIndex = 11;
@@ -188,7 +201,7 @@ namespace BM_Converter
             // numericFramerate
             // 
             this.numericFramerate.Enabled = false;
-            this.numericFramerate.Location = new System.Drawing.Point(280, 156);
+            this.numericFramerate.Location = new System.Drawing.Point(280, 172);
             this.numericFramerate.Name = "numericFramerate";
             this.numericFramerate.Size = new System.Drawing.Size(78, 23);
             this.numericFramerate.TabIndex = 10;
@@ -196,7 +209,7 @@ namespace BM_Converter
             // checkBoxCompressed
             // 
             this.checkBoxCompressed.AutoSize = true;
-            this.checkBoxCompressed.Location = new System.Drawing.Point(481, 157);
+            this.checkBoxCompressed.Location = new System.Drawing.Point(481, 173);
             this.checkBoxCompressed.Name = "checkBoxCompressed";
             this.checkBoxCompressed.Size = new System.Drawing.Size(92, 19);
             this.checkBoxCompressed.TabIndex = 9;
@@ -205,15 +218,37 @@ namespace BM_Converter
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboBoxTransparentColour);
+            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.radioBtnWeapon);
             this.groupBox1.Controls.Add(this.radioBtnTransparent);
             this.groupBox1.Controls.Add(this.radioBtnOpaque);
-            this.groupBox1.Location = new System.Drawing.Point(280, 42);
+            this.groupBox1.Location = new System.Drawing.Point(280, 13);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(323, 63);
+            this.groupBox1.Size = new System.Drawing.Size(372, 110);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Transparency";
+            // 
+            // comboBoxTransparentColour
+            // 
+            this.comboBoxTransparentColour.FormattingEnabled = true;
+            this.comboBoxTransparentColour.Items.AddRange(new object[] {
+            "Black (RGB 0,0,0)",
+            "Transparent (alpha 0)"});
+            this.comboBoxTransparentColour.Location = new System.Drawing.Point(156, 65);
+            this.comboBoxTransparentColour.Name = "comboBoxTransparentColour";
+            this.comboBoxTransparentColour.Size = new System.Drawing.Size(190, 23);
+            this.comboBoxTransparentColour.TabIndex = 8;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(16, 68);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(108, 15);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Transparent colour:";
             // 
             // radioBtnWeapon
             // 
@@ -246,23 +281,24 @@ namespace BM_Converter
             this.radioBtnOpaque.TabStop = true;
             this.radioBtnOpaque.Text = "Opaque";
             this.radioBtnOpaque.UseVisualStyleBackColor = true;
+            this.radioBtnOpaque.CheckedChanged += new System.EventHandler(this.radioBtnOpaque_CheckedChanged);
             // 
             // displayBox
             // 
             this.displayBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.displayBox.BackColor = System.Drawing.Color.Black;
+            this.displayBox.BackColor = System.Drawing.Color.DarkGray;
             this.displayBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.displayBox.Location = new System.Drawing.Point(280, 200);
+            this.displayBox.Location = new System.Drawing.Point(280, 216);
             this.displayBox.Name = "displayBox";
-            this.displayBox.Size = new System.Drawing.Size(519, 504);
+            this.displayBox.Size = new System.Drawing.Size(519, 488);
             this.displayBox.TabIndex = 8;
             this.displayBox.TabStop = false;
             // 
             // btnRemoveImage
             // 
-            this.btnRemoveImage.Location = new System.Drawing.Point(136, 129);
+            this.btnRemoveImage.Location = new System.Drawing.Point(135, 137);
             this.btnRemoveImage.Name = "btnRemoveImage";
             this.btnRemoveImage.Size = new System.Drawing.Size(104, 55);
             this.btnRemoveImage.TabIndex = 7;
@@ -272,7 +308,7 @@ namespace BM_Converter
             // 
             // btnAddImage
             // 
-            this.btnAddImage.Location = new System.Drawing.Point(12, 129);
+            this.btnAddImage.Location = new System.Drawing.Point(11, 137);
             this.btnAddImage.Name = "btnAddImage";
             this.btnAddImage.Size = new System.Drawing.Size(104, 55);
             this.btnAddImage.TabIndex = 6;
@@ -284,7 +320,7 @@ namespace BM_Converter
             // 
             this.listBoxImages.FormattingEnabled = true;
             this.listBoxImages.ItemHeight = 15;
-            this.listBoxImages.Location = new System.Drawing.Point(12, 200);
+            this.listBoxImages.Location = new System.Drawing.Point(11, 216);
             this.listBoxImages.Name = "listBoxImages";
             this.listBoxImages.Size = new System.Drawing.Size(228, 379);
             this.listBoxImages.TabIndex = 5;
@@ -297,17 +333,6 @@ namespace BM_Converter
             this.saveBMDialog.Title = "Save BM";
             this.saveBMDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveBMDialog_FileOk);
             // 
-            // checkBoxCommonColours
-            // 
-            this.checkBoxCommonColours.AutoSize = true;
-            this.checkBoxCommonColours.Location = new System.Drawing.Point(351, 22);
-            this.checkBoxCommonColours.Name = "checkBoxCommonColours";
-            this.checkBoxCommonColours.Size = new System.Drawing.Size(145, 19);
-            this.checkBoxCommonColours.TabIndex = 3;
-            this.checkBoxCommonColours.Text = "Common colours only";
-            this.checkBoxCommonColours.UseVisualStyleBackColor = true;
-            this.checkBoxCommonColours.CheckedChanged += new System.EventHandler(this.checkBoxCommonColours_CheckedChanged);
-            // 
             // Form2
             // 
             this.ClientSize = new System.Drawing.Size(824, 784);
@@ -318,6 +343,8 @@ namespace BM_Converter
             this.MinimumSize = new System.Drawing.Size(840, 800);
             this.Name = "Form2";
             this.Text = "Create BM";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
+            this.Load += new System.EventHandler(this.Form2_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupTypeBM.ResumeLayout(false);
@@ -357,5 +384,7 @@ namespace BM_Converter
         private SaveFileDialog saveBMDialog;
         private CheckBox checkBoxIncludeIlluminated;
         private CheckBox checkBoxCommonColours;
+        private ComboBox comboBoxTransparentColour;
+        private Label label2;
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Runtime.CompilerServices;
 
 namespace BM_Converter
 {
@@ -194,11 +195,28 @@ namespace BM_Converter
         }
 
         // Static method to convert a Bitmap object into a BM image
-        public static byte[,] BitmaptoBM(Bitmap bitmap, DFPal pal, bool includeIlluminated, bool commonColoursOnly)
+        public static byte[,] BitmaptoBM(Bitmap bitmap, DFPal pal, bool includeIlluminated, bool commonColoursOnly, string transparentColour)
         {
             bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
             Byte[,] PixelArray = new byte[bitmap.Width, bitmap.Height];
+
+            // current options for transparent colour are black (RGB 0,0,0) and alpha 0
+            Func<Color, bool> isTransparentColour;
+            switch (transparentColour)
+            {
+                case "black":
+                    isTransparentColour = colour => colour.R == 0 && colour.G == 0 && colour.B == 0;
+                    break;
+
+                case "alpha":
+                    isTransparentColour = colour => colour.A == 0;
+                    break;
+
+                default:
+                    isTransparentColour = colour => false;
+                    break;
+            }
             
             for (int x = 0; x < bitmap.Width; x++)
             {
@@ -207,7 +225,7 @@ namespace BM_Converter
                     Color pixelColour = bitmap.GetPixel(x, y);
                     byte palIndex;
 
-                    if (pixelColour.R == 0 && pixelColour.G == 0 && pixelColour.B == 0)    // black = PAL index 0, will be set to transparent if transparent or weapon texture
+                    if (isTransparentColour(pixelColour))
                     {
                         palIndex = 0;
                     }

@@ -15,7 +15,7 @@ namespace BM_Converter
         }
         
         // Builds a BM object from source images
-        public static DFBM BuildBM(bool multiBM, DFPal pal, List<Bitmap> SourceImages, char transparency, byte FRate, bool includeIlluminated, bool commonColoursOnly, bool compress)
+        public static DFBM BuildBM(bool multiBM, DFPal pal, List<Bitmap> SourceImages, char transparency, string transparentColour, byte FRate, bool includeIlluminated, bool commonColoursOnly, bool compress)
         {
             DFBM newBM = new DFBM();
 
@@ -60,7 +60,7 @@ namespace BM_Converter
                 }
 
                 // Create BM image data
-                newBM.PixelData = DFBM.BitmaptoBM(source, pal, includeIlluminated, commonColoursOnly);
+                newBM.PixelData = DFBM.BitmaptoBM(source, pal, includeIlluminated, commonColoursOnly, transparentColour);
 
                 if (compress)
                 {
@@ -119,7 +119,7 @@ namespace BM_Converter
                         newSubBM.logSizeY = 0;
                     }
 
-                    newSubBM.PixelData = DFBM.BitmaptoBM(SourceImages[i], pal, includeIlluminated, commonColoursOnly);
+                    newSubBM.PixelData = DFBM.BitmaptoBM(SourceImages[i], pal, includeIlluminated, commonColoursOnly, transparentColour);
                     newBM.SubBMs.Add(newSubBM);
                 }
 
