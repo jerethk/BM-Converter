@@ -229,7 +229,7 @@ namespace BM_Converter
             this.displayBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.displayBox.BackColor = System.Drawing.Color.Black;
+            this.displayBox.BackColor = System.Drawing.Color.DarkGray;
             this.displayBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.displayBox.Location = new System.Drawing.Point(247, 82);
             this.displayBox.Name = "displayBox";

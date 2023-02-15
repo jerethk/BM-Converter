@@ -158,7 +158,7 @@ namespace BM_Converter
             Images.Clear();
             if (!BM.IsMultiBM)
             {
-                Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette);
+                Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette, BM.transparent == 0x3E || BM.transparent == 0x08);
                 Images.Add(newBitmap);
                 displayBox.Image = Images[0];
             }
@@ -166,7 +166,7 @@ namespace BM_Converter
             {
                 for (int i = 0; i < BM.NumImages; i++)
                 {
-                    Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette);
+                    Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette, BM.transparent == 0x3E || BM.transparent == 0x08);
                     Images.Add(newBitmap);
                 }
             }
@@ -310,7 +310,7 @@ namespace BM_Converter
                         }
                         else
                         {
-                            Bitmap bitmap = DFBM.BMtoBitmap(ConvertingBM.SizeX, ConvertingBM.SizeY, ConvertingBM.PixelData, palette);
+                            Bitmap bitmap = DFBM.BMtoBitmap(ConvertingBM.SizeX, ConvertingBM.SizeY, ConvertingBM.PixelData, palette, ConvertingBM.transparent == 0x3E || ConvertingBM.transparent == 0x08);
 
                             try
                             {

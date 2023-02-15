@@ -173,7 +173,7 @@ namespace BM_Converter
         }
 
         // Static method to convert a BM image into a Bitmap object
-        public static Bitmap BMtoBitmap(int SizeX, int SizeY, byte[,] PixelData, DFPal pal)
+        public static Bitmap BMtoBitmap(int SizeX, int SizeY, byte[,] PixelData, DFPal pal, bool isTransparentBM)
         {
             Bitmap bitmap = new Bitmap(SizeX, SizeY);
             
@@ -181,11 +181,20 @@ namespace BM_Converter
             {
                 for (int y = 0; y < SizeY; y++)
                 {
-                    int R = pal.Colours[PixelData[x, y]].R;
-                    int G = pal.Colours[PixelData[x, y]].G;
-                    int B = pal.Colours[PixelData[x, y]].B;
+                    Color colour;
+                    if (isTransparentBM && PixelData[x, y] == 0)   // transparent
+                    {
+                        colour = Color.FromArgb(0, 0, 0, 0);
+                    }
+                    else
+                    {
+                        int R = pal.Colours[PixelData[x, y]].R;
+                        int G = pal.Colours[PixelData[x, y]].G;
+                        int B = pal.Colours[PixelData[x, y]].B;
 
-                    Color colour = Color.FromArgb(255, R, G, B);
+                        colour = Color.FromArgb(255, R, G, B);
+                    }
+
                     bitmap.SetPixel(x, y, colour);
                 }
             }
