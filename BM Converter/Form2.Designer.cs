@@ -235,7 +235,8 @@ namespace BM_Converter
             this.comboBoxTransparentColour.FormattingEnabled = true;
             this.comboBoxTransparentColour.Items.AddRange(new object[] {
             "Black (RGB 0,0,0)",
-            "Transparent (alpha 0)"});
+            "Alpha 0",
+            "Alpha < 128"});
             this.comboBoxTransparentColour.Location = new System.Drawing.Point(156, 65);
             this.comboBoxTransparentColour.Name = "comboBoxTransparentColour";
             this.comboBoxTransparentColour.Size = new System.Drawing.Size(190, 23);

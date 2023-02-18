@@ -218,8 +218,12 @@ namespace BM_Converter
                     isTransparentColour = colour => colour.R == 0 && colour.G == 0 && colour.B == 0;
                     break;
 
-                case "alpha":
+                case "alpha0":
                     isTransparentColour = colour => colour.A == 0;
+                    break;
+
+                case "alpha127":
+                    isTransparentColour = colour => colour.A < 128;
                     break;
 
                 default:

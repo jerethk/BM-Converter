@@ -210,10 +210,22 @@ namespace BM_Converter
                 transparency = 'w';
             }
 
-            string transparentColour = comboBoxTransparentColour.SelectedIndex == 0
-                ? "black"
-                : "alpha";
+            string transparentColour;
+            switch (comboBoxTransparentColour.SelectedIndex)
+            {
+                case 1:
+                    transparentColour = "alpha0";
+                    break;
 
+                case 2:
+                    transparentColour = "alpha127";
+                    break;
+
+                default:
+                    transparentColour = "black";
+                    break;
+            }
+            
             DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, transparentColour, (byte) numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
             
             if (newBM.SaveToFile(saveBMDialog.FileName))
