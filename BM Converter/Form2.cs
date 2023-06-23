@@ -9,15 +9,15 @@ namespace BM_Converter
 {
     public partial class Form2 : Form
     {
-        List<Bitmap> SourceImages;
-        DFPal palette;
+        private List<Bitmap> SourceImages;
+        private DFPal palette;
 
         public Form2()
         {
             InitializeComponent();
 
-            SourceImages = new List<Bitmap>();
-            palette = new DFPal();
+            this.SourceImages = new List<Bitmap>();
+            this.palette = new DFPal();
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -81,13 +81,13 @@ namespace BM_Converter
 
         private void radioBtnSingleBM_Click(object sender, EventArgs e)
         {
-            if (SourceImages.Count > 1)
-            {
-                MessageBox.Show("You have added multiple images!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                radioBtnMultiBM.Checked = true;
-            }
+            //if (SourceImages.Count > 1)
+            //{
+            //    MessageBox.Show("You have added multiple images!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    radioBtnMultiBM.Checked = true;
+            //}
         }
-        
+
         private void radioBtnSingleBM_CheckedChanged(object sender, EventArgs e)
         {
             checkBoxCompressed.Enabled = true;
@@ -118,10 +118,7 @@ namespace BM_Converter
         // Add & remove image ------------------------------------------------------------------------------------
         private void btnAddImage_Click(object sender, EventArgs e)
         {
-            if (SourceImages.Count == 0 || radioBtnMultiBM.Checked)
-            {
-                LoadImageDialog.ShowDialog();
-            }
+            LoadImageDialog.ShowDialog();
         }
 
         private void LoadImageDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
@@ -136,7 +133,7 @@ namespace BM_Converter
                 // Check image wd&ht is power of 2
                 if (!MiscFunctions.IsPowerOfTwo(newImage.Width) || !MiscFunctions.IsPowerOfTwo(newImage.Height))
                 {
-                    DialogResult answer = MessageBox.Show("Your image width or height is not a power of 2. This is only allowed for weapon textures. Continue?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    var answer = MessageBox.Show("Your image width or height is not a power of 2. This is only allowed for weapon textures. Continue?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     if (answer == DialogResult.Yes)
                     {
                         proceed = true;
@@ -190,7 +187,7 @@ namespace BM_Converter
         {
             if (SourceImages.Count > 0)
             {
-                string fn = Path.GetFileNameWithoutExtension((string)listBoxImages.Items[0]);
+                var fn = Path.GetFileNameWithoutExtension((string)listBoxImages.Items[0]);
                 saveBMDialog.FileName = fn;
                 saveBMDialog.ShowDialog();
             }
@@ -225,9 +222,26 @@ namespace BM_Converter
                     transparentColour = "black";
                     break;
             }
-            
+
+            // New feature - Bulk convert single BMs
+            if (!radioBtnMultiBM.Checked && this.SourceImages.Count > 1)
+            {
+                // Bulk convert!
+                for (int i = 0; i < this.SourceImages.Count; i++)
+                {
+                    var dir = Path.GetDirectoryName(saveBMDialog.FileName);
+                    var filename = Path.GetFileNameWithoutExtension((string)listBoxImages.Items[i]);
+                    var source = new List<Bitmap>() { this.SourceImages[i] };
+
+                    var BM = MiscFunctions.BuildBM(false, this.palette, source, transparency, transparentColour, (byte)numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
+                    BM.SaveToFile($"{dir}\\{filename}.bm");
+                }
+
+                return;
+            }
+
             DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, transparentColour, (byte) numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
-            
+
             if (newBM.SaveToFile(saveBMDialog.FileName))
             {
                 MessageBox.Show("Successfully saved BM file!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
