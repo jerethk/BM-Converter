@@ -123,37 +123,45 @@ namespace BM_Converter
 
         private void LoadImageDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Bitmap newImage;
+            var failedImages = 0;
             
-            try
+            foreach (var imgFile in LoadImageDialog.FileNames)
             {
-                newImage = new Bitmap(LoadImageDialog.FileName);
-                bool proceed = false;
-
-                // Check image wd&ht is power of 2
-                if (!MiscFunctions.IsPowerOfTwo(newImage.Width) || !MiscFunctions.IsPowerOfTwo(newImage.Height))
+                try
                 {
-                    var answer = MessageBox.Show("Your image width or height is not a power of 2. This is only allowed for weapon textures. Continue?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (answer == DialogResult.Yes)
+                    var newImage = new Bitmap(imgFile);
+                    bool proceed = false;
+
+                    // Check image wd&ht is power of 2
+                    if (!MiscFunctions.IsPowerOfTwo(newImage.Width) || !MiscFunctions.IsPowerOfTwo(newImage.Height))
+                    {
+                        var answer = MessageBox.Show("Your image width or height is not a power of 2. This is only allowed for weapon textures. Continue?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (answer == DialogResult.Yes)
+                        {
+                            proceed = true;
+                        }
+                    }
+                    else
                     {
                         proceed = true;
                     }
-                }
-                else
-                {
-                    proceed = true;
-                }
 
-                if (proceed)
+                    if (proceed)
+                    {
+                        SourceImages.Add(newImage);
+                        listBoxImages.Items.Add(Path.GetFileName(imgFile));
+                        listBoxImages.SelectedIndex = listBoxImages.Items.Count - 1;
+                    }
+                }
+                catch (Exception)
                 {
-                    SourceImages.Add(newImage);
-                    listBoxImages.Items.Add(Path.GetFileName(LoadImageDialog.FileName));
-                    listBoxImages.SelectedIndex = listBoxImages.Items.Count - 1;
+                    failedImages++;
                 }
             }
-            catch (IOException)
+
+            if (failedImages > 0)
             {
-                MessageBox.Show("Error loading image.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                MessageBox.Show($"{failedImages} images failed to load.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -185,13 +193,21 @@ namespace BM_Converter
         // Create BM ------------------------------------------------------------------------
         private void btnCreateBM_Click(object sender, EventArgs e)
         {
+            if (this.SourceImages.Count > 1 && radioBtnSingleBM.Checked)
+            {
+                var response = MessageBox.Show("You have added multiple images. They will each be converted into a BM. Confirm?", "Multiple images", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (response == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
             if (SourceImages.Count > 0)
             {
                 var fn = Path.GetFileNameWithoutExtension((string)listBoxImages.Items[0]);
                 saveBMDialog.FileName = fn;
                 saveBMDialog.ShowDialog();
             }
-            
         }
 
         private void saveBMDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
@@ -226,6 +242,8 @@ namespace BM_Converter
             // New feature - Bulk convert single BMs
             if (!radioBtnMultiBM.Checked && this.SourceImages.Count > 1)
             {
+                var failed = 0;
+                
                 // Bulk convert!
                 for (int i = 0; i < this.SourceImages.Count; i++)
                 {
@@ -234,9 +252,18 @@ namespace BM_Converter
                     var source = new List<Bitmap>() { this.SourceImages[i] };
 
                     var BM = MiscFunctions.BuildBM(false, this.palette, source, transparency, transparentColour, (byte)numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
-                    BM.SaveToFile($"{dir}\\{filename}.bm");
+                    
+                    if (!BM.SaveToFile($"{dir}\\{filename}.bm"))
+                    {
+                        failed++;
+                    }
                 }
 
+                if (failed > 0)
+                {
+                    MessageBox.Show("One or more BMs failed to successfully save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                
                 return;
             }
 

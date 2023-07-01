@@ -111,6 +111,7 @@ namespace BM_Converter
             // LoadImageDialog
             // 
             this.LoadImageDialog.Filter = "PNG image|*.PNG|BMP image|*.BMP|JPEG image|*.JPG";
+            this.LoadImageDialog.Multiselect = true;
             this.LoadImageDialog.Title = "Load image";
             this.LoadImageDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.LoadImageDialog_FileOk);
             // 
@@ -313,7 +314,7 @@ namespace BM_Converter
             this.btnAddImage.Name = "btnAddImage";
             this.btnAddImage.Size = new System.Drawing.Size(104, 55);
             this.btnAddImage.TabIndex = 6;
-            this.btnAddImage.Text = "Add Image";
+            this.btnAddImage.Text = "Add Image(s)";
             this.btnAddImage.UseVisualStyleBackColor = true;
             this.btnAddImage.Click += new System.EventHandler(this.btnAddImage_Click);
             // 
