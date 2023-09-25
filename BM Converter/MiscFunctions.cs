@@ -43,8 +43,8 @@ namespace BM_Converter
                 Bitmap source = SourceImages[0];
 
                 // Create BM header. The FileID is automatically created by the object constructor
-                newBM.SizeX = (short)source.Width;
-                newBM.SizeY = (short)source.Height;
+                newBM.SizeX = (ushort)source.Width;
+                newBM.SizeY = (ushort)source.Height;
                 newBM.idemX = newBM.SizeX;
                 newBM.idemY = newBM.SizeY;
                 newBM.transparent = trn;                
@@ -89,8 +89,8 @@ namespace BM_Converter
                 newBM.NumImages = SourceImages.Count;
                 
                 newBM.SizeX = 1;
-                newBM.idemX = -2;
-                newBM.idemY = (short)newBM.NumImages;
+                newBM.idemX = 0xfffe;
+                newBM.idemY = (ushort)newBM.NumImages;
                 newBM.transparent = trn;
                 newBM.compressed = 0;
                 newBM.DataSize = 0;
@@ -133,7 +133,8 @@ namespace BM_Converter
                     counter += 28;  // len of sub BM header = 28
                     counter += newBM.SubBMs[i].DataSize;
                 }
-                newBM.SizeY = (short)counter;
+                // TODO need to throw error when counter is > 0xffff !!!
+                newBM.SizeY = (ushort)counter;
             }
 
             return newBM;

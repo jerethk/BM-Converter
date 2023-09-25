@@ -11,10 +11,10 @@ namespace BM_Converter
     class DFBM
     {
         public byte[] FileId { get; set; }      // header
-        public short SizeX { get; set; }
-        public short SizeY { get; set; }
-        public short idemX { get; set; }
-        public short idemY { get; set; }
+        public ushort SizeX { get; set; }
+        public ushort SizeY { get; set; }
+        public ushort idemX { get; set; }
+        public ushort idemY { get; set; }
         public byte transparent { get; set; }
         public byte logSizeY { get; set; }
         public short compressed { get; set; }
@@ -60,10 +60,10 @@ namespace BM_Converter
                 }
                 else
                 {
-                    this.SizeX = reader.ReadInt16();
-                    this.SizeY = reader.ReadInt16();
-                    this.idemX = reader.ReadInt16(); 
-                    this.idemY = reader.ReadInt16();
+                    this.SizeX = reader.ReadUInt16();
+                    this.SizeY = reader.ReadUInt16();
+                    this.idemX = reader.ReadUInt16(); 
+                    this.idemY = reader.ReadUInt16();
                     this.transparent = reader.ReadByte();
                     this.logSizeY = reader.ReadByte();
                     this.compressed = reader.ReadInt16();
