@@ -152,6 +152,7 @@ namespace BM_Converter
 
                 btnExport.Enabled = true;
 
+                this.comboBoxImageVersion.SelectedIndex = 0;
                 this.loadRemasterImages(Path.GetFileNameWithoutExtension(path));
             }
         }
@@ -165,14 +166,13 @@ namespace BM_Converter
                 Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette, BM.transparent == 0x3E || BM.transparent == 0x08);
                 this.images.Add(newBitmap);
                 this.displayBox.Image = images[0];
-                this.comboBoxImageVersion.SelectedIndex = 0;
             }
             else
             {
                 for (int i = 0; i < BM.NumImages; i++)
                 {
                     Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette, BM.transparent == 0x3E || BM.transparent == 0x08);
-                    images.Add(newBitmap);
+                    this.images.Add(newBitmap);
                 }
             }
         }
@@ -238,7 +238,7 @@ namespace BM_Converter
             s[8] = $"DataSize: {BM.SubBMs[a].DataSize}";
             textBoxSubBMInfo.Lines = s;
 
-            displayBox.Image = images[a];
+            this.UpdateDisplayBox();
         }
 
         // Export -------------------------------------------------------------------------------
@@ -258,7 +258,7 @@ namespace BM_Converter
                     this.images[0].Save(saveBMPDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
                     
                     
-                    if (this.remasterImages.Count > 0 && this.remasterAlphaImages.Count > 0)
+                    if (this.remasterImages.Count == 1 && this.remasterAlphaImages.Count == 1)
                     {
                         var dir = Path.GetDirectoryName(saveBMPDialog.FileName);
                         var filenameWithoutExtension = Path.GetFileNameWithoutExtension(saveBMPDialog.FileName);
@@ -284,7 +284,15 @@ namespace BM_Converter
                     for (int i = 0; i < BM.NumImages; i++)
                     {
                         string saveName = $"{dir}/{fil}_{i}.png";
-                        images[i].Save(saveName, System.Drawing.Imaging.ImageFormat.Png);
+                        this.images[i].Save(saveName, System.Drawing.Imaging.ImageFormat.Png);
+
+                        if (this.remasterImages.Count > i && this.remasterAlphaImages.Count > i)
+                        {
+                            string saveName2 = $"{dir}/{fil}_{i}_remaster.png";
+                            this.remasterImages[i].Save(saveName2, System.Drawing.Imaging.ImageFormat.Png);
+                            string saveName3 = $"{dir}/{fil}_{i}_remaster_alpha.png";
+                            this.remasterAlphaImages[i].Save(saveName3, System.Drawing.Imaging.ImageFormat.Png);
+                        }
                     }
                 }
                 catch (IOException)
@@ -399,10 +407,11 @@ namespace BM_Converter
                 return;
             }
 
+            var rawData = MiscFunctions.LoadRawFile(rawPath);
+
             if (!this.BM.IsMultiBM)
             {
-                var rawData = MiscFunctions.LoadRawFile(rawPath);
-
+                // Single BM
                 if (rawData != null && rawData.Length > 0)
                 {
                     var (bitmap, alphaBitmap) = MiscFunctions.GenerateRemasterImage(rawData, this.BM.SizeX * 2, this.BM.SizeY * 2);
@@ -410,22 +419,59 @@ namespace BM_Converter
                     this.remasterAlphaImages.Add(alphaBitmap);
                 }
             }
+            else
+            {
+                // Multi BM
+                var dataPosition = 0;
+
+                foreach (var subBM in this.BM.SubBMs)
+                {
+                    var imageDataSize = subBM.SizeX * subBM.SizeY * 4 * 4;
+                    var imageData = new byte[imageDataSize];
+
+                    try
+                    {
+                        Array.Copy(rawData, dataPosition, imageData, 0, imageDataSize);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        return;
+                    }
+
+
+                    var (bitmap, alphaBitmap) = MiscFunctions.GenerateRemasterImage(imageData, subBM.SizeX * 2, subBM.SizeY * 2);
+                    this.remasterImages.Add(bitmap);
+                    this.remasterAlphaImages.Add(alphaBitmap);
+                    dataPosition += imageDataSize;
+                }
+            }
         }
 
         private void comboBoxImageVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
+            this.UpdateDisplayBox();
+        }
+
+        private void UpdateDisplayBox()
+        {
             switch (comboBoxImageVersion.SelectedIndex)
             {
                 case 1:
-                    this.displayBox.Image = this.remasterImages.Count > 0 ? this.remasterImages[this.selectedSubBM] : null;
+                    this.displayBox.Image = this.remasterImages.Count > this.selectedSubBM
+                        ? this.remasterImages[this.selectedSubBM]
+                        : null;
                     return;
 
                 case 2:
-                    this.displayBox.Image = this.remasterAlphaImages.Count > 0 ? this.remasterAlphaImages[this.selectedSubBM] : null;
+                    this.displayBox.Image = this.remasterAlphaImages.Count > this.selectedSubBM
+                        ? this.remasterAlphaImages[this.selectedSubBM]
+                        : null;
                     return;
 
                 default:
-                    this.displayBox.Image = this.images.Count > 0 ? this.images[this.selectedSubBM] : null;
+                    this.displayBox.Image = this.images.Count > this.selectedSubBM
+                        ? this.images[this.selectedSubBM]
+                        : null;
                     return;
             }
         }

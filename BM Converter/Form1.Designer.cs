@@ -192,7 +192,7 @@ namespace BM_Converter
             // 
             comboBoxImageVersion.Enabled = false;
             comboBoxImageVersion.FormattingEnabled = true;
-            comboBoxImageVersion.Items.AddRange(new object[] { "Original texture", "Remastered texture", "Alpha channel" });
+            comboBoxImageVersion.Items.AddRange(new object[] { "Original texture", "Remastered texture", "Remaster - alpha channel" });
             comboBoxImageVersion.Location = new System.Drawing.Point(501, 13);
             comboBoxImageVersion.Name = "comboBoxImageVersion";
             comboBoxImageVersion.Size = new System.Drawing.Size(266, 23);
