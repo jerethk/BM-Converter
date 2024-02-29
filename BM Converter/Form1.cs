@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BM_Converter
@@ -15,27 +12,32 @@ namespace BM_Converter
     {
         private DFPal palette;
         private DFBM BM;
-        private List<Bitmap> Images;
-        private int subBMSelected = 0;
+        private List<Bitmap> images;
+        private List<Bitmap> remasterImages;
+        private List<Bitmap> remasterAlphaImages;
+        private string remasterPath;
+        private int selectedSubBM = 0;
 
         public Form1(string[] args)
         {
             InitializeComponent();
 
-            palette = new DFPal();
-            BM = new DFBM();
-            Images = new List<Bitmap>();
+            this.palette = new DFPal();
+            this.BM = new DFBM();
+            this.images = new List<Bitmap>();
+            this.remasterImages = new List<Bitmap>();
+            this.remasterAlphaImages = new List<Bitmap>();
 
             if (args.Length > 0)
             {
                 // Attempt to load file that has been passed in from command line
-                LoadBM(args[0]);
+                this.LoadBM(args[0]);
             }
         }
 
         private void buttonHelp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This app is © 2021 Jereth K.", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("This app is © 2021-2024 Jereth K.", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // Load PAL  -------------------------------------------------------------------------
@@ -43,28 +45,28 @@ namespace BM_Converter
         {
             OpenPALDialog.ShowDialog();
         }
-        
+
         private void OpenPALDialog_FileOk(object sender, CancelEventArgs e)
         {
             if (this.palette.LoadfromFile(OpenPALDialog.FileName))
             {
                 if (BM.PixelData != null || BM.SubBMs != null)
                 {
-                    GenerateImages();
-                    displayBox.Image = Images[0];
-                    
+                    this.GenerateImages();
+                    displayBox.Image = images[0];
+
                     if (BM.IsMultiBM)
                     {
                         this.UpdateSubBMInfo();
                     }
-                    
+
                 }
 
                 MessageBox.Show("PAL Loaded.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 labelPal.Text = $"PAL: {Path.GetFileName(OpenPALDialog.FileName)}";
                 BtnLoadBM.Enabled = true;
                 btnBulkConvert.Enabled = true;
-            } 
+            }
             else
             {
                 MessageBox.Show("Error. May not have been a valid PAL file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -130,15 +132,15 @@ namespace BM_Converter
                 s[13] = $"DataSize: {BM.DataSize.ToString()}";
                 textBoxBMInfo.Lines = s;
 
-                GenerateImages();
+                this.GenerateImages();
 
                 // Set up multi BM interface
-                subBMSelected = 0;
+                selectedSubBM = 0;
                 if (BM.IsMultiBM)
                 {
                     btnPrevSub.Enabled = true;
                     btnNextSub.Enabled = true;
-                    displayBox.Image = Images[0];
+                    displayBox.Image = images[0];
                     UpdateSubBMInfo();
                 }
                 else
@@ -149,25 +151,28 @@ namespace BM_Converter
                 }
 
                 btnExport.Enabled = true;
+
+                this.loadRemasterImages(Path.GetFileNameWithoutExtension(path));
             }
         }
-        
+
         private void GenerateImages()
         {
             // Convert image(s) to Bitmap(s) and store in List
-            Images.Clear();
+            this.images.Clear();
             if (!BM.IsMultiBM)
             {
                 Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette, BM.transparent == 0x3E || BM.transparent == 0x08);
-                Images.Add(newBitmap);
-                displayBox.Image = Images[0];
+                this.images.Add(newBitmap);
+                this.displayBox.Image = images[0];
+                this.comboBoxImageVersion.SelectedIndex = 0;
             }
             else
             {
                 for (int i = 0; i < BM.NumImages; i++)
                 {
                     Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette, BM.transparent == 0x3E || BM.transparent == 0x08);
-                    Images.Add(newBitmap);
+                    images.Add(newBitmap);
                 }
             }
         }
@@ -184,25 +189,25 @@ namespace BM_Converter
         // Multi BM Interface ------------------------------------------------------------
         private void btnPrevSub_Click(object sender, EventArgs e)
         {
-            if (subBMSelected > 0)
+            if (selectedSubBM > 0)
             {
-                subBMSelected--;
+                selectedSubBM--;
                 UpdateSubBMInfo();
             }
         }
 
         private void btnNextSub_Click(object sender, EventArgs e)
         {
-            if (subBMSelected < BM.NumImages - 1)
+            if (selectedSubBM < BM.NumImages - 1)
             {
-                subBMSelected++;
+                selectedSubBM++;
                 UpdateSubBMInfo();
             }
         }
 
         private void UpdateSubBMInfo()
         {
-            int a = subBMSelected;
+            int a = selectedSubBM;
 
             string transparency;
             switch (BM.SubBMs[a].transparent)
@@ -222,7 +227,7 @@ namespace BM_Converter
             }
 
             string[] s = new string[10];
-            s[0] = $"Sub BM {subBMSelected + 1} of {BM.NumImages}";
+            s[0] = $"Sub BM {selectedSubBM + 1} of {BM.NumImages}";
             s[1] = $"SizeX: {BM.SubBMs[a].SizeX}";
             s[2] = $"SizeY: {BM.SubBMs[a].SizeY}";
             s[3] = $"Transparency: {transparency}";
@@ -233,7 +238,7 @@ namespace BM_Converter
             s[8] = $"DataSize: {BM.SubBMs[a].DataSize}";
             textBoxSubBMInfo.Lines = s;
 
-            displayBox.Image = Images[a];
+            displayBox.Image = images[a];
         }
 
         // Export -------------------------------------------------------------------------------
@@ -250,11 +255,21 @@ namespace BM_Converter
                 // single BM
                 try
                 {
-                    Images[0].Save(saveBMPDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                    this.images[0].Save(saveBMPDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                    
+                    
+                    if (this.remasterImages.Count > 0 && this.remasterAlphaImages.Count > 0)
+                    {
+                        var dir = Path.GetDirectoryName(saveBMPDialog.FileName);
+                        var filenameWithoutExtension = Path.GetFileNameWithoutExtension(saveBMPDialog.FileName);
+                        this.remasterImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster.png", System.Drawing.Imaging.ImageFormat.Png);
+                        this.remasterAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster_alpha.png", System.Drawing.Imaging.ImageFormat.Png);
+                    }
+
                 }
                 catch (IOException)
                 {
-                    MessageBox.Show("Failed to export. An error occurred.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                    MessageBox.Show("Failed to export. An error occurred.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -269,7 +284,7 @@ namespace BM_Converter
                     for (int i = 0; i < BM.NumImages; i++)
                     {
                         string saveName = $"{dir}/{fil}_{i}.png";
-                        Images[i].Save(saveName, System.Drawing.Imaging.ImageFormat.Png);
+                        images[i].Save(saveName, System.Drawing.Imaging.ImageFormat.Png);
                     }
                 }
                 catch (IOException)
@@ -293,7 +308,7 @@ namespace BM_Converter
             {
                 int numSuccessful = 0;
                 int numFailed = 0;
-                
+
                 foreach (string BMFile in openBulkDialog.FileNames)
                 {
                     string dir = Path.GetDirectoryName(BMFile);
@@ -340,6 +355,79 @@ namespace BM_Converter
         {
             Form2 BMCreator = new Form2();
             BMCreator.Show();
+        }
+
+
+        // RAW (remaster) images ------------------------------------------------------------------------
+
+        private void btnRawPath_Click(object sender, EventArgs e)
+        {
+            this.openRawDialog.ShowDialog(this);
+        }
+
+        private void openRawDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            this.remasterPath = Path.GetDirectoryName(this.openRawDialog.FileName);
+            this.comboBoxImageVersion.Enabled = true;
+            this.comboBoxImageVersion.SelectedIndex = 0;
+
+            if (this.BM != null && !string.IsNullOrEmpty(this.OpenBMDialog.FileName))
+            {
+                this.loadRemasterImages(Path.GetFileNameWithoutExtension(this.OpenBMDialog.FileName));
+            }
+        }
+
+        private void loadRemasterImages(string bmFilenameWithoutExtension)
+        {
+            this.remasterImages.Clear();
+            this.remasterAlphaImages.Clear();
+
+            if (string.IsNullOrEmpty(this.remasterPath) || string.IsNullOrEmpty(bmFilenameWithoutExtension))
+            {
+                return;
+            }
+
+            if (this.BM == null)
+            {
+                return;
+            }
+
+            // Attempt to load remaster version
+            var rawPath = $"{this.remasterPath}\\{bmFilenameWithoutExtension}.raw";
+            if (!File.Exists(rawPath))
+            {
+                return;
+            }
+
+            if (!this.BM.IsMultiBM)
+            {
+                var rawData = MiscFunctions.LoadRawFile(rawPath);
+
+                if (rawData != null && rawData.Length > 0)
+                {
+                    var (bitmap, alphaBitmap) = MiscFunctions.GenerateRemasterImage(rawData, this.BM.SizeX * 2, this.BM.SizeY * 2);
+                    this.remasterImages.Add(bitmap);
+                    this.remasterAlphaImages.Add(alphaBitmap);
+                }
+            }
+        }
+
+        private void comboBoxImageVersion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBoxImageVersion.SelectedIndex)
+            {
+                case 1:
+                    this.displayBox.Image = this.remasterImages.Count > 0 ? this.remasterImages[this.selectedSubBM] : null;
+                    return;
+
+                case 2:
+                    this.displayBox.Image = this.remasterAlphaImages.Count > 0 ? this.remasterAlphaImages[this.selectedSubBM] : null;
+                    return;
+
+                default:
+                    this.displayBox.Image = this.images.Count > 0 ? this.images[this.selectedSubBM] : null;
+                    return;
+            }
         }
     }
 }

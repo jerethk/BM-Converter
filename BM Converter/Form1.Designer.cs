@@ -30,267 +30,296 @@ namespace BM_Converter
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnCreateBM = new System.Windows.Forms.Button();
-            this.buttonHelp = new System.Windows.Forms.Button();
-            this.btnBulkConvert = new System.Windows.Forms.Button();
-            this.BtnLoadBM = new System.Windows.Forms.Button();
-            this.BtnLoadPAL = new System.Windows.Forms.Button();
-            this.btnExport = new System.Windows.Forms.Button();
-            this.OpenPALDialog = new System.Windows.Forms.OpenFileDialog();
-            this.OpenBMDialog = new System.Windows.Forms.OpenFileDialog();
-            this.saveBMPDialog = new System.Windows.Forms.SaveFileDialog();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.checkBoxZoom = new System.Windows.Forms.CheckBox();
-            this.btnNextSub = new System.Windows.Forms.Button();
-            this.btnPrevSub = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBoxSubBMInfo = new System.Windows.Forms.TextBox();
-            this.displayBox = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.labelPal = new System.Windows.Forms.Label();
-            this.textBoxBMInfo = new System.Windows.Forms.TextBox();
-            this.openBulkDialog = new System.Windows.Forms.OpenFileDialog();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.displayBox)).BeginInit();
-            this.SuspendLayout();
+            panel1 = new System.Windows.Forms.Panel();
+            btnRawPath = new System.Windows.Forms.Button();
+            btnCreateBM = new System.Windows.Forms.Button();
+            buttonHelp = new System.Windows.Forms.Button();
+            btnBulkConvert = new System.Windows.Forms.Button();
+            BtnLoadBM = new System.Windows.Forms.Button();
+            BtnLoadPAL = new System.Windows.Forms.Button();
+            btnExport = new System.Windows.Forms.Button();
+            OpenPALDialog = new System.Windows.Forms.OpenFileDialog();
+            OpenBMDialog = new System.Windows.Forms.OpenFileDialog();
+            saveBMPDialog = new System.Windows.Forms.SaveFileDialog();
+            panel2 = new System.Windows.Forms.Panel();
+            comboBoxImageVersion = new System.Windows.Forms.ComboBox();
+            checkBoxZoom = new System.Windows.Forms.CheckBox();
+            btnNextSub = new System.Windows.Forms.Button();
+            btnPrevSub = new System.Windows.Forms.Button();
+            label2 = new System.Windows.Forms.Label();
+            textBoxSubBMInfo = new System.Windows.Forms.TextBox();
+            displayBox = new System.Windows.Forms.PictureBox();
+            label1 = new System.Windows.Forms.Label();
+            labelPal = new System.Windows.Forms.Label();
+            textBoxBMInfo = new System.Windows.Forms.TextBox();
+            openBulkDialog = new System.Windows.Forms.OpenFileDialog();
+            openRawDialog = new System.Windows.Forms.OpenFileDialog();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)displayBox).BeginInit();
+            SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.btnCreateBM);
-            this.panel1.Controls.Add(this.buttonHelp);
-            this.panel1.Controls.Add(this.btnBulkConvert);
-            this.panel1.Controls.Add(this.BtnLoadBM);
-            this.panel1.Controls.Add(this.BtnLoadPAL);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(784, 65);
-            this.panel1.TabIndex = 0;
+            panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            panel1.Controls.Add(btnRawPath);
+            panel1.Controls.Add(btnCreateBM);
+            panel1.Controls.Add(buttonHelp);
+            panel1.Controls.Add(btnBulkConvert);
+            panel1.Controls.Add(BtnLoadBM);
+            panel1.Controls.Add(BtnLoadPAL);
+            panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            panel1.Location = new System.Drawing.Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(784, 65);
+            panel1.TabIndex = 0;
+            // 
+            // btnRawPath
+            // 
+            btnRawPath.Location = new System.Drawing.Point(203, 12);
+            btnRawPath.Name = "btnRawPath";
+            btnRawPath.Size = new System.Drawing.Size(129, 32);
+            btnRawPath.TabIndex = 5;
+            btnRawPath.Text = "Remaster files";
+            btnRawPath.UseVisualStyleBackColor = true;
+            btnRawPath.Click += btnRawPath_Click;
             // 
             // btnCreateBM
             // 
-            this.btnCreateBM.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnCreateBM.Location = new System.Drawing.Point(486, 12);
-            this.btnCreateBM.Name = "btnCreateBM";
-            this.btnCreateBM.Size = new System.Drawing.Size(123, 32);
-            this.btnCreateBM.TabIndex = 4;
-            this.btnCreateBM.Text = "Create BM";
-            this.btnCreateBM.UseVisualStyleBackColor = true;
-            this.btnCreateBM.Click += new System.EventHandler(this.btnCreateBM_Click);
+            btnCreateBM.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            btnCreateBM.Location = new System.Drawing.Point(560, 12);
+            btnCreateBM.Name = "btnCreateBM";
+            btnCreateBM.Size = new System.Drawing.Size(123, 32);
+            btnCreateBM.TabIndex = 4;
+            btnCreateBM.Text = "Create BM";
+            btnCreateBM.UseVisualStyleBackColor = true;
+            btnCreateBM.Click += btnCreateBM_Click;
             // 
             // buttonHelp
             // 
-            this.buttonHelp.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.buttonHelp.Location = new System.Drawing.Point(736, 12);
-            this.buttonHelp.Name = "buttonHelp";
-            this.buttonHelp.Size = new System.Drawing.Size(30, 32);
-            this.buttonHelp.TabIndex = 3;
-            this.buttonHelp.Text = "?";
-            this.buttonHelp.UseVisualStyleBackColor = true;
-            this.buttonHelp.Click += new System.EventHandler(this.buttonHelp_Click);
+            buttonHelp.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            buttonHelp.Location = new System.Drawing.Point(736, 12);
+            buttonHelp.Name = "buttonHelp";
+            buttonHelp.Size = new System.Drawing.Size(30, 32);
+            buttonHelp.TabIndex = 3;
+            buttonHelp.Text = "?";
+            buttonHelp.UseVisualStyleBackColor = true;
+            buttonHelp.Click += buttonHelp_Click;
             // 
             // btnBulkConvert
             // 
-            this.btnBulkConvert.Location = new System.Drawing.Point(235, 12);
-            this.btnBulkConvert.Name = "btnBulkConvert";
-            this.btnBulkConvert.Size = new System.Drawing.Size(117, 32);
-            this.btnBulkConvert.TabIndex = 2;
-            this.btnBulkConvert.Text = "Bulk Convert";
-            this.btnBulkConvert.UseVisualStyleBackColor = true;
-            this.btnBulkConvert.Click += new System.EventHandler(this.btnBulkConvert_Click);
+            btnBulkConvert.Location = new System.Drawing.Point(386, 12);
+            btnBulkConvert.Name = "btnBulkConvert";
+            btnBulkConvert.Size = new System.Drawing.Size(117, 32);
+            btnBulkConvert.TabIndex = 2;
+            btnBulkConvert.Text = "Bulk Convert";
+            btnBulkConvert.UseVisualStyleBackColor = true;
+            btnBulkConvert.Click += btnBulkConvert_Click;
             // 
             // BtnLoadBM
             // 
-            this.BtnLoadBM.Location = new System.Drawing.Point(106, 12);
-            this.BtnLoadBM.Name = "BtnLoadBM";
-            this.BtnLoadBM.Size = new System.Drawing.Size(81, 32);
-            this.BtnLoadBM.TabIndex = 1;
-            this.BtnLoadBM.Text = "Load BM";
-            this.BtnLoadBM.UseVisualStyleBackColor = true;
-            this.BtnLoadBM.Click += new System.EventHandler(this.BtnLoadBM_Click);
+            BtnLoadBM.Location = new System.Drawing.Point(106, 12);
+            BtnLoadBM.Name = "BtnLoadBM";
+            BtnLoadBM.Size = new System.Drawing.Size(81, 32);
+            BtnLoadBM.TabIndex = 1;
+            BtnLoadBM.Text = "Load BM";
+            BtnLoadBM.UseVisualStyleBackColor = true;
+            BtnLoadBM.Click += BtnLoadBM_Click;
             // 
             // BtnLoadPAL
             // 
-            this.BtnLoadPAL.Location = new System.Drawing.Point(12, 12);
-            this.BtnLoadPAL.Name = "BtnLoadPAL";
-            this.BtnLoadPAL.Size = new System.Drawing.Size(79, 32);
-            this.BtnLoadPAL.TabIndex = 0;
-            this.BtnLoadPAL.Text = "Load PAL";
-            this.BtnLoadPAL.UseVisualStyleBackColor = true;
-            this.BtnLoadPAL.Click += new System.EventHandler(this.BtnLoadPAL_Click);
+            BtnLoadPAL.Location = new System.Drawing.Point(12, 12);
+            BtnLoadPAL.Name = "BtnLoadPAL";
+            BtnLoadPAL.Size = new System.Drawing.Size(79, 32);
+            BtnLoadPAL.TabIndex = 0;
+            BtnLoadPAL.Text = "Load PAL";
+            BtnLoadPAL.UseVisualStyleBackColor = true;
+            BtnLoadPAL.Click += BtnLoadPAL_Click;
             // 
             // btnExport
             // 
-            this.btnExport.Enabled = false;
-            this.btnExport.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnExport.Location = new System.Drawing.Point(58, 462);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(111, 32);
-            this.btnExport.TabIndex = 2;
-            this.btnExport.Text = "Export PNG";
-            this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            btnExport.Enabled = false;
+            btnExport.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            btnExport.Location = new System.Drawing.Point(58, 462);
+            btnExport.Name = "btnExport";
+            btnExport.Size = new System.Drawing.Size(111, 32);
+            btnExport.TabIndex = 2;
+            btnExport.Text = "Export PNG";
+            btnExport.UseVisualStyleBackColor = true;
+            btnExport.Click += btnExport_Click;
             // 
             // OpenPALDialog
             // 
-            this.OpenPALDialog.DefaultExt = "pal";
-            this.OpenPALDialog.Filter = "DF Palette files|*.pal";
-            this.OpenPALDialog.Title = "Open PAL";
-            this.OpenPALDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenPALDialog_FileOk);
+            OpenPALDialog.DefaultExt = "pal";
+            OpenPALDialog.Filter = "DF Palette files|*.pal";
+            OpenPALDialog.Title = "Open PAL";
+            OpenPALDialog.FileOk += OpenPALDialog_FileOk;
             // 
             // OpenBMDialog
             // 
-            this.OpenBMDialog.DefaultExt = "bm";
-            this.OpenBMDialog.Filter = "Dark Forces BM file|*.bm";
-            this.OpenBMDialog.Title = "Open BM";
-            this.OpenBMDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenBMDialog_FileOk);
+            OpenBMDialog.DefaultExt = "bm";
+            OpenBMDialog.Filter = "Dark Forces BM file|*.bm";
+            OpenBMDialog.Title = "Open BM";
+            OpenBMDialog.FileOk += OpenBMDialog_FileOk;
             // 
             // saveBMPDialog
             // 
-            this.saveBMPDialog.DefaultExt = "png";
-            this.saveBMPDialog.Filter = "PNG file|*.png";
-            this.saveBMPDialog.Title = "Export";
-            this.saveBMPDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveBMPDialog_FileOk);
+            saveBMPDialog.DefaultExt = "png";
+            saveBMPDialog.Filter = "PNG file|*.png";
+            saveBMPDialog.Title = "Export";
+            saveBMPDialog.FileOk += saveBMPDialog_FileOk;
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.btnExport);
-            this.panel2.Controls.Add(this.checkBoxZoom);
-            this.panel2.Controls.Add(this.btnNextSub);
-            this.panel2.Controls.Add(this.btnPrevSub);
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.textBoxSubBMInfo);
-            this.panel2.Controls.Add(this.displayBox);
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.labelPal);
-            this.panel2.Controls.Add(this.textBoxBMInfo);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 65);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(784, 536);
-            this.panel2.TabIndex = 1;
+            panel2.Controls.Add(comboBoxImageVersion);
+            panel2.Controls.Add(btnExport);
+            panel2.Controls.Add(checkBoxZoom);
+            panel2.Controls.Add(btnNextSub);
+            panel2.Controls.Add(btnPrevSub);
+            panel2.Controls.Add(label2);
+            panel2.Controls.Add(textBoxSubBMInfo);
+            panel2.Controls.Add(displayBox);
+            panel2.Controls.Add(label1);
+            panel2.Controls.Add(labelPal);
+            panel2.Controls.Add(textBoxBMInfo);
+            panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel2.Location = new System.Drawing.Point(0, 65);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(784, 536);
+            panel2.TabIndex = 1;
+            // 
+            // comboBoxImageVersion
+            // 
+            comboBoxImageVersion.Enabled = false;
+            comboBoxImageVersion.FormattingEnabled = true;
+            comboBoxImageVersion.Items.AddRange(new object[] { "Original texture", "Remastered texture", "Alpha channel" });
+            comboBoxImageVersion.Location = new System.Drawing.Point(501, 13);
+            comboBoxImageVersion.Name = "comboBoxImageVersion";
+            comboBoxImageVersion.Size = new System.Drawing.Size(266, 23);
+            comboBoxImageVersion.TabIndex = 9;
+            comboBoxImageVersion.SelectedIndexChanged += comboBoxImageVersion_SelectedIndexChanged;
             // 
             // checkBoxZoom
             // 
-            this.checkBoxZoom.AutoSize = true;
-            this.checkBoxZoom.Location = new System.Drawing.Point(247, 57);
-            this.checkBoxZoom.Name = "checkBoxZoom";
-            this.checkBoxZoom.Size = new System.Drawing.Size(86, 19);
-            this.checkBoxZoom.TabIndex = 8;
-            this.checkBoxZoom.Text = "Zoom to fit";
-            this.checkBoxZoom.UseVisualStyleBackColor = true;
-            this.checkBoxZoom.CheckedChanged += new System.EventHandler(this.checkBoxZoom_CheckedChanged);
+            checkBoxZoom.AutoSize = true;
+            checkBoxZoom.Location = new System.Drawing.Point(247, 57);
+            checkBoxZoom.Name = "checkBoxZoom";
+            checkBoxZoom.Size = new System.Drawing.Size(86, 19);
+            checkBoxZoom.TabIndex = 8;
+            checkBoxZoom.Text = "Zoom to fit";
+            checkBoxZoom.UseVisualStyleBackColor = true;
+            checkBoxZoom.CheckedChanged += checkBoxZoom_CheckedChanged;
             // 
             // btnNextSub
             // 
-            this.btnNextSub.Enabled = false;
-            this.btnNextSub.Location = new System.Drawing.Point(128, 265);
-            this.btnNextSub.Name = "btnNextSub";
-            this.btnNextSub.Size = new System.Drawing.Size(28, 29);
-            this.btnNextSub.TabIndex = 7;
-            this.btnNextSub.Text = ">";
-            this.btnNextSub.UseVisualStyleBackColor = true;
-            this.btnNextSub.Click += new System.EventHandler(this.btnNextSub_Click);
+            btnNextSub.Enabled = false;
+            btnNextSub.Location = new System.Drawing.Point(128, 265);
+            btnNextSub.Name = "btnNextSub";
+            btnNextSub.Size = new System.Drawing.Size(28, 29);
+            btnNextSub.TabIndex = 7;
+            btnNextSub.Text = ">";
+            btnNextSub.UseVisualStyleBackColor = true;
+            btnNextSub.Click += btnNextSub_Click;
             // 
             // btnPrevSub
             // 
-            this.btnPrevSub.Enabled = false;
-            this.btnPrevSub.Location = new System.Drawing.Point(84, 265);
-            this.btnPrevSub.Name = "btnPrevSub";
-            this.btnPrevSub.Size = new System.Drawing.Size(28, 29);
-            this.btnPrevSub.TabIndex = 6;
-            this.btnPrevSub.Text = "<";
-            this.btnPrevSub.UseVisualStyleBackColor = true;
-            this.btnPrevSub.Click += new System.EventHandler(this.btnPrevSub_Click);
+            btnPrevSub.Enabled = false;
+            btnPrevSub.Location = new System.Drawing.Point(84, 265);
+            btnPrevSub.Name = "btnPrevSub";
+            btnPrevSub.Size = new System.Drawing.Size(28, 29);
+            btnPrevSub.TabIndex = 6;
+            btnPrevSub.Text = "<";
+            btnPrevSub.UseVisualStyleBackColor = true;
+            btnPrevSub.Click += btnPrevSub_Click;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 265);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 15);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Sub BMs:";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(13, 265);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(56, 15);
+            label2.TabIndex = 5;
+            label2.Text = "Sub BMs:";
             // 
             // textBoxSubBMInfo
             // 
-            this.textBoxSubBMInfo.Location = new System.Drawing.Point(13, 300);
-            this.textBoxSubBMInfo.Multiline = true;
-            this.textBoxSubBMInfo.Name = "textBoxSubBMInfo";
-            this.textBoxSubBMInfo.ReadOnly = true;
-            this.textBoxSubBMInfo.Size = new System.Drawing.Size(212, 142);
-            this.textBoxSubBMInfo.TabIndex = 4;
+            textBoxSubBMInfo.Location = new System.Drawing.Point(13, 300);
+            textBoxSubBMInfo.Multiline = true;
+            textBoxSubBMInfo.Name = "textBoxSubBMInfo";
+            textBoxSubBMInfo.ReadOnly = true;
+            textBoxSubBMInfo.Size = new System.Drawing.Size(212, 142);
+            textBoxSubBMInfo.TabIndex = 4;
             // 
             // displayBox
             // 
-            this.displayBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.displayBox.BackColor = System.Drawing.Color.DarkGray;
-            this.displayBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.displayBox.Location = new System.Drawing.Point(247, 82);
-            this.displayBox.Name = "displayBox";
-            this.displayBox.Size = new System.Drawing.Size(520, 425);
-            this.displayBox.TabIndex = 3;
-            this.displayBox.TabStop = false;
+            displayBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            displayBox.BackColor = System.Drawing.Color.DarkGray;
+            displayBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            displayBox.Location = new System.Drawing.Point(247, 82);
+            displayBox.Name = "displayBox";
+            displayBox.Size = new System.Drawing.Size(520, 425);
+            displayBox.TabIndex = 3;
+            displayBox.TabStop = false;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 64);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 15);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "BM Info:";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(13, 64);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(52, 15);
+            label1.TabIndex = 2;
+            label1.Text = "BM Info:";
             // 
             // labelPal
             // 
-            this.labelPal.AutoSize = true;
-            this.labelPal.Location = new System.Drawing.Point(13, 21);
-            this.labelPal.Name = "labelPal";
-            this.labelPal.Size = new System.Drawing.Size(98, 15);
-            this.labelPal.TabIndex = 1;
-            this.labelPal.Text = "PAL: Secbase.PAL";
+            labelPal.AutoSize = true;
+            labelPal.Location = new System.Drawing.Point(13, 21);
+            labelPal.Name = "labelPal";
+            labelPal.Size = new System.Drawing.Size(98, 15);
+            labelPal.TabIndex = 1;
+            labelPal.Text = "PAL: Secbase.PAL";
             // 
             // textBoxBMInfo
             // 
-            this.textBoxBMInfo.Location = new System.Drawing.Point(13, 82);
-            this.textBoxBMInfo.Multiline = true;
-            this.textBoxBMInfo.Name = "textBoxBMInfo";
-            this.textBoxBMInfo.ReadOnly = true;
-            this.textBoxBMInfo.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.textBoxBMInfo.Size = new System.Drawing.Size(212, 149);
-            this.textBoxBMInfo.TabIndex = 0;
-            this.textBoxBMInfo.WordWrap = false;
+            textBoxBMInfo.Location = new System.Drawing.Point(13, 82);
+            textBoxBMInfo.Multiline = true;
+            textBoxBMInfo.Name = "textBoxBMInfo";
+            textBoxBMInfo.ReadOnly = true;
+            textBoxBMInfo.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            textBoxBMInfo.Size = new System.Drawing.Size(212, 149);
+            textBoxBMInfo.TabIndex = 0;
+            textBoxBMInfo.WordWrap = false;
             // 
             // openBulkDialog
             // 
-            this.openBulkDialog.DefaultExt = "bm";
-            this.openBulkDialog.Filter = "Dark Forces BM files|*.BM";
-            this.openBulkDialog.Multiselect = true;
-            this.openBulkDialog.Title = "Choose BM files to convert";
-            this.openBulkDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openBulkDialog_FileOk);
+            openBulkDialog.DefaultExt = "bm";
+            openBulkDialog.Filter = "Dark Forces BM files|*.BM";
+            openBulkDialog.Multiselect = true;
+            openBulkDialog.Title = "Choose BM files to convert";
+            openBulkDialog.FileOk += openBulkDialog_FileOk;
+            // 
+            // openRawDialog
+            // 
+            openRawDialog.Filter = "RAW|*.raw";
+            openRawDialog.Title = "Select folder containing RAW (DF Remaster) textures";
+            openRawDialog.FileOk += openRawDialog_FileOk;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 601);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(800, 640);
-            this.Name = "Form1";
-            this.Text = "BM Converter (version 1.52)";
-            this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.displayBox)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(784, 601);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MinimumSize = new System.Drawing.Size(800, 640);
+            Name = "Form1";
+            Text = "BM Converter (version 2.0)";
+            panel1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)displayBox).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion
@@ -316,6 +345,9 @@ namespace BM_Converter
         private System.Windows.Forms.OpenFileDialog openBulkDialog;
         private System.Windows.Forms.Button buttonHelp;
         private System.Windows.Forms.Button btnCreateBM;
+        private System.Windows.Forms.Button btnRawPath;
+        private System.Windows.Forms.OpenFileDialog openRawDialog;
+        private System.Windows.Forms.ComboBox comboBoxImageVersion;
     }
 }
 

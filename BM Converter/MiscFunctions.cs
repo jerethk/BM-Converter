@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Text;
+using System.Windows.Forms;
 
 namespace BM_Converter
 {
@@ -177,6 +179,96 @@ namespace BM_Converter
             }
 
             return (byte)bestMatch;
+        }
+
+        public static byte[] LoadRawFile(string path)
+        {
+            var fileSize = (int)new FileInfo(path).Length;
+            var fileBytes = new byte[fileSize];
+
+            try
+            {
+                using (var fileReader = new BinaryReader(File.Open(path, FileMode.Open)))
+                {
+                    fileBytes = fileReader.ReadBytes(fileSize);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error reading RAW file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+
+            return fileBytes;
+        }
+            
+        
+        /// <summary>
+        /// Generates bitmaps from RAW (remaster texture) data
+        /// </summary>
+        /// <returns>Two bitmaps, one representing the image and one representing the alpha channel</returns>
+        public static (Bitmap, Bitmap) GenerateRemasterImage(byte[] rawData, int imageWidth, int imageHeight)
+        {   
+            if (rawData == null)
+            {
+                return (null, null);
+            }
+
+            if (rawData.Length < imageWidth * imageHeight * 4)
+            {
+                return (null, null);
+            }
+
+            
+            // Put the RAW data into an array of texels
+            var imageData = new Texel[imageWidth, imageHeight];
+            var texelCount = 0;
+            for (var y = 0; y < imageHeight; y++)
+            {
+                for (var x = 0; x < imageWidth; x++)
+                {
+                    var txl = new Texel();
+                    txl.Red = rawData[texelCount * 4];
+                    txl.Green = rawData[texelCount * 4 + 1];
+                    txl.Blue = rawData[texelCount * 4 + 2];
+                    txl.Alpha = rawData[texelCount * 4 + 3];
+                    imageData[x, y] = txl;
+
+                    texelCount++;
+                }
+            }
+
+            // Create image bitmap
+            var bitmap = new Bitmap(imageWidth, imageHeight);
+            for (var x = 0; x < imageWidth; x++)
+            {
+                for (var y = 0; y < imageHeight; y++)
+                {
+                    var colour = Color.FromArgb(
+                        255,
+                        imageData[x, y].Red,
+                        imageData[x, y].Green,
+                        imageData[x, y].Blue);
+                    bitmap.SetPixel(x, y, colour);
+                }
+            }
+
+            // Create the alpha bitmap (greyscale)
+            var alphaBitmap = new Bitmap(imageWidth, imageHeight);
+            for (var x = 0; x < imageWidth; x++)
+            {
+                for (var y = 0; y < imageHeight; y++)
+                {
+                    var colour = Color.FromArgb(
+                        255,
+                        imageData[x, y].Alpha,
+                        imageData[x, y].Alpha,
+                        imageData[x, y].Alpha);
+                    alphaBitmap.SetPixel(x, y, colour);
+                }
+            }
+
+            return (bitmap, alphaBitmap);
         }
     }
 }
