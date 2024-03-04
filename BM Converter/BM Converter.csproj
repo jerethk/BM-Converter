@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0-windows7.0</TargetFramework>
     <RootNamespace>BM_Converter</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>kylekatarn_pre_talay_vbn_icon.ico</ApplicationIcon>
