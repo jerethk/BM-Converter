@@ -19,6 +19,11 @@ namespace BM_Converter
                 this.CreateBMs(allPngs, pal, currentDirectory);
                 return;
             }
+
+            if (args.Any(a => a.ToLower() == "-makeraw"))
+            {
+                this.CreateRaws(allPngs, currentDirectory);
+            }
         }
 
         private void CreateBMs(string[] pngPaths, DFPal pal, string currentDirectory)
@@ -82,6 +87,38 @@ namespace BM_Converter
                 }
 
                 logWriter.WriteLine($"Successfully created {successCount} BMs");
+            }
+        }
+
+        private void CreateRaws(string[] pngPaths, string currentDirectory)
+        {
+            var outputPath = $"{currentDirectory}\\RawOutput";
+            Directory.CreateDirectory(outputPath);
+            var logFile = $"{currentDirectory}\\log_{DateTime.UtcNow.Ticks}.txt";
+
+            using (var logWriter = new StreamWriter(logFile))
+            {
+                var successCount = 0;
+
+                foreach (var pngPath in pngPaths)
+                {
+                    var source = new Bitmap(Image.FromFile(pngPath));
+                    var filename = Path.GetFileNameWithoutExtension(pngPath);
+                    var destination = $"{outputPath}\\{filename}.raw";
+
+                    var succeeds = MiscFunctions.WriteRawFile(destination, source);
+
+                    if (succeeds)
+                    {
+                        successCount++;
+                    }
+                    else
+                    {
+                        logWriter.WriteLine($"Failed to create {destination}");
+                    }
+                }
+
+                logWriter.WriteLine($"Successfully created {successCount} RAWs");
             }
         }
 

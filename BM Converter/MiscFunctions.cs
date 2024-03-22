@@ -201,7 +201,6 @@ namespace BM_Converter
 
             return fileBytes;
         }
-            
         
         /// <summary>
         /// Generates bitmaps from RAW (remaster texture) data
@@ -269,6 +268,37 @@ namespace BM_Converter
             }
 
             return (bitmap, alphaBitmap);
+        }
+
+        public static bool WriteRawFile(string path, Bitmap img)
+        {
+            try
+            {
+                using (var fileWriter = new BinaryWriter(File.Open(path, FileMode.Create)))
+                {
+                    for (var y = 0; y < img.Height; y++)
+                    {
+                        for (var x = 0; x < img.Width; x++)
+                        {
+                            var red = img.GetPixel(x, y).R;
+                            var green = img.GetPixel(x, y).G;
+                            var blue = img.GetPixel(x, y).B;
+                            var alpha = img.GetPixel(x, y).A;
+
+                            fileWriter.Write(red);
+                            fileWriter.Write(green);
+                            fileWriter.Write(blue);
+                            fileWriter.Write(alpha);
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
