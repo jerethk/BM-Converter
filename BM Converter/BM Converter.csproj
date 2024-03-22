@@ -6,6 +6,7 @@
     <RootNamespace>BM_Converter</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>kylekatarn_pre_talay_vbn_icon.ico</ApplicationIcon>
+    <AssemblyName>BMConverter</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

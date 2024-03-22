@@ -1,7 +1,7 @@
 ﻿
 namespace BM_Converter
 {
-    partial class Form1
+    partial class MainWindow
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@ namespace BM_Converter
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             panel1 = new System.Windows.Forms.Panel();
             btnRawPath = new System.Windows.Forms.Button();
             btnCreateBM = new System.Windows.Forms.Button();

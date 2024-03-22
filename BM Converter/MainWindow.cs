@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace BM_Converter
 {
-    public partial class Form1 : Form
+    public partial class MainWindow : Form
     {
         private DFPal palette;
         private DFBM BM;
@@ -18,7 +18,7 @@ namespace BM_Converter
         private string remasterPath;
         private int selectedSubBM = 0;
 
-        public Form1(string[] args)
+        public MainWindow(string[] args)
         {
             InitializeComponent();
 
