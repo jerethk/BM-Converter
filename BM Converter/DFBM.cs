@@ -49,120 +49,117 @@ namespace BM_Converter
 
             try
             {
-                BinaryReader reader = new BinaryReader(File.Open(FileName, FileMode.Open));
-
-                this.FileId = reader.ReadBytes(4);
-
-                if (FileId[0] != 0x42 || FileId[1] != 0x4d || FileId[2] != 0x20 || FileId[3] != 0x1e)
+                using (BinaryReader reader = new BinaryReader(File.Open(FileName, FileMode.Open)))
                 {
-                    // Not a valid BM file
-                    result = false;
-                }
-                else
-                {
-                    this.SizeX = reader.ReadUInt16();
-                    this.SizeY = reader.ReadUInt16();
-                    this.idemX = reader.ReadUInt16(); 
-                    this.idemY = reader.ReadUInt16();
-                    this.transparent = reader.ReadByte();
-                    this.logSizeY = reader.ReadByte();
-                    this.compressed = reader.ReadInt16();
-                    this.DataSize = reader.ReadInt32();
-                    this.pad = reader.ReadBytes(12);
+                    this.FileId = reader.ReadBytes(4);
 
-                    this.IsMultiBM = false;
-                    this.NumImages = 1;
-
-                    if (this.SizeX == 1 && this.SizeY > 1)
+                    if (FileId[0] != 0x42 || FileId[1] != 0x4d || FileId[2] != 0x20 || FileId[3] != 0x1e)
                     {
-                        // multi BM !
-                        this.IsMultiBM = true;
-                        this.NumImages = this.idemY;
-                        this.fileLength = this.SizeY + 32;
-
-                        this.FrameRate = reader.ReadByte();
-                        this.SecondByte = reader.ReadByte();
-
-                        this.Offsets = new int[this.NumImages];
-                        for (int i = 0; i < this.NumImages; i++)
-                        {
-                            this.Offsets[i] = reader.ReadInt32();
-                        }
-
-                        this.SubBMs = new List<SubBM>();
-                        for (int i = 0; i < this.NumImages; i++)
-                        {
-                            SubBM newSubBM = new SubBM();
-                            newSubBM.SizeX = reader.ReadInt16();
-                            newSubBM.SizeY = reader.ReadInt16();
-                            newSubBM.idemX = reader.ReadInt16();
-                            newSubBM.idemY = reader.ReadInt16();
-                            newSubBM.DataSize = reader.ReadInt32();
-                            newSubBM.logSizeY = reader.ReadByte();
-                            newSubBM.pad1 = reader.ReadBytes(3);
-                            newSubBM.u1 = reader.ReadBytes(3);
-                            newSubBM.pad2 = reader.ReadBytes(5);
-                            newSubBM.transparent = reader.ReadByte();
-                            newSubBM.pad3 = reader.ReadBytes(3);
-
-                            newSubBM.PixelData = new byte[newSubBM.SizeX, newSubBM.SizeY];
-                            for (int x = 0; x < newSubBM.SizeX; x++)
-                            {
-                                for (int y = 0; y < newSubBM.SizeY; y++)
-                                {
-                                    newSubBM.PixelData[x, y] = reader.ReadByte();
-                                }
-                            }
-
-                            this.SubBMs.Add(newSubBM);
-                        }
-
+                        // Not a valid BM file
+                        result = false;
                     }
                     else
                     {
-                        // single BM
-                        this.PixelData = new byte[this.SizeX, this.SizeY];
+                        this.SizeX = reader.ReadUInt16();
+                        this.SizeY = reader.ReadUInt16();
+                        this.idemX = reader.ReadUInt16();
+                        this.idemY = reader.ReadUInt16();
+                        this.transparent = reader.ReadByte();
+                        this.logSizeY = reader.ReadByte();
+                        this.compressed = reader.ReadInt16();
+                        this.DataSize = reader.ReadInt32();
+                        this.pad = reader.ReadBytes(12);
 
-                        if (this.compressed == 0)
+                        this.IsMultiBM = false;
+                        this.NumImages = 1;
+
+                        if (this.SizeX == 1 && this.SizeY > 1)
                         {
-                            // Uncompressed BM
-                            for (int x = 0; x < this.SizeX; x++)
+                            // multi BM !
+                            this.IsMultiBM = true;
+                            this.NumImages = this.idemY;
+                            this.fileLength = this.SizeY + 32;
+
+                            this.FrameRate = reader.ReadByte();
+                            this.SecondByte = reader.ReadByte();
+
+                            this.Offsets = new int[this.NumImages];
+                            for (int i = 0; i < this.NumImages; i++)
                             {
-                                for (int y= 0; y < this.SizeY; y++)
-                                {
-                                    this.PixelData[x, y] = reader.ReadByte();
-                                }
+                                this.Offsets[i] = reader.ReadInt32();
                             }
+
+                            this.SubBMs = new List<SubBM>();
+                            for (int i = 0; i < this.NumImages; i++)
+                            {
+                                SubBM newSubBM = new SubBM();
+                                newSubBM.SizeX = reader.ReadInt16();
+                                newSubBM.SizeY = reader.ReadInt16();
+                                newSubBM.idemX = reader.ReadInt16();
+                                newSubBM.idemY = reader.ReadInt16();
+                                newSubBM.DataSize = reader.ReadInt32();
+                                newSubBM.logSizeY = reader.ReadByte();
+                                newSubBM.pad1 = reader.ReadBytes(3);
+                                newSubBM.u1 = reader.ReadBytes(3);
+                                newSubBM.pad2 = reader.ReadBytes(5);
+                                newSubBM.transparent = reader.ReadByte();
+                                newSubBM.pad3 = reader.ReadBytes(3);
+
+                                newSubBM.PixelData = new byte[newSubBM.SizeX, newSubBM.SizeY];
+                                for (int x = 0; x < newSubBM.SizeX; x++)
+                                {
+                                    for (int y = 0; y < newSubBM.SizeY; y++)
+                                    {
+                                        newSubBM.PixelData[x, y] = reader.ReadByte();
+                                    }
+                                }
+
+                                this.SubBMs.Add(newSubBM);
+                            }
+
                         }
                         else
                         {
-                            // read Compressed data
-                            this.CompressedData = new byte[this.DataSize];
-                            this.CompressedData = reader.ReadBytes(this.DataSize);
+                            // single BM
+                            this.PixelData = new byte[this.SizeX, this.SizeY];
 
-                            this.ColumnStarts = new int[this.SizeX];
-                            for (int x = 0; x < this.SizeX; x++)
+                            if (this.compressed == 0)
                             {
-                                this.ColumnStarts[x] = reader.ReadInt32();
+                                // Uncompressed BM
+                                for (int x = 0; x < this.SizeX; x++)
+                                {
+                                    for (int y = 0; y < this.SizeY; y++)
+                                    {
+                                        this.PixelData[x, y] = reader.ReadByte();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // read Compressed data
+                                this.CompressedData = new byte[this.DataSize];
+                                this.CompressedData = reader.ReadBytes(this.DataSize);
+
+                                this.ColumnStarts = new int[this.SizeX];
+                                for (int x = 0; x < this.SizeX; x++)
+                                {
+                                    this.ColumnStarts[x] = reader.ReadInt32();
+                                }
+                            }
+
+                            if (this.compressed == 1)
+                            {
+                                UncompressRLE();
+                            }
+                            else if (this.compressed == 2)
+                            {
+                                UncompressRLE0();
                             }
                         }
 
-                        if (this.compressed == 1)
-                        {
-                            UncompressRLE();
-                        }
-                        else if (this.compressed == 2)
-                        {
-                            UncompressRLE0();
-                        }
-
+                        result = true;
                     }
-
-                    result = true;
                 }
-
-                reader.Close();
-                reader.Dispose();
             }
             catch (IOException)
             {
@@ -262,77 +259,76 @@ namespace BM_Converter
 
             try
             {
-                BinaryWriter writer = new BinaryWriter(File.Open(filename, FileMode.Create));
-                
-                // write BM header
-                foreach (byte b in this.FileId) writer.Write(b);
-                writer.Write(this.SizeX);
-                writer.Write(this.SizeY);
-                writer.Write(this.idemX);
-                writer.Write(this.idemY);
-                writer.Write(this.transparent);
-                writer.Write(this.logSizeY);
-                writer.Write(this.compressed);
-                writer.Write(this.DataSize);
-                foreach (byte b in this.pad) writer.Write(b);
-
-                if (!this.IsMultiBM)
+                using (BinaryWriter writer = new BinaryWriter(File.Open(filename, FileMode.Create)))
                 {
-                    // single BM image
-                    
-                    if (this.compressed == 0)
+                    // write BM header
+                    foreach (byte b in this.FileId) writer.Write(b);
+                    writer.Write(this.SizeX);
+                    writer.Write(this.SizeY);
+                    writer.Write(this.idemX);
+                    writer.Write(this.idemY);
+                    writer.Write(this.transparent);
+                    writer.Write(this.logSizeY);
+                    writer.Write(this.compressed);
+                    writer.Write(this.DataSize);
+                    foreach (byte b in this.pad) writer.Write(b);
+
+                    if (!this.IsMultiBM)
                     {
-                        // uncompressed BM
-                        for (int x = 0; x < this.SizeX; x++)
+                        // single BM image
+
+                        if (this.compressed == 0)
                         {
-                            for (int y = 0; y < this.SizeY; y++)
+                            // uncompressed BM
+                            for (int x = 0; x < this.SizeX; x++)
                             {
-                                writer.Write(this.PixelData[x, y]);
+                                for (int y = 0; y < this.SizeY; y++)
+                                {
+                                    writer.Write(this.PixelData[x, y]);
+                                }
+                            }
+                        }
+                        else if (this.compressed == 1 || this.compressed == 2)
+                        {
+                            // compressed BM
+                            writer.Write(this.CompressedData);
+                            foreach (int i in this.ColumnStarts) writer.Write(i);
+                        }
+                    }
+                    else
+                    {
+                        // multi BM
+                        writer.Write(this.FrameRate);
+                        writer.Write(this.SecondByte);
+                        foreach (int i in this.Offsets) writer.Write(i);
+
+                        foreach (SubBM sub in this.SubBMs)
+                        {
+                            //Sub BM header
+                            writer.Write(sub.SizeX);
+                            writer.Write(sub.SizeY);
+                            writer.Write(sub.idemX);
+                            writer.Write(sub.idemY);
+                            writer.Write(sub.DataSize);
+                            writer.Write(sub.logSizeY);
+                            foreach (byte b in sub.pad1) writer.Write(b);
+                            foreach (byte b in sub.u1) writer.Write(b);
+                            foreach (byte b in sub.pad2) writer.Write(b);
+                            writer.Write(sub.transparent);
+                            foreach (byte b in sub.pad3) writer.Write(b);
+
+                            //Sub BM image
+                            for (int x = 0; x < sub.SizeX; x++)
+                            {
+                                for (int y = 0; y < sub.SizeY; y++)
+                                {
+                                    writer.Write(sub.PixelData[x, y]);
+                                }
                             }
                         }
                     }
-                    else if (this.compressed == 1 || this.compressed == 2)
-                    {
-                        // compressed BM
-                        writer.Write(this.CompressedData);
-                        foreach (int i in this.ColumnStarts) writer.Write(i);
-                    }
-                }
-                else
-                {
-                    // multi BM
-                    writer.Write(this.FrameRate);
-                    writer.Write(this.SecondByte);
-                    foreach (int i in this.Offsets) writer.Write(i);
-
-                    foreach (SubBM sub in this.SubBMs) 
-                    {
-                        //Sub BM header
-                        writer.Write(sub.SizeX);
-                        writer.Write(sub.SizeY);
-                        writer.Write(sub.idemX);
-                        writer.Write(sub.idemY);
-                        writer.Write(sub.DataSize);
-                        writer.Write(sub.logSizeY);
-                        foreach (byte b in sub.pad1) writer.Write(b);
-                        foreach (byte b in sub.u1) writer.Write(b);
-                        foreach (byte b in sub.pad2) writer.Write(b);
-                        writer.Write(sub.transparent);
-                        foreach (byte b in sub.pad3) writer.Write(b);
-
-                        //Sub BM image
-                        for (int x = 0; x < sub.SizeX; x++)
-                        {
-                            for (int y = 0; y < sub.SizeY; y++)
-                            {
-                                writer.Write(sub.PixelData[x, y]);
-                            }
-                        }
-                    }
                 }
 
-                writer.Close();
-                writer.Dispose();
                 success = true;
             }
             catch (IOException)
