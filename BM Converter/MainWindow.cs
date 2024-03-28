@@ -16,6 +16,9 @@ namespace BM_Converter
         private List<Bitmap> remasterImages;
         private List<Bitmap> remasterAlphaImages;
         private string remasterPath;
+        private string palPath;
+        private string bmPath;
+        private string exportPath;
         private int selectedSubBM = 0;
 
         public MainWindow(string[] args)
@@ -43,6 +46,7 @@ namespace BM_Converter
         // Load PAL  -------------------------------------------------------------------------
         private void BtnLoadPAL_Click(object sender, EventArgs e)
         {
+            OpenPALDialog.InitialDirectory = this.palPath ?? OpenPALDialog.InitialDirectory;
             OpenPALDialog.ShowDialog();
         }
 
@@ -66,6 +70,7 @@ namespace BM_Converter
                 labelPal.Text = $"PAL: {Path.GetFileName(OpenPALDialog.FileName)}";
                 BtnLoadBM.Enabled = true;
                 btnBulkConvert.Enabled = true;
+                this.palPath = Path.GetDirectoryName(OpenPALDialog.FileName);
             }
             else
             {
@@ -76,6 +81,7 @@ namespace BM_Converter
         // Load BM  -------------------------------------------------------------------------
         private void BtnLoadBM_Click(object sender, EventArgs e)
         {
+            OpenBMDialog.InitialDirectory = this.bmPath ?? OpenBMDialog.InitialDirectory;
             OpenBMDialog.ShowDialog();
         }
 
@@ -126,8 +132,8 @@ namespace BM_Converter
                     //s[8] = $"{BM.SecondByte}";
                 }
 
-                s[10] = $"idemX: {BM.idemX.ToString()}";
-                s[11] = $"idemY: {BM.idemY.ToString()}";
+                s[10] = $"UV width: {BM.idemX.ToString()}";
+                s[11] = $"UV height: {BM.idemY.ToString()}";
                 s[12] = $"logSizeY: {BM.logSizeY.ToString()}";
                 s[13] = $"DataSize: {BM.DataSize.ToString()}";
                 textBoxBMInfo.Lines = s;
@@ -151,6 +157,7 @@ namespace BM_Converter
                 }
 
                 btnExport.Enabled = true;
+                this.bmPath = Path.GetDirectoryName(path);
 
                 this.comboBoxImageVersion.SelectedIndex = 0;
                 this.loadRemasterImages(Path.GetFileNameWithoutExtension(path));
@@ -232,8 +239,8 @@ namespace BM_Converter
             s[2] = $"SizeY: {BM.SubBMs[a].SizeY}";
             s[3] = $"Transparency: {transparency}";
 
-            s[5] = $"idemX: {BM.SubBMs[a].idemX}";
-            s[6] = $"idemY: {BM.SubBMs[a].idemY}";
+            s[5] = $"UV width: {BM.SubBMs[a].idemX}";
+            s[6] = $"UV height: {BM.SubBMs[a].idemY}";
             s[7] = $"logSizeY: {BM.SubBMs[a].logSizeY}";
             s[8] = $"DataSize: {BM.SubBMs[a].DataSize}";
             textBoxSubBMInfo.Lines = s;
@@ -244,6 +251,7 @@ namespace BM_Converter
         // Export -------------------------------------------------------------------------------
         private void btnExport_Click(object sender, EventArgs e)
         {
+            saveBMPDialog.InitialDirectory = this.exportPath ?? Path.GetDirectoryName(this.OpenBMDialog.FileName);
             saveBMPDialog.FileName = Path.GetFileNameWithoutExtension(OpenBMDialog.FileName);
             saveBMPDialog.ShowDialog();
         }
@@ -300,6 +308,8 @@ namespace BM_Converter
                     MessageBox.Show("Failed to export. An error occurred.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+
+            this.exportPath = Path.GetDirectoryName(this.saveBMPDialog.FileName);
         }
 
         // Bulk convert  ------------------------------------------------------------------
@@ -370,6 +380,7 @@ namespace BM_Converter
 
         private void btnRawPath_Click(object sender, EventArgs e)
         {
+            this.openRawDialog.InitialDirectory = this.remasterPath ?? this.openRawDialog.InitialDirectory;
             this.openRawDialog.ShowDialog(this);
         }
 

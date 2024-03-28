@@ -304,7 +304,7 @@ namespace BM_Converter
             openRawDialog.Title = "Select folder containing RAW (DF Remaster) textures";
             openRawDialog.FileOk += openRawDialog_FileOk;
             // 
-            // Form1
+            // MainWindow
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -313,8 +313,8 @@ namespace BM_Converter
             Controls.Add(panel1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MinimumSize = new System.Drawing.Size(800, 640);
-            Name = "Form1";
-            Text = "BM Converter (version 2.0)";
+            Name = "MainWindow";
+            Text = "BM Converter (version 2.1.1)";
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();

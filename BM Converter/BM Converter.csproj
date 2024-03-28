@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>kylekatarn_pre_talay_vbn_icon.ico</ApplicationIcon>
     <AssemblyName>BMConverter</AssemblyName>
-    <FileVersion>2.1.0</FileVersion>
+    <FileVersion>2.1.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
