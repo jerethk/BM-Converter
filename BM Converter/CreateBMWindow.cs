@@ -7,12 +7,15 @@ using System.Windows.Forms;
 
 namespace BM_Converter
 {
-    public partial class Form2 : Form
+    public partial class CreateBMWindow : Form
     {
         private List<Bitmap> SourceImages;
         private DFPal palette;
+        private string palPath;
+        private string loadPath;
+        private string savePath;
 
-        public Form2()
+        public CreateBMWindow()
         {
             InitializeComponent();
 
@@ -40,6 +43,7 @@ namespace BM_Converter
 
         private void btnLoadPal_Click(object sender, EventArgs e)
         {
+            openPALDialog.InitialDirectory = this.palPath ?? openPALDialog.InitialDirectory;
             openPALDialog.ShowDialog();
         }
 
@@ -49,6 +53,7 @@ namespace BM_Converter
             {
                 labelPal.Text = $"PAL: {Path.GetFileName(openPALDialog.FileName)}";
                 btnCreateBM.Enabled = true;
+                this.palPath = Path.GetDirectoryName(openPALDialog.FileName);
             }
             else
             {
@@ -118,12 +123,14 @@ namespace BM_Converter
         // Add & remove image ------------------------------------------------------------------------------------
         private void btnAddImage_Click(object sender, EventArgs e)
         {
+            LoadImageDialog.InitialDirectory = this.loadPath ?? LoadImageDialog.InitialDirectory;
             LoadImageDialog.ShowDialog();
         }
 
         private void LoadImageDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             var failedImages = 0;
+            this.loadPath = Path.GetDirectoryName(LoadImageDialog.FileName);
             
             foreach (var imgFile in LoadImageDialog.FileNames)
             {
@@ -205,6 +212,7 @@ namespace BM_Converter
             if (SourceImages.Count > 0)
             {
                 var fn = Path.GetFileNameWithoutExtension((string)listBoxImages.Items[0]);
+                saveBMDialog.InitialDirectory = this.savePath ?? saveBMDialog.InitialDirectory;
                 saveBMDialog.FileName = fn;
                 saveBMDialog.ShowDialog();
             }
@@ -277,6 +285,8 @@ namespace BM_Converter
             {
                 MessageBox.Show("Error saving BM file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            this.savePath = Path.GetDirectoryName(saveBMDialog.FileName);
         }
     }
 }

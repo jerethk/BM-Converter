@@ -5,11 +5,11 @@ using System.Windows.Forms;
 
 namespace BM_Converter
 {
-    public partial class Form2 : Form
+    public partial class CreateBMWindow : Form
     {
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateBMWindow));
             this.btnLoadPal = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.checkBoxCommonColours = new System.Windows.Forms.CheckBox();

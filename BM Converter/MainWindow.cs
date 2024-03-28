@@ -371,7 +371,7 @@ namespace BM_Converter
         // Create BM ------------------------------------------------------------------------------
         private void btnCreateBM_Click(object sender, EventArgs e)
         {
-            Form2 BMCreator = new Form2();
+            CreateBMWindow BMCreator = new CreateBMWindow();
             BMCreator.Show();
         }
 
