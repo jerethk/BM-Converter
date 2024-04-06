@@ -12,26 +12,44 @@ namespace BM_Converter
         {
             var currentDirectory = Directory.GetCurrentDirectory();
             var allPngs = this.GetAllPngFilePaths(currentDirectory).ToArray();
+            var invalidPathChars = Path.GetInvalidFileNameChars().Where(c => c != '/' && c != '\\' && c != ':');
+
+            string outputPath = null;
+            var outPathArg = args.FirstOrDefault(a => a.ToLower().Substring(0, 5) == "-out:");
+            if (!string.IsNullOrEmpty(outPathArg))
+            {
+                var path = outPathArg.Substring(5);
+                var isPathValid = path.Length > 0 && !path.Any(c => invalidPathChars.Contains(c));
+                outputPath = isPathValid ? path : null;
+            }
 
             if (args.Any(a => a.ToLower() == "-makebm"))
             {
                 var pal = this.GetPal(currentDirectory, args);
-                this.CreateBMs(allPngs, pal, currentDirectory);
+                this.CreateBMs(allPngs, pal, currentDirectory, outputPath);
                 return;
             }
 
             if (args.Any(a => a.ToLower() == "-makeraw"))
             {
-                this.CreateRaws(allPngs, currentDirectory);
+                this.CreateRaws(allPngs, currentDirectory, outputPath);
             }
         }
 
-        private void CreateBMs(string[] pngPaths, DFPal pal, string currentDirectory)
+        private void CreateBMs(string[] pngPaths, DFPal pal, string currentDirectory, string outputPath)
         {
-            var outputPath = $"{currentDirectory}\\BmOutput";
-            Directory.CreateDirectory(outputPath);
+            outputPath ??= $"{currentDirectory}\\BmOutput";
+            try
+            {
+                Directory.CreateDirectory(outputPath);
+            }
+            catch
+            {
+                Console.WriteLine("Unable to create output directory.");
+                return;
+            }
+            
             var logFile = $"{currentDirectory}\\log_{DateTime.UtcNow.Ticks}.txt";
-
             using (var logWriter = new StreamWriter(logFile))
             {
                 var successCount = 0;
@@ -79,6 +97,8 @@ namespace BM_Converter
                     if (succeeds)
                     {
                         successCount++;
+                        var paramsString = $"{(transparency == 't' ? "transparent" : transparency == 'w' ? "weapon" : "")} {(useFullbrights ? "fullBrights" : "")} {(universalColours ? "universalColours" : "")} {(compressed ? "compressed" : "")}".Trim();
+                        logWriter.WriteLine($"Created {outputFilename}.BM \t {(string.IsNullOrWhiteSpace(paramsString) ? "" : ": ")} {paramsString}");
                     }
                     else
                     {
@@ -86,16 +106,24 @@ namespace BM_Converter
                     }
                 }
 
-                logWriter.WriteLine($"Successfully created {successCount} BMs");
+                logWriter.WriteLine($"\nSuccessfully created {successCount} BMs \nat path {outputPath} \nusing {pal}");
             }
         }
 
-        private void CreateRaws(string[] pngPaths, string currentDirectory)
+        private void CreateRaws(string[] pngPaths, string currentDirectory, string outputPath)
         {
-            var outputPath = $"{currentDirectory}\\RawOutput";
-            Directory.CreateDirectory(outputPath);
-            var logFile = $"{currentDirectory}\\log_{DateTime.UtcNow.Ticks}.txt";
+            outputPath ??= $"{currentDirectory}\\RawOutput";
+            try
+            {
+                Directory.CreateDirectory(outputPath);
+            }
+            catch
+            {
+                Console.WriteLine("Unable to create output directory.");
+                return;
+            }
 
+            var logFile = $"{currentDirectory}\\log_{DateTime.UtcNow.Ticks}.txt";
             using (var logWriter = new StreamWriter(logFile))
             {
                 var successCount = 0;
@@ -111,6 +139,7 @@ namespace BM_Converter
                     if (succeeds)
                     {
                         successCount++;
+                        logWriter.WriteLine($"Created {filename}.RAW");
                     }
                     else
                     {
@@ -118,7 +147,7 @@ namespace BM_Converter
                     }
                 }
 
-                logWriter.WriteLine($"Successfully created {successCount} RAWs");
+                logWriter.WriteLine($"\nSuccessfully created {successCount} RAWs \nat path {outputPath}");
             }
         }
 
