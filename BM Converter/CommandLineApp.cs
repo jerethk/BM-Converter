@@ -57,15 +57,15 @@ namespace BM_Converter
                 foreach (var pngPath in pngPaths)
                 {
                     var filename = Path.GetFileNameWithoutExtension(pngPath);
-                    var split = filename.Split('_');
+                    var split = filename.Split("__");
 
                     string outputFilename;
                     string options;
 
-                    // Final portion of filename following underscore contains the options
+                    // Final portion of filename following double-underscore contains the options
                     if (split.Length > 1)
                     {
-                        var underscorePos = filename.LastIndexOf('_');
+                        var underscorePos = filename.LastIndexOf("__");
                         outputFilename = filename.Substring(0, underscorePos);
                         options = split.Last().ToLower();
                     }
@@ -106,7 +106,7 @@ namespace BM_Converter
                     }
                 }
 
-                logWriter.WriteLine($"\nSuccessfully created {successCount} BMs \nat path {outputPath} \nusing {pal}");
+                logWriter.WriteLine($"\nSuccessfully created {successCount} BMs \nat path {outputPath}");
             }
         }
 
@@ -132,14 +132,27 @@ namespace BM_Converter
                 {
                     var source = new Bitmap(Image.FromFile(pngPath));
                     var filename = Path.GetFileNameWithoutExtension(pngPath);
-                    var destination = $"{outputPath}\\{filename}.raw";
+                    var split = filename.Split("__");
+                    string outputFilename;
 
+                    // Remove anything after double-underscore for consistency with BMs
+                    if (split.Length > 1)
+                    {
+                        var underscorePos = filename.LastIndexOf("__");
+                        outputFilename = filename.Substring(0, underscorePos);
+                    }
+                    else
+                    {
+                        outputFilename = filename;
+                    }
+
+                    var destination = $"{outputPath}\\{outputFilename}.raw";
                     var succeeds = MiscFunctions.WriteRawFile(destination, source);
 
                     if (succeeds)
                     {
                         successCount++;
-                        logWriter.WriteLine($"Created {filename}.RAW");
+                        logWriter.WriteLine($"Created {outputFilename}.RAW");
                     }
                     else
                     {
