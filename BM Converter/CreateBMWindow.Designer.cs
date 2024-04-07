@@ -86,7 +86,7 @@ namespace BM_Converter
             this.checkBoxIncludeIlluminated.Name = "checkBoxIncludeIlluminated";
             this.checkBoxIncludeIlluminated.Size = new System.Drawing.Size(170, 19);
             this.checkBoxIncludeIlluminated.TabIndex = 2;
-            this.checkBoxIncludeIlluminated.Text = "Include illuminated colours";
+            this.checkBoxIncludeIlluminated.Text = "Include full-bright colours";
             this.checkBoxIncludeIlluminated.UseVisualStyleBackColor = true;
             this.checkBoxIncludeIlluminated.CheckedChanged += new System.EventHandler(this.checkBoxIncludeIlluminated_CheckedChanged);
             // 
