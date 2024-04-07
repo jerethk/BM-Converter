@@ -314,7 +314,7 @@ namespace BM_Converter
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MinimumSize = new System.Drawing.Size(800, 640);
             Name = "MainWindow";
-            Text = "BM Converter (version 2.1.1)";
+            Text = "BM Converter (version 2.1.2)";
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
