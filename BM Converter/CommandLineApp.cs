@@ -167,7 +167,7 @@ namespace BM_Converter
         private IEnumerable<string> GetAllPngFilePaths(string currentDirectory)
         {
             
-            var allFiles = Directory.EnumerateFiles(currentDirectory);
+            var allFiles = Directory.EnumerateFiles(currentDirectory).ToList();
             return allFiles.Where(f => Path.GetExtension(f).ToLower() == ".png");
         }
 

@@ -380,13 +380,23 @@ namespace BM_Converter
 
         private void btnRawPath_Click(object sender, EventArgs e)
         {
-            this.openRawDialog.InitialDirectory = this.remasterPath ?? this.openRawDialog.InitialDirectory;
-            this.openRawDialog.ShowDialog(this);
+            this.openRawLocationDialog.InitialDirectory = !string.IsNullOrEmpty(this.remasterPath) ? Path.GetDirectoryName(this.remasterPath) : this.openRawLocationDialog.InitialDirectory;
+            this.openRawLocationDialog.ShowDialog(this);
         }
 
-        private void openRawDialog_FileOk(object sender, CancelEventArgs e)
+        private void openRawLocationDialog_FileOk(object sender, CancelEventArgs e)
         {
-            this.remasterPath = Path.GetDirectoryName(this.openRawDialog.FileName);
+            if (Path.GetExtension(this.openRawLocationDialog.FileName).Equals(".gob", StringComparison.OrdinalIgnoreCase))
+            {
+                this.remasterPath = this.openRawLocationDialog.FileName;
+            }
+            else
+            {
+                this.remasterPath = Path.GetDirectoryName(this.openRawLocationDialog.FileName);
+            }
+
+            MessageBox.Show($"High res (DF Remaster) images will automatically be loaded from [{this.remasterPath}] when you open a BM.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             this.comboBoxImageVersion.Enabled = true;
             this.comboBoxImageVersion.SelectedIndex = 0;
 
@@ -411,24 +421,43 @@ namespace BM_Converter
                 return;
             }
 
-            // Attempt to load remaster version
-            var rawPath = $"{this.remasterPath}\\{bmFilenameWithoutExtension}.raw";
-            if (!File.Exists(rawPath))
+            // Check if RAW file exists, then attempt to load
+            byte[] rawData;
+            var rawFileName = $"{bmFilenameWithoutExtension}.raw";
+
+            if (Path.GetExtension(this.remasterPath).Equals(".gob", StringComparison.OrdinalIgnoreCase))
             {
-                return;
+                // Path is a GOB
+                if (!Gob.GobContainsFile(this.remasterPath, rawFileName))
+                {
+                    return;
+                }
+
+                rawData = Gob.GetFileFromGob(this.remasterPath, rawFileName);
+            }
+            else
+            {
+                // Path is a directory
+                var rawPath = $"{this.remasterPath}\\{rawFileName}";
+                if (!File.Exists(rawPath))
+                {
+                    return;
+                }
+
+                rawData = MiscFunctions.LoadRawFile(rawPath);
             }
 
-            var rawData = MiscFunctions.LoadRawFile(rawPath);
+            if (rawData == null || rawData.Length == 0)
+            {
+                return;
+            }            
 
             if (!this.BM.IsMultiBM)
             {
                 // Single BM
-                if (rawData != null && rawData.Length > 0)
-                {
-                    var (bitmap, alphaBitmap) = MiscFunctions.GenerateRemasterImage(rawData, this.BM.SizeX * 2, this.BM.SizeY * 2);
-                    this.remasterImages.Add(bitmap);
-                    this.remasterAlphaImages.Add(alphaBitmap);
-                }
+                var (bitmap, alphaBitmap) = MiscFunctions.GenerateRemasterImage(rawData, this.BM.SizeX * 2, this.BM.SizeY * 2);
+                this.remasterImages.Add(bitmap);
+                this.remasterAlphaImages.Add(alphaBitmap);
             }
             else
             {
@@ -448,7 +477,6 @@ namespace BM_Converter
                     {
                         return;
                     }
-
 
                     var (bitmap, alphaBitmap) = MiscFunctions.GenerateRemasterImage(imageData, subBM.SizeX * 2, subBM.SizeY * 2);
                     this.remasterImages.Add(bitmap);

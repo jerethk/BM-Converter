@@ -53,7 +53,7 @@ namespace BM_Converter
             labelPal = new System.Windows.Forms.Label();
             textBoxBMInfo = new System.Windows.Forms.TextBox();
             openBulkDialog = new System.Windows.Forms.OpenFileDialog();
-            openRawDialog = new System.Windows.Forms.OpenFileDialog();
+            openRawLocationDialog = new System.Windows.Forms.OpenFileDialog();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)displayBox).BeginInit();
@@ -298,11 +298,11 @@ namespace BM_Converter
             openBulkDialog.Title = "Choose BM files to convert";
             openBulkDialog.FileOk += openBulkDialog_FileOk;
             // 
-            // openRawDialog
+            // openRawLocationDialog
             // 
-            openRawDialog.Filter = "RAW|*.raw";
-            openRawDialog.Title = "Select folder containing RAW (DF Remaster) textures";
-            openRawDialog.FileOk += openRawDialog_FileOk;
+            openRawLocationDialog.Filter = "RAW, GOB|*.raw; *.GOB";
+            openRawLocationDialog.Title = "Select folder or GOB containing RAW (DF Remaster) textures";
+            openRawLocationDialog.FileOk += openRawLocationDialog_FileOk;
             // 
             // MainWindow
             // 
@@ -346,7 +346,7 @@ namespace BM_Converter
         private System.Windows.Forms.Button buttonHelp;
         private System.Windows.Forms.Button btnCreateBM;
         private System.Windows.Forms.Button btnRawPath;
-        private System.Windows.Forms.OpenFileDialog openRawDialog;
+        private System.Windows.Forms.OpenFileDialog openRawLocationDialog;
         private System.Windows.Forms.ComboBox comboBoxImageVersion;
     }
 }
