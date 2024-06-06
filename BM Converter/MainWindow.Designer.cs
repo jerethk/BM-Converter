@@ -30,17 +30,9 @@ namespace BM_Converter
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            panel1 = new System.Windows.Forms.Panel();
-            btnRawPath = new System.Windows.Forms.Button();
-            btnCreateBM = new System.Windows.Forms.Button();
-            buttonHelp = new System.Windows.Forms.Button();
-            btnBulkConvert = new System.Windows.Forms.Button();
-            BtnLoadBM = new System.Windows.Forms.Button();
-            BtnLoadPAL = new System.Windows.Forms.Button();
-            btnExport = new System.Windows.Forms.Button();
             OpenPALDialog = new System.Windows.Forms.OpenFileDialog();
             OpenBMDialog = new System.Windows.Forms.OpenFileDialog();
-            saveBMPDialog = new System.Windows.Forms.SaveFileDialog();
+            SavePngDialog = new System.Windows.Forms.SaveFileDialog();
             panel2 = new System.Windows.Forms.Panel();
             comboBoxImageVersion = new System.Windows.Forms.ComboBox();
             checkBoxZoom = new System.Windows.Forms.CheckBox();
@@ -54,99 +46,23 @@ namespace BM_Converter
             textBoxBMInfo = new System.Windows.Forms.TextBox();
             openBulkDialog = new System.Windows.Forms.OpenFileDialog();
             openRawLocationDialog = new System.Windows.Forms.OpenFileDialog();
-            panel1.SuspendLayout();
+            menuStrip1 = new System.Windows.Forms.MenuStrip();
+            MenuFile = new System.Windows.Forms.ToolStripMenuItem();
+            MenuLoadPal = new System.Windows.Forms.ToolStripMenuItem();
+            MenuLoadBm = new System.Windows.Forms.ToolStripMenuItem();
+            MenuRawLocation = new System.Windows.Forms.ToolStripMenuItem();
+            MenuExport = new System.Windows.Forms.ToolStripMenuItem();
+            MenuExportBm = new System.Windows.Forms.ToolStripMenuItem();
+            MenuExportHighRes = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            MenuBulkConvert = new System.Windows.Forms.ToolStripMenuItem();
+            MenuCreate = new System.Windows.Forms.ToolStripMenuItem();
+            MenuCreateBm = new System.Windows.Forms.ToolStripMenuItem();
+            MenuAbout = new System.Windows.Forms.ToolStripMenuItem();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)displayBox).BeginInit();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
-            // 
-            // panel1
-            // 
-            panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            panel1.Controls.Add(btnRawPath);
-            panel1.Controls.Add(btnCreateBM);
-            panel1.Controls.Add(buttonHelp);
-            panel1.Controls.Add(btnBulkConvert);
-            panel1.Controls.Add(BtnLoadBM);
-            panel1.Controls.Add(BtnLoadPAL);
-            panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            panel1.Location = new System.Drawing.Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(784, 65);
-            panel1.TabIndex = 0;
-            // 
-            // btnRawPath
-            // 
-            btnRawPath.Location = new System.Drawing.Point(203, 12);
-            btnRawPath.Name = "btnRawPath";
-            btnRawPath.Size = new System.Drawing.Size(129, 32);
-            btnRawPath.TabIndex = 5;
-            btnRawPath.Text = "Remaster files";
-            btnRawPath.UseVisualStyleBackColor = true;
-            btnRawPath.Click += btnRawPath_Click;
-            // 
-            // btnCreateBM
-            // 
-            btnCreateBM.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            btnCreateBM.Location = new System.Drawing.Point(560, 12);
-            btnCreateBM.Name = "btnCreateBM";
-            btnCreateBM.Size = new System.Drawing.Size(123, 32);
-            btnCreateBM.TabIndex = 4;
-            btnCreateBM.Text = "Create BM";
-            btnCreateBM.UseVisualStyleBackColor = true;
-            btnCreateBM.Click += btnCreateBM_Click;
-            // 
-            // buttonHelp
-            // 
-            buttonHelp.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            buttonHelp.Location = new System.Drawing.Point(736, 12);
-            buttonHelp.Name = "buttonHelp";
-            buttonHelp.Size = new System.Drawing.Size(30, 32);
-            buttonHelp.TabIndex = 3;
-            buttonHelp.Text = "?";
-            buttonHelp.UseVisualStyleBackColor = true;
-            buttonHelp.Click += buttonHelp_Click;
-            // 
-            // btnBulkConvert
-            // 
-            btnBulkConvert.Location = new System.Drawing.Point(386, 12);
-            btnBulkConvert.Name = "btnBulkConvert";
-            btnBulkConvert.Size = new System.Drawing.Size(117, 32);
-            btnBulkConvert.TabIndex = 2;
-            btnBulkConvert.Text = "Bulk Convert";
-            btnBulkConvert.UseVisualStyleBackColor = true;
-            btnBulkConvert.Click += btnBulkConvert_Click;
-            // 
-            // BtnLoadBM
-            // 
-            BtnLoadBM.Location = new System.Drawing.Point(106, 12);
-            BtnLoadBM.Name = "BtnLoadBM";
-            BtnLoadBM.Size = new System.Drawing.Size(81, 32);
-            BtnLoadBM.TabIndex = 1;
-            BtnLoadBM.Text = "Load BM";
-            BtnLoadBM.UseVisualStyleBackColor = true;
-            BtnLoadBM.Click += BtnLoadBM_Click;
-            // 
-            // BtnLoadPAL
-            // 
-            BtnLoadPAL.Location = new System.Drawing.Point(12, 12);
-            BtnLoadPAL.Name = "BtnLoadPAL";
-            BtnLoadPAL.Size = new System.Drawing.Size(79, 32);
-            BtnLoadPAL.TabIndex = 0;
-            BtnLoadPAL.Text = "Load PAL";
-            BtnLoadPAL.UseVisualStyleBackColor = true;
-            BtnLoadPAL.Click += BtnLoadPAL_Click;
-            // 
-            // btnExport
-            // 
-            btnExport.Enabled = false;
-            btnExport.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            btnExport.Location = new System.Drawing.Point(58, 462);
-            btnExport.Name = "btnExport";
-            btnExport.Size = new System.Drawing.Size(111, 32);
-            btnExport.TabIndex = 2;
-            btnExport.Text = "Export PNG";
-            btnExport.UseVisualStyleBackColor = true;
-            btnExport.Click += btnExport_Click;
             // 
             // OpenPALDialog
             // 
@@ -162,17 +78,17 @@ namespace BM_Converter
             OpenBMDialog.Title = "Open BM";
             OpenBMDialog.FileOk += OpenBMDialog_FileOk;
             // 
-            // saveBMPDialog
+            // SavePngDialog
             // 
-            saveBMPDialog.DefaultExt = "png";
-            saveBMPDialog.Filter = "PNG file|*.png";
-            saveBMPDialog.Title = "Export";
-            saveBMPDialog.FileOk += saveBMPDialog_FileOk;
+            SavePngDialog.DefaultExt = "png";
+            SavePngDialog.Filter = "PNG file|*.png";
+            SavePngDialog.Title = "Export";
+            SavePngDialog.FileOk += savePngDialog_FileOk;
             // 
             // panel2
             // 
+            panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             panel2.Controls.Add(comboBoxImageVersion);
-            panel2.Controls.Add(btnExport);
             panel2.Controls.Add(checkBoxZoom);
             panel2.Controls.Add(btnNextSub);
             panel2.Controls.Add(btnPrevSub);
@@ -183,9 +99,9 @@ namespace BM_Converter
             panel2.Controls.Add(labelPal);
             panel2.Controls.Add(textBoxBMInfo);
             panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel2.Location = new System.Drawing.Point(0, 65);
+            panel2.Location = new System.Drawing.Point(0, 24);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(784, 536);
+            panel2.Size = new System.Drawing.Size(784, 577);
             panel2.TabIndex = 1;
             // 
             // comboBoxImageVersion
@@ -257,7 +173,7 @@ namespace BM_Converter
             displayBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             displayBox.Location = new System.Drawing.Point(247, 82);
             displayBox.Name = "displayBox";
-            displayBox.Size = new System.Drawing.Size(520, 425);
+            displayBox.Size = new System.Drawing.Size(518, 464);
             displayBox.TabIndex = 3;
             displayBox.TabStop = false;
             // 
@@ -304,32 +220,120 @@ namespace BM_Converter
             openRawLocationDialog.Title = "Select folder or GOB containing RAW (DF Remaster) textures";
             openRawLocationDialog.FileOk += openRawLocationDialog_FileOk;
             // 
+            // menuStrip1
+            // 
+            menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuFile, MenuExport, MenuCreate, MenuAbout });
+            menuStrip1.Location = new System.Drawing.Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new System.Drawing.Size(784, 24);
+            menuStrip1.TabIndex = 2;
+            // 
+            // MenuFile
+            // 
+            MenuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuLoadPal, MenuLoadBm, MenuRawLocation });
+            MenuFile.Name = "MenuFile";
+            MenuFile.Size = new System.Drawing.Size(37, 20);
+            MenuFile.Text = "File";
+            // 
+            // MenuLoadPal
+            // 
+            MenuLoadPal.Name = "MenuLoadPal";
+            MenuLoadPal.Size = new System.Drawing.Size(193, 22);
+            MenuLoadPal.Text = "Load PAL";
+            MenuLoadPal.Click += MenuLoadPal_Click;
+            // 
+            // MenuLoadBm
+            // 
+            MenuLoadBm.Name = "MenuLoadBm";
+            MenuLoadBm.Size = new System.Drawing.Size(193, 22);
+            MenuLoadBm.Text = "Load BM";
+            MenuLoadBm.Click += MenuLoadBm_Click;
+            // 
+            // MenuRawLocation
+            // 
+            MenuRawLocation.Name = "MenuRawLocation";
+            MenuRawLocation.Size = new System.Drawing.Size(193, 22);
+            MenuRawLocation.Text = "Remaster files location";
+            MenuRawLocation.Click += MenuRawLocation_Click;
+            // 
+            // MenuExport
+            // 
+            MenuExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuExportBm, MenuExportHighRes, toolStripSeparator1, MenuBulkConvert });
+            MenuExport.Name = "MenuExport";
+            MenuExport.Size = new System.Drawing.Size(53, 20);
+            MenuExport.Text = "Export";
+            // 
+            // MenuExportBm
+            // 
+            MenuExportBm.Name = "MenuExportBm";
+            MenuExportBm.Size = new System.Drawing.Size(196, 22);
+            MenuExportBm.Text = "Export BM to PNG";
+            MenuExportBm.Click += MenuExportBm_Click;
+            // 
+            // MenuExportHighRes
+            // 
+            MenuExportHighRes.Name = "MenuExportHighRes";
+            MenuExportHighRes.Size = new System.Drawing.Size(196, 22);
+            MenuExportHighRes.Text = "Export high-res images";
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(193, 6);
+            // 
+            // MenuBulkConvert
+            // 
+            MenuBulkConvert.Name = "MenuBulkConvert";
+            MenuBulkConvert.Size = new System.Drawing.Size(196, 22);
+            MenuBulkConvert.Text = "Bulk Convert";
+            MenuBulkConvert.Click += MenuBulkConvert_Click;
+            // 
+            // MenuCreate
+            // 
+            MenuCreate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuCreateBm });
+            MenuCreate.Name = "MenuCreate";
+            MenuCreate.Size = new System.Drawing.Size(53, 20);
+            MenuCreate.Text = "Create";
+            // 
+            // MenuCreateBm
+            // 
+            MenuCreateBm.Name = "MenuCreateBm";
+            MenuCreateBm.Size = new System.Drawing.Size(129, 22);
+            MenuCreateBm.Text = "Create BM";
+            MenuCreateBm.Click += MenuCreateBM_Click;
+            // 
+            // MenuAbout
+            // 
+            MenuAbout.Name = "MenuAbout";
+            MenuAbout.Size = new System.Drawing.Size(52, 20);
+            MenuAbout.Text = "About";
+            MenuAbout.Click += MenuAbout_Click;
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(784, 601);
             Controls.Add(panel2);
-            Controls.Add(panel1);
+            Controls.Add(menuStrip1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStrip1;
             MinimumSize = new System.Drawing.Size(800, 640);
             Name = "MainWindow";
             Text = "BM Converter (version 2.1.2)";
-            panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)displayBox).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button BtnLoadBM;
-        private System.Windows.Forms.Button BtnLoadPAL;
         private System.Windows.Forms.OpenFileDialog OpenPALDialog;
         private System.Windows.Forms.OpenFileDialog OpenBMDialog;
-        private System.Windows.Forms.SaveFileDialog saveBMPDialog;
+        private System.Windows.Forms.SaveFileDialog SavePngDialog;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label labelPal;
         private System.Windows.Forms.TextBox textBoxBMInfo;
@@ -340,14 +344,22 @@ namespace BM_Converter
         private System.Windows.Forms.Button btnNextSub;
         private System.Windows.Forms.Button btnPrevSub;
         private System.Windows.Forms.CheckBox checkBoxZoom;
-        private System.Windows.Forms.Button btnExport;
-        private System.Windows.Forms.Button btnBulkConvert;
         private System.Windows.Forms.OpenFileDialog openBulkDialog;
-        private System.Windows.Forms.Button buttonHelp;
-        private System.Windows.Forms.Button btnCreateBM;
-        private System.Windows.Forms.Button btnRawPath;
         private System.Windows.Forms.OpenFileDialog openRawLocationDialog;
         private System.Windows.Forms.ComboBox comboBoxImageVersion;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem MenuFile;
+        private System.Windows.Forms.ToolStripMenuItem MenuExport;
+        private System.Windows.Forms.ToolStripMenuItem MenuCreate;
+        private System.Windows.Forms.ToolStripMenuItem MenuAbout;
+        private System.Windows.Forms.ToolStripMenuItem MenuLoadPal;
+        private System.Windows.Forms.ToolStripMenuItem MenuLoadBm;
+        private System.Windows.Forms.ToolStripMenuItem MenuRawLocation;
+        private System.Windows.Forms.ToolStripMenuItem MenuExportBm;
+        private System.Windows.Forms.ToolStripMenuItem MenuExportHighRes;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem MenuBulkConvert;
+        private System.Windows.Forms.ToolStripMenuItem MenuCreateBm;
     }
 }
 

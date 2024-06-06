@@ -38,13 +38,13 @@ namespace BM_Converter
             }
         }
 
-        private void buttonHelp_Click(object sender, EventArgs e)
+        private void MenuAbout_Click(object sender, EventArgs e)
         {
             MessageBox.Show("This app is © 2021-2024 Jereth K.", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // Load PAL  -------------------------------------------------------------------------
-        private void BtnLoadPAL_Click(object sender, EventArgs e)
+        private void MenuLoadPal_Click(object sender, EventArgs e)
         {
             OpenPALDialog.InitialDirectory = this.palPath ?? OpenPALDialog.InitialDirectory;
             OpenPALDialog.ShowDialog();
@@ -68,8 +68,6 @@ namespace BM_Converter
 
                 MessageBox.Show("PAL Loaded.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 labelPal.Text = $"PAL: {Path.GetFileName(OpenPALDialog.FileName)}";
-                BtnLoadBM.Enabled = true;
-                btnBulkConvert.Enabled = true;
                 this.palPath = Path.GetDirectoryName(OpenPALDialog.FileName);
             }
             else
@@ -79,7 +77,7 @@ namespace BM_Converter
         }
 
         // Load BM  -------------------------------------------------------------------------
-        private void BtnLoadBM_Click(object sender, EventArgs e)
+        private void MenuLoadBm_Click(object sender, EventArgs e)
         {
             OpenBMDialog.InitialDirectory = this.bmPath ?? OpenBMDialog.InitialDirectory;
             OpenBMDialog.ShowDialog();
@@ -156,7 +154,7 @@ namespace BM_Converter
                     textBoxSubBMInfo.Text = null;
                 }
 
-                btnExport.Enabled = true;
+                MenuExportBm.Enabled = true;
                 this.bmPath = Path.GetDirectoryName(path);
 
                 this.comboBoxImageVersion.SelectedIndex = 0;
@@ -249,27 +247,27 @@ namespace BM_Converter
         }
 
         // Export -------------------------------------------------------------------------------
-        private void btnExport_Click(object sender, EventArgs e)
+        private void MenuExportBm_Click(object sender, EventArgs e)
         {
-            saveBMPDialog.InitialDirectory = this.exportPath ?? Path.GetDirectoryName(this.OpenBMDialog.FileName);
-            saveBMPDialog.FileName = Path.GetFileNameWithoutExtension(OpenBMDialog.FileName);
-            saveBMPDialog.ShowDialog();
+            SavePngDialog.InitialDirectory = this.exportPath ?? Path.GetDirectoryName(this.OpenBMDialog.FileName);
+            SavePngDialog.FileName = Path.GetFileNameWithoutExtension(OpenBMDialog.FileName);
+            SavePngDialog.ShowDialog();
         }
 
-        private void saveBMPDialog_FileOk(object sender, CancelEventArgs e)
+        private void savePngDialog_FileOk(object sender, CancelEventArgs e)
         {
             if (!BM.IsMultiBM)
             {
                 // single BM
                 try
                 {
-                    this.images[0].Save(saveBMPDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
-                    
-                    
+                    this.images[0].Save(SavePngDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+
+
                     if (this.remasterImages.Count == 1 && this.remasterAlphaImages.Count == 1)
                     {
-                        var dir = Path.GetDirectoryName(saveBMPDialog.FileName);
-                        var filenameWithoutExtension = Path.GetFileNameWithoutExtension(saveBMPDialog.FileName);
+                        var dir = Path.GetDirectoryName(SavePngDialog.FileName);
+                        var filenameWithoutExtension = Path.GetFileNameWithoutExtension(SavePngDialog.FileName);
                         this.remasterImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster.png", System.Drawing.Imaging.ImageFormat.Png);
                         this.remasterAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster_alpha.png", System.Drawing.Imaging.ImageFormat.Png);
                     }
@@ -283,7 +281,7 @@ namespace BM_Converter
             else
             {
                 // multi BM
-                string f = saveBMPDialog.FileName;
+                string f = SavePngDialog.FileName;
                 string dir = Path.GetDirectoryName(f);
                 string fil = Path.GetFileNameWithoutExtension(f);
 
@@ -309,11 +307,11 @@ namespace BM_Converter
                 }
             }
 
-            this.exportPath = Path.GetDirectoryName(this.saveBMPDialog.FileName);
+            this.exportPath = Path.GetDirectoryName(this.SavePngDialog.FileName);
         }
 
         // Bulk convert  ------------------------------------------------------------------
-        private void btnBulkConvert_Click(object sender, EventArgs e)
+        private void MenuBulkConvert_Click(object sender, EventArgs e)
         {
             openBulkDialog.ShowDialog();
         }
@@ -369,7 +367,7 @@ namespace BM_Converter
         }
 
         // Create BM ------------------------------------------------------------------------------
-        private void btnCreateBM_Click(object sender, EventArgs e)
+        private void MenuCreateBM_Click(object sender, EventArgs e)
         {
             CreateBMWindow BMCreator = new CreateBMWindow();
             BMCreator.Show();
@@ -378,7 +376,7 @@ namespace BM_Converter
 
         // RAW (remaster) images ------------------------------------------------------------------------
 
-        private void btnRawPath_Click(object sender, EventArgs e)
+        private void MenuRawLocation_Click(object sender, EventArgs e)
         {
             this.openRawLocationDialog.InitialDirectory = !string.IsNullOrEmpty(this.remasterPath) ? Path.GetDirectoryName(this.remasterPath) : this.openRawLocationDialog.InitialDirectory;
             this.openRawLocationDialog.ShowDialog(this);
@@ -450,7 +448,7 @@ namespace BM_Converter
             if (rawData == null || rawData.Length == 0)
             {
                 return;
-            }            
+            }
 
             if (!this.BM.IsMultiBM)
             {
