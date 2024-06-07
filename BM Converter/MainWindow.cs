@@ -196,18 +196,28 @@ namespace BM_Converter
         // Multi BM Interface ------------------------------------------------------------
         private void btnPrevSub_Click(object sender, EventArgs e)
         {
-            if (selectedSubBM > 0)
+            if (selectedSubBM >= 0)
             {
                 selectedSubBM--;
+                if (selectedSubBM < 0)
+                {
+                    selectedSubBM = BM.NumImages - 1;
+                }
+
                 UpdateSubBMInfo();
             }
         }
 
         private void btnNextSub_Click(object sender, EventArgs e)
         {
-            if (selectedSubBM < BM.NumImages - 1)
+            if (selectedSubBM < BM.NumImages)
             {
                 selectedSubBM++;
+                if (selectedSubBM >= BM.NumImages)
+                {
+                    selectedSubBM = 0;
+                }
+
                 UpdateSubBMInfo();
             }
         }
@@ -255,30 +265,22 @@ namespace BM_Converter
             {
                 return;
             }
-            
+
             SavePngDialog.InitialDirectory = this.exportPath ?? Path.GetDirectoryName(this.OpenBMDialog.FileName);
             SavePngDialog.FileName = Path.GetFileNameWithoutExtension(OpenBMDialog.FileName);
-            SavePngDialog.ShowDialog();
-        }
+            var dialogResult = SavePngDialog.ShowDialog();
 
-        private void savePngDialog_FileOk(object sender, CancelEventArgs e)
-        {
+            if (dialogResult != DialogResult.OK)
+            {
+                return;
+            }
+
             if (!BM.IsMultiBM)
             {
                 // single BM
                 try
                 {
                     this.images[0].Save(SavePngDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
-
-
-                    if (this.remasterNoAlphaImages.Count == 1 && this.remasterAlphaImages.Count == 1)
-                    {
-                        var dir = Path.GetDirectoryName(SavePngDialog.FileName);
-                        var filenameWithoutExtension = Path.GetFileNameWithoutExtension(SavePngDialog.FileName);
-                        this.remasterNoAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster.png", System.Drawing.Imaging.ImageFormat.Png);
-                        this.remasterAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster_alpha.png", System.Drawing.Imaging.ImageFormat.Png);
-                    }
-
                 }
                 catch (IOException)
                 {
@@ -288,24 +290,15 @@ namespace BM_Converter
             else
             {
                 // multi BM
-                string f = SavePngDialog.FileName;
-                string dir = Path.GetDirectoryName(f);
-                string fil = Path.GetFileNameWithoutExtension(f);
+                string dir = Path.GetDirectoryName(SavePngDialog.FileName);
+                string filenameWithoutExtension = Path.GetFileNameWithoutExtension(SavePngDialog.FileName);
 
                 try
                 {
                     for (int i = 0; i < BM.NumImages; i++)
                     {
-                        string saveName = $"{dir}/{fil}_{i}.png";
+                        string saveName = $"{dir}/{filenameWithoutExtension}_{i}.png";
                         this.images[i].Save(saveName, System.Drawing.Imaging.ImageFormat.Png);
-
-                        if (this.remasterNoAlphaImages.Count > i && this.remasterAlphaImages.Count > i)
-                        {
-                            string saveName2 = $"{dir}/{fil}_{i}_remaster.png";
-                            this.remasterNoAlphaImages[i].Save(saveName2, System.Drawing.Imaging.ImageFormat.Png);
-                            string saveName3 = $"{dir}/{fil}_{i}_remaster_alpha.png";
-                            this.remasterAlphaImages[i].Save(saveName3, System.Drawing.Imaging.ImageFormat.Png);
-                        }
                     }
                 }
                 catch (IOException)
@@ -527,6 +520,110 @@ namespace BM_Converter
                         : null;
                     return;
             }
+        }
+
+        private void MenuExportHighRes_Click(object sender, EventArgs e)
+        {
+            if (this.remasterNoAlphaImages.Count == 0 || this.remasterCombinedImages.Count == 0)
+            {
+                return;
+            }
+
+            if (this.remasterNoAlphaImages.Any(i => i == null) || this.remasterCombinedImages.Any(i => i == null))
+            {
+                return;
+            }
+
+            SavePngDialog.InitialDirectory = this.exportPath ?? Path.GetDirectoryName(this.OpenBMDialog.FileName);
+            SavePngDialog.FileName = Path.GetFileNameWithoutExtension(OpenBMDialog.FileName);
+            var dialogResult = SavePngDialog.ShowDialog();
+
+            if (dialogResult != DialogResult.OK)
+            {
+                return;
+            }
+
+            var response = MessageBox.Show("Do you wish to save the alpha channel separately? The alpha data will be saved as a greyscale image.", "Question", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+            if (response == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            if (!BM.IsMultiBM)
+            {
+                // Single BM
+                try
+                {
+                    var dir = Path.GetDirectoryName(SavePngDialog.FileName);
+                    var filenameWithoutExtension = Path.GetFileNameWithoutExtension(SavePngDialog.FileName);
+
+                    switch (response)
+                    {
+                        case DialogResult.Yes:
+                            if (this.remasterNoAlphaImages.Count == 1 && this.remasterAlphaImages.Count == 1)
+                            {
+                                this.remasterNoAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster.png", System.Drawing.Imaging.ImageFormat.Png);
+                                this.remasterAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster_alpha.png", System.Drawing.Imaging.ImageFormat.Png);
+                            }
+                            
+                            break;
+
+                        case DialogResult.No:
+                            if (this.remasterCombinedImages.Count == 1)
+                            {
+                                this.remasterCombinedImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster.png", System.Drawing.Imaging.ImageFormat.Png);
+                            }
+
+                            break;
+                    }
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Failed to export. An error occurred.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                // Multi BM
+                string dir = Path.GetDirectoryName(SavePngDialog.FileName);
+                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(SavePngDialog.FileName);
+
+                try
+                {
+                    for (int i = 0; i < BM.NumImages; i++)
+                    {
+                        switch (response)
+                        {
+                            case (DialogResult.Yes):
+                                if (this.remasterNoAlphaImages.Count > i && this.remasterAlphaImages.Count > i)
+                                {
+                                    string saveName2 = $"{dir}/{fileNameWithoutExtension}_{i}_remaster.png";
+                                    this.remasterNoAlphaImages[i].Save(saveName2, System.Drawing.Imaging.ImageFormat.Png);
+                                    string saveName3 = $"{dir}/{fileNameWithoutExtension}_{i}_remaster_alpha.png";
+                                    this.remasterAlphaImages[i].Save(saveName3, System.Drawing.Imaging.ImageFormat.Png);
+                                }
+
+                                break;
+
+                            case (DialogResult.No):
+                                if (this.remasterCombinedImages.Count > i)
+                                {
+                                    string saveName2 = $"{dir}/{fileNameWithoutExtension}_{i}_remaster.png";
+                                    this.remasterCombinedImages[i].Save(saveName2, System.Drawing.Imaging.ImageFormat.Png);
+                                }
+
+                                break;
+                        }
+                    }
+                }
+                catch (IOException)
+                {
+                    MessageBox.Show("Failed to export. An error occurred.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            this.exportPath = Path.GetDirectoryName(this.SavePngDialog.FileName);
         }
     }
 }

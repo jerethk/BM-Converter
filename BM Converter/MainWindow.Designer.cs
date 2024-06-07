@@ -83,7 +83,6 @@ namespace BM_Converter
             SavePngDialog.DefaultExt = "png";
             SavePngDialog.Filter = "PNG file|*.png";
             SavePngDialog.Title = "Export";
-            SavePngDialog.FileOk += savePngDialog_FileOk;
             // 
             // panel2
             // 
@@ -275,6 +274,7 @@ namespace BM_Converter
             MenuExportHighRes.Name = "MenuExportHighRes";
             MenuExportHighRes.Size = new System.Drawing.Size(196, 22);
             MenuExportHighRes.Text = "Export high-res images";
+            MenuExportHighRes.Click += MenuExportHighRes_Click;
             // 
             // toolStripSeparator1
             // 
