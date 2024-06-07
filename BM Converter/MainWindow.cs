@@ -13,8 +13,9 @@ namespace BM_Converter
         private DFPal palette;
         private DFBM BM;
         private List<Bitmap> images;
-        private List<Bitmap> remasterImages;
+        private List<Bitmap> remasterNoAlphaImages;
         private List<Bitmap> remasterAlphaImages;
+        private List<Bitmap> remasterCombinedImages;
         private string remasterPath;
         private string palPath;
         private string bmPath;
@@ -28,8 +29,9 @@ namespace BM_Converter
             this.palette = new DFPal();
             this.BM = new DFBM();
             this.images = new List<Bitmap>();
-            this.remasterImages = new List<Bitmap>();
+            this.remasterNoAlphaImages = new List<Bitmap>();
             this.remasterAlphaImages = new List<Bitmap>();
+            this.remasterCombinedImages = new List<Bitmap>();
 
             if (args.Length > 0)
             {
@@ -249,6 +251,11 @@ namespace BM_Converter
         // Export -------------------------------------------------------------------------------
         private void MenuExportBm_Click(object sender, EventArgs e)
         {
+            if (this.images.Count == 0)
+            {
+                return;
+            }
+            
             SavePngDialog.InitialDirectory = this.exportPath ?? Path.GetDirectoryName(this.OpenBMDialog.FileName);
             SavePngDialog.FileName = Path.GetFileNameWithoutExtension(OpenBMDialog.FileName);
             SavePngDialog.ShowDialog();
@@ -264,11 +271,11 @@ namespace BM_Converter
                     this.images[0].Save(SavePngDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
 
 
-                    if (this.remasterImages.Count == 1 && this.remasterAlphaImages.Count == 1)
+                    if (this.remasterNoAlphaImages.Count == 1 && this.remasterAlphaImages.Count == 1)
                     {
                         var dir = Path.GetDirectoryName(SavePngDialog.FileName);
                         var filenameWithoutExtension = Path.GetFileNameWithoutExtension(SavePngDialog.FileName);
-                        this.remasterImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster.png", System.Drawing.Imaging.ImageFormat.Png);
+                        this.remasterNoAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster.png", System.Drawing.Imaging.ImageFormat.Png);
                         this.remasterAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster_alpha.png", System.Drawing.Imaging.ImageFormat.Png);
                     }
 
@@ -292,10 +299,10 @@ namespace BM_Converter
                         string saveName = $"{dir}/{fil}_{i}.png";
                         this.images[i].Save(saveName, System.Drawing.Imaging.ImageFormat.Png);
 
-                        if (this.remasterImages.Count > i && this.remasterAlphaImages.Count > i)
+                        if (this.remasterNoAlphaImages.Count > i && this.remasterAlphaImages.Count > i)
                         {
                             string saveName2 = $"{dir}/{fil}_{i}_remaster.png";
-                            this.remasterImages[i].Save(saveName2, System.Drawing.Imaging.ImageFormat.Png);
+                            this.remasterNoAlphaImages[i].Save(saveName2, System.Drawing.Imaging.ImageFormat.Png);
                             string saveName3 = $"{dir}/{fil}_{i}_remaster_alpha.png";
                             this.remasterAlphaImages[i].Save(saveName3, System.Drawing.Imaging.ImageFormat.Png);
                         }
@@ -406,8 +413,9 @@ namespace BM_Converter
 
         private void loadRemasterImages(string bmFilenameWithoutExtension)
         {
-            this.remasterImages.Clear();
+            this.remasterNoAlphaImages.Clear();
             this.remasterAlphaImages.Clear();
+            this.remasterCombinedImages.Clear();
 
             if (string.IsNullOrEmpty(this.remasterPath) || string.IsNullOrEmpty(bmFilenameWithoutExtension))
             {
@@ -453,9 +461,10 @@ namespace BM_Converter
             if (!this.BM.IsMultiBM)
             {
                 // Single BM
-                var (bitmap, alphaBitmap) = MiscFunctions.GenerateRemasterImage(rawData, this.BM.SizeX * 2, this.BM.SizeY * 2);
-                this.remasterImages.Add(bitmap);
-                this.remasterAlphaImages.Add(alphaBitmap);
+                var bitmaps = MiscFunctions.GenerateRemasterImage(rawData, this.BM.SizeX * 2, this.BM.SizeY * 2);
+                this.remasterNoAlphaImages.Add(bitmaps.noAlphaImage);
+                this.remasterAlphaImages.Add(bitmaps.alphaImage);
+                this.remasterCombinedImages.Add(bitmaps.combinedImage);
             }
             else
             {
@@ -476,9 +485,10 @@ namespace BM_Converter
                         return;
                     }
 
-                    var (bitmap, alphaBitmap) = MiscFunctions.GenerateRemasterImage(imageData, subBM.SizeX * 2, subBM.SizeY * 2);
-                    this.remasterImages.Add(bitmap);
-                    this.remasterAlphaImages.Add(alphaBitmap);
+                    var bitmaps = MiscFunctions.GenerateRemasterImage(imageData, subBM.SizeX * 2, subBM.SizeY * 2);
+                    this.remasterNoAlphaImages.Add(bitmaps.noAlphaImage);
+                    this.remasterAlphaImages.Add(bitmaps.alphaImage);
+                    this.remasterCombinedImages.Add(bitmaps.combinedImage);
                     dataPosition += imageDataSize;
                 }
             }
@@ -494,12 +504,18 @@ namespace BM_Converter
             switch (comboBoxImageVersion.SelectedIndex)
             {
                 case 1:
-                    this.displayBox.Image = this.remasterImages.Count > this.selectedSubBM
-                        ? this.remasterImages[this.selectedSubBM]
+                    this.displayBox.Image = this.remasterCombinedImages.Count > this.selectedSubBM
+                        ? this.remasterCombinedImages[this.selectedSubBM]
                         : null;
                     return;
 
                 case 2:
+                    this.displayBox.Image = this.remasterNoAlphaImages.Count > this.selectedSubBM
+                        ? this.remasterNoAlphaImages[this.selectedSubBM]
+                        : null;
+                    return;
+
+                case 3:
                     this.displayBox.Image = this.remasterAlphaImages.Count > this.selectedSubBM
                         ? this.remasterAlphaImages[this.selectedSubBM]
                         : null;

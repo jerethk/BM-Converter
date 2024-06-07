@@ -205,19 +205,18 @@ namespace BM_Converter
         /// <summary>
         /// Generates bitmaps from RAW (remaster texture) data
         /// </summary>
-        /// <returns>Two bitmaps, one representing the image and one representing the alpha channel</returns>
-        public static (Bitmap, Bitmap) GenerateRemasterImage(byte[] rawData, int imageWidth, int imageHeight)
+        /// <returns>Three bitmaps, one representing the image without alpha, one representing the alpha channel, and one combined</returns>
+        public static (Bitmap noAlphaImage, Bitmap alphaImage, Bitmap combinedImage) GenerateRemasterImage(byte[] rawData, int imageWidth, int imageHeight)
         {   
             if (rawData == null)
             {
-                return (null, null);
+                return (null, null, null);
             }
 
             if (rawData.Length < imageWidth * imageHeight * 4)
             {
-                return (null, null);
+                return (null, null, null);
             }
-
             
             // Put the RAW data into an array of texels
             var imageData = new Texel[imageWidth, imageHeight];
@@ -237,37 +236,39 @@ namespace BM_Converter
                 }
             }
 
-            // Create image bitmap
-            var bitmap = new Bitmap(imageWidth, imageHeight);
+            var noAlphaBitmap = new Bitmap(imageWidth, imageHeight);
+            var alphaBitmap = new Bitmap(imageWidth, imageHeight);
+            var combinedBitmap = new Bitmap(imageWidth, imageHeight);
+
             for (var x = 0; x < imageWidth; x++)
             {
                 for (var y = 0; y < imageHeight; y++)
                 {
-                    var colour = Color.FromArgb(
+                    var colour1 = Color.FromArgb(
                         255,
                         imageData[x, y].Red,
                         imageData[x, y].Green,
                         imageData[x, y].Blue);
-                    bitmap.SetPixel(x, y, colour);
-                }
-            }
+                    noAlphaBitmap.SetPixel(x, y, colour1);
 
-            // Create the alpha bitmap (greyscale)
-            var alphaBitmap = new Bitmap(imageWidth, imageHeight);
-            for (var x = 0; x < imageWidth; x++)
-            {
-                for (var y = 0; y < imageHeight; y++)
-                {
-                    var colour = Color.FromArgb(
+                    // Create the alpha bitmap in greyscale
+                    var colour2 = Color.FromArgb(
                         255,
                         imageData[x, y].Alpha,
                         imageData[x, y].Alpha,
                         imageData[x, y].Alpha);
-                    alphaBitmap.SetPixel(x, y, colour);
+                    alphaBitmap.SetPixel(x, y, colour2);
+
+                    var colour3 = Color.FromArgb(
+                        imageData[x, y].Alpha,
+                        imageData[x, y].Red,
+                        imageData[x, y].Green,
+                        imageData[x, y].Blue);
+                    combinedBitmap.SetPixel(x, y, colour3);
                 }
             }
 
-            return (bitmap, alphaBitmap);
+            return (noAlphaBitmap, alphaBitmap, combinedBitmap);
         }
 
         public static bool WriteRawFile(string path, Bitmap img)
