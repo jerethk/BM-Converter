@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace BM_Converter
 {
-    class DFBM
+    public class DFBM
     {
         public byte[] FileId { get; set; }      // header
         public ushort SizeX { get; set; }
@@ -563,7 +563,7 @@ namespace BM_Converter
         }
     }
 
-    class SubBM
+    public class SubBM
     {
         public short SizeX { get; set; }
         public short SizeY { get; set; }

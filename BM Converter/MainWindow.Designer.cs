@@ -59,6 +59,7 @@ namespace BM_Converter
             MenuCreate = new System.Windows.Forms.ToolStripMenuItem();
             MenuCreateBm = new System.Windows.Forms.ToolStripMenuItem();
             MenuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            MenuCreateRaw = new System.Windows.Forms.ToolStripMenuItem();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)displayBox).BeginInit();
             menuStrip1.SuspendLayout();
@@ -290,7 +291,7 @@ namespace BM_Converter
             // 
             // MenuCreate
             // 
-            MenuCreate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuCreateBm });
+            MenuCreate.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuCreateBm, MenuCreateRaw });
             MenuCreate.Name = "MenuCreate";
             MenuCreate.Size = new System.Drawing.Size(53, 20);
             MenuCreate.Text = "Create";
@@ -298,7 +299,7 @@ namespace BM_Converter
             // MenuCreateBm
             // 
             MenuCreateBm.Name = "MenuCreateBm";
-            MenuCreateBm.Size = new System.Drawing.Size(129, 22);
+            MenuCreateBm.Size = new System.Drawing.Size(218, 22);
             MenuCreateBm.Text = "Create BM";
             MenuCreateBm.Click += MenuCreateBM_Click;
             // 
@@ -308,6 +309,13 @@ namespace BM_Converter
             MenuAbout.Size = new System.Drawing.Size(52, 20);
             MenuAbout.Text = "About";
             MenuAbout.Click += MenuAbout_Click;
+            // 
+            // MenuCreateRaw
+            // 
+            MenuCreateRaw.Name = "MenuCreateRaw";
+            MenuCreateRaw.Size = new System.Drawing.Size(218, 22);
+            MenuCreateRaw.Text = "Create RAW (high res asset)";
+            MenuCreateRaw.Click += MenuCreateRaw_Click;
             // 
             // MainWindow
             // 
@@ -360,6 +368,7 @@ namespace BM_Converter
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem MenuBulkConvert;
         private System.Windows.Forms.ToolStripMenuItem MenuCreateBm;
+        private System.Windows.Forms.ToolStripMenuItem MenuCreateRaw;
     }
 }
 

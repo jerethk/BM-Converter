@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BM_Converter
 {
-    class DFPal
+    public class DFPal
     {
         public DFPal()
         {

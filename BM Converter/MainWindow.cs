@@ -415,7 +415,7 @@ namespace BM_Converter
                 return;
             }
 
-            if (this.BM == null)
+            if (this.BM == null || this.BM.NumImages == 0)
             {
                 return;
             }
@@ -566,7 +566,7 @@ namespace BM_Converter
                                 this.remasterNoAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster.png", System.Drawing.Imaging.ImageFormat.Png);
                                 this.remasterAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster_alpha.png", System.Drawing.Imaging.ImageFormat.Png);
                             }
-                            
+
                             break;
 
                         case DialogResult.No:
@@ -624,6 +624,12 @@ namespace BM_Converter
             }
 
             this.exportPath = Path.GetDirectoryName(this.SavePngDialog.FileName);
+        }
+
+        private void MenuCreateRaw_Click(object sender, EventArgs e)
+        {
+            var createRawWindow = new CreateRawWindow(this.BM);
+            createRawWindow.Show();
         }
     }
 }
