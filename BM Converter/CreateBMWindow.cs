@@ -41,6 +41,11 @@ namespace BM_Converter
             }
         }
 
+        private void CreateBMWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.SourceImages.ForEach(b => b.Dispose());
+        }
+
         private void btnLoadPal_Click(object sender, EventArgs e)
         {
             openPALDialog.InitialDirectory = this.palPath ?? openPALDialog.InitialDirectory;
@@ -113,7 +118,7 @@ namespace BM_Converter
         private void radioBtnOpaque_CheckedChanged(object sender, EventArgs e)
         {
             comboBoxTransparentColour.Enabled = !radioBtnOpaque.Checked;
-            
+
             if (radioBtnOpaque.Checked)
             {
                 comboBoxTransparentColour.SelectedIndex = 0;
@@ -131,12 +136,12 @@ namespace BM_Converter
         {
             var failedImages = 0;
             this.loadPath = Path.GetDirectoryName(LoadImageDialog.FileName);
-            
+
             foreach (var imgFile in LoadImageDialog.FileNames)
             {
                 try
                 {
-                    var newImage = new Bitmap(imgFile);
+                    var newImage = Image.FromFile(imgFile);
                     bool proceed = false;
 
                     // Check image wd&ht is power of 2
@@ -155,7 +160,8 @@ namespace BM_Converter
 
                     if (proceed)
                     {
-                        SourceImages.Add(newImage);
+                        SourceImages.Add(new Bitmap(newImage));
+                        newImage.Dispose();
                         listBoxImages.Items.Add(Path.GetFileName(imgFile));
                         listBoxImages.SelectedIndex = listBoxImages.Items.Count - 1;
                     }
@@ -225,7 +231,7 @@ namespace BM_Converter
             if (radioBtnTransparent.Checked)
             {
                 transparency = 't';
-            } 
+            }
             else if (radioBtnWeapon.Checked)
             {
                 transparency = 'w';
@@ -251,7 +257,7 @@ namespace BM_Converter
             if (!radioBtnMultiBM.Checked && this.SourceImages.Count > 1)
             {
                 var failed = 0;
-                
+
                 // Bulk convert!
                 for (int i = 0; i < this.SourceImages.Count; i++)
                 {
@@ -260,7 +266,7 @@ namespace BM_Converter
                     var source = new List<Bitmap>() { this.SourceImages[i] };
 
                     var BM = MiscFunctions.BuildBM(false, this.palette, source, transparency, transparentColour, (byte)numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
-                    
+
                     if (!BM.SaveToFile($"{dir}\\{filename}.bm"))
                     {
                         failed++;
@@ -271,11 +277,11 @@ namespace BM_Converter
                 {
                     MessageBox.Show("One or more BMs failed to successfully save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                
+
                 return;
             }
 
-            DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, transparentColour, (byte) numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
+            DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, transparentColour, (byte)numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
 
             if (newBM.SaveToFile(saveBMDialog.FileName))
             {
