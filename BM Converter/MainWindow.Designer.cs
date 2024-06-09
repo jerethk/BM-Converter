@@ -58,8 +58,8 @@ namespace BM_Converter
             MenuBulkConvert = new System.Windows.Forms.ToolStripMenuItem();
             MenuCreate = new System.Windows.Forms.ToolStripMenuItem();
             MenuCreateBm = new System.Windows.Forms.ToolStripMenuItem();
-            MenuAbout = new System.Windows.Forms.ToolStripMenuItem();
             MenuCreateRaw = new System.Windows.Forms.ToolStripMenuItem();
+            MenuAbout = new System.Windows.Forms.ToolStripMenuItem();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)displayBox).BeginInit();
             menuStrip1.SuspendLayout();
@@ -303,19 +303,19 @@ namespace BM_Converter
             MenuCreateBm.Text = "Create BM";
             MenuCreateBm.Click += MenuCreateBM_Click;
             // 
-            // MenuAbout
-            // 
-            MenuAbout.Name = "MenuAbout";
-            MenuAbout.Size = new System.Drawing.Size(52, 20);
-            MenuAbout.Text = "About";
-            MenuAbout.Click += MenuAbout_Click;
-            // 
             // MenuCreateRaw
             // 
             MenuCreateRaw.Name = "MenuCreateRaw";
             MenuCreateRaw.Size = new System.Drawing.Size(218, 22);
             MenuCreateRaw.Text = "Create RAW (high res asset)";
             MenuCreateRaw.Click += MenuCreateRaw_Click;
+            // 
+            // MenuAbout
+            // 
+            MenuAbout.Name = "MenuAbout";
+            MenuAbout.Size = new System.Drawing.Size(52, 20);
+            MenuAbout.Text = "About";
+            MenuAbout.Click += MenuAbout_Click;
             // 
             // MainWindow
             // 
@@ -328,7 +328,7 @@ namespace BM_Converter
             MainMenuStrip = menuStrip1;
             MinimumSize = new System.Drawing.Size(800, 640);
             Name = "MainWindow";
-            Text = "BM Converter (version 2.1.2)";
+            Text = "BM Converter (version 2.2)";
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)displayBox).EndInit();
