@@ -147,7 +147,7 @@ namespace BM_Converter
                     }
 
                     var destination = $"{outputPath}\\{outputFilename}.raw";
-                    var succeeds = MiscFunctions.WriteRawFile(destination, source);
+                    var succeeds = MiscFunctions.WriteRawFile(destination, new List<Bitmap>(){ source });
 
                     if (succeeds)
                     {

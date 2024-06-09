@@ -99,6 +99,11 @@ namespace BM_Converter
             this.sourceImagesDialog.ShowDialog();
         }
 
+        private void btnInfo_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("The alpha channel in the source image(s) determines transparency and illumination.\n\nAlpha 0 = transparent pixel.\nAlpha 1-254 = full-bright pixel.\nAlpha 255 = ordinary pixel.", "Source Image Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void sourceImagesDialog_FileOk(object sender, CancelEventArgs e)
         {
             this.sourceDirectoryImages.Clear();
@@ -112,15 +117,17 @@ namespace BM_Converter
             {
                 try
                 {
-                    var image = (Bitmap)Image.FromFile(imageFile);
+                    var image = Image.FromFile(imageFile);
 
-                    if (image.Width % 2 == 1 || image.Height % 2 == 1)
+                    // Exclude images which aren't the correct size for any of the BM's images
+                    if (this.bmImages.All(bmImage => !IsCorrectSize(bmImage, image)))
                     {
-                        continue;   // exclude images which don't have an even number Wd or Ht
+                        continue;
                     }
 
-                    this.sourceDirectoryImages.Add(image);
+                    this.sourceDirectoryImages.Add(new Bitmap(image));
                     this.listBoxSourceImages.Items.Add(Path.GetFileName(imageFile));
+                    image.Dispose();
                 }
                 catch
                 {
@@ -130,7 +137,6 @@ namespace BM_Converter
         }
 
         #endregion
-
 
         // ---------------------------------------------------------------------------------------------------------------------
 
@@ -183,45 +189,6 @@ namespace BM_Converter
             }
         }
 
-        private void btnAutoSet_Click(object sender, EventArgs e)
-        {
-            if (this.sourceDirectoryImages.Count == 0)
-            {
-                return;
-            }
-
-            var response = MessageBox.Show("This will attempt to automatically set high res images by matching them based on size. Please check the results and perform manual corrections as needed. Proceed?",
-                "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (response == DialogResult.No)
-            {
-                return;
-            }
-
-            var matchedCount = 0;
-            var unmatchedCount = 0;
-            for (var wi = 0; wi < this.bmImages.Count; wi++)
-            {
-                var bmImage = this.bmImages[wi];
-
-                var matchingHiresImage = this.sourceDirectoryImages
-                    .FirstOrDefault(i => IsCorrectSize(bmImage, i));
-
-                if (matchingHiresImage != null)
-                {
-                    this.highResImages[wi] = matchingHiresImage;
-                    matchedCount++;
-                }
-                else
-                {
-                    unmatchedCount++;
-                }
-            }
-
-            MessageBox.Show($"{matchedCount} images set. {unmatchedCount} images could not be matched.", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.pictureBoxHighRes.Image = this.highResImages[listBoxBmImages.SelectedIndex];
-        }
-
         #endregion
 
         // ---------------------------------------------------------------------------------------------------------------------
@@ -241,10 +208,10 @@ namespace BM_Converter
                 }
             }
 
-            var response = this.saveBmDialog.ShowDialog();
+            var response = this.saveRawDialog.ShowDialog();
             if (response == DialogResult.OK)
             {
-                if (true) // (RemasterImagesImporterExporter.Create(this.highResImages, this.saveBmDialog.FileName))
+                if (MiscFunctions.WriteRawFile(this.saveRawDialog.FileName, this.highResImages.ToList()))
                 {
                     MessageBox.Show("RAW successfully created.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -255,7 +222,7 @@ namespace BM_Converter
             }
         }
 
-        private static bool IsCorrectSize(Bitmap lowRes, Bitmap highRes)
+        private static bool IsCorrectSize(Bitmap lowRes, Image highRes)
         {
             if (lowRes == null || highRes == null)
             {

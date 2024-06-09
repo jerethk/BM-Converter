@@ -271,25 +271,30 @@ namespace BM_Converter
             return (noAlphaBitmap, alphaBitmap, combinedBitmap);
         }
 
-        public static bool WriteRawFile(string path, Bitmap img)
+        public static bool WriteRawFile(string path, List<Bitmap> images)
         {
             try
             {
                 using (var fileWriter = new BinaryWriter(File.Open(path, FileMode.Create)))
                 {
-                    for (var y = 0; y < img.Height; y++)
+                    for (var i = 0; i < images.Count; i++)
                     {
-                        for (var x = 0; x < img.Width; x++)
+                        var img = images[i];
+                        
+                        for (var y = 0; y < img.Height; y++)
                         {
-                            var red = img.GetPixel(x, y).R;
-                            var green = img.GetPixel(x, y).G;
-                            var blue = img.GetPixel(x, y).B;
-                            var alpha = img.GetPixel(x, y).A;
+                            for (var x = 0; x < img.Width; x++)
+                            {
+                                var red = img.GetPixel(x, y).R;
+                                var green = img.GetPixel(x, y).G;
+                                var blue = img.GetPixel(x, y).B;
+                                var alpha = img.GetPixel(x, y).A;
 
-                            fileWriter.Write(red);
-                            fileWriter.Write(green);
-                            fileWriter.Write(blue);
-                            fileWriter.Write(alpha);
+                                fileWriter.Write(red);
+                                fileWriter.Write(green);
+                                fileWriter.Write(blue);
+                                fileWriter.Write(alpha);
+                            }
                         }
                     }
                 }

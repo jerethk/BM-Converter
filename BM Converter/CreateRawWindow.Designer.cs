@@ -45,7 +45,8 @@
             labelBmImageSize = new System.Windows.Forms.Label();
             labelSourceImageSize = new System.Windows.Forms.Label();
             btnCreateRaw = new System.Windows.Forms.Button();
-            saveBmDialog = new System.Windows.Forms.SaveFileDialog();
+            saveRawDialog = new System.Windows.Forms.SaveFileDialog();
+            btnInfo = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)pictureBoxBmImage).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxSourceImages).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxHighRes).BeginInit();
@@ -65,7 +66,7 @@
             // 
             // btnSourceImages
             // 
-            btnSourceImages.Location = new System.Drawing.Point(235, 456);
+            btnSourceImages.Location = new System.Drawing.Point(230, 454);
             btnSourceImages.Name = "btnSourceImages";
             btnSourceImages.Size = new System.Drawing.Size(141, 40);
             btnSourceImages.TabIndex = 0;
@@ -201,18 +202,30 @@
             btnCreateRaw.UseVisualStyleBackColor = true;
             btnCreateRaw.Click += btnCreateRaw_Click;
             // 
-            // saveBmDialog
+            // saveRawDialog
             // 
-            saveBmDialog.DefaultExt = "WXX";
-            saveBmDialog.Filter = "High res BM|*.RAW";
-            saveBmDialog.Title = "Save RAW";
+            saveRawDialog.DefaultExt = "RAW";
+            saveRawDialog.Filter = "High res BM|*.RAW";
+            saveRawDialog.Title = "Save RAW";
+            // 
+            // btnInfo
+            // 
+            btnInfo.Font = new System.Drawing.Font("Times New Roman", 12.75F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            btnInfo.Location = new System.Drawing.Point(389, 454);
+            btnInfo.Name = "btnInfo";
+            btnInfo.Size = new System.Drawing.Size(41, 40);
+            btnInfo.TabIndex = 15;
+            btnInfo.Text = "i";
+            btnInfo.UseVisualStyleBackColor = true;
+            btnInfo.Click += btnInfo_Click;
             // 
             // CreateRawWindow
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1224, 951);
+            ClientSize = new System.Drawing.Size(1224, 974);
             ControlBox = false;
+            Controls.Add(btnInfo);
             Controls.Add(btnCreateRaw);
             Controls.Add(labelSourceImageSize);
             Controls.Add(labelBmImageSize);
@@ -257,6 +270,7 @@
         private System.Windows.Forms.Label labelBmImageSize;
         private System.Windows.Forms.Label labelSourceImageSize;
         private System.Windows.Forms.Button btnCreateRaw;
-        private System.Windows.Forms.SaveFileDialog saveBmDialog;
+        private System.Windows.Forms.SaveFileDialog saveRawDialog;
+        private System.Windows.Forms.Button btnInfo;
     }
 }
