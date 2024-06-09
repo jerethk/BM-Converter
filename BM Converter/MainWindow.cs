@@ -563,8 +563,8 @@ namespace BM_Converter
                         case DialogResult.Yes:
                             if (this.remasterNoAlphaImages.Count == 1 && this.remasterAlphaImages.Count == 1)
                             {
-                                this.remasterNoAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster.png", System.Drawing.Imaging.ImageFormat.Png);
-                                this.remasterAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster_alpha.png", System.Drawing.Imaging.ImageFormat.Png);
+                                this.remasterNoAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension}_remaster.png", System.Drawing.Imaging.ImageFormat.Png);
+                                this.remasterAlphaImages[0].Save($"{dir}\\{filenameWithoutExtension}_remaster_alpha.png", System.Drawing.Imaging.ImageFormat.Png);
                             }
 
                             break;
@@ -572,7 +572,7 @@ namespace BM_Converter
                         case DialogResult.No:
                             if (this.remasterCombinedImages.Count == 1)
                             {
-                                this.remasterCombinedImages[0].Save($"{dir}\\{filenameWithoutExtension} remaster.png", System.Drawing.Imaging.ImageFormat.Png);
+                                this.remasterCombinedImages[0].Save($"{dir}\\{filenameWithoutExtension}_remaster.png", System.Drawing.Imaging.ImageFormat.Png);
                             }
 
                             break;
