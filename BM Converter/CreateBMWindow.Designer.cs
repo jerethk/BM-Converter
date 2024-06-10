@@ -22,6 +22,12 @@ namespace BM_Converter
             groupTypeBM = new GroupBox();
             radioBtnMultiBM = new RadioButton();
             panel2 = new Panel();
+            groupUv = new GroupBox();
+            btnPreviewUv = new Button();
+            label4 = new Label();
+            numericUvHeight = new NumericUpDown();
+            label3 = new Label();
+            numericUvWidth = new NumericUpDown();
             btnCreateBM = new Button();
             label1 = new Label();
             numericFramerate = new NumericUpDown();
@@ -37,9 +43,13 @@ namespace BM_Converter
             btnAddImage = new Button();
             listBoxImages = new ListBox();
             saveBMDialog = new SaveFileDialog();
+            labelImageSize = new Label();
             panel1.SuspendLayout();
             groupTypeBM.SuspendLayout();
             panel2.SuspendLayout();
+            groupUv.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUvHeight).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUvWidth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericFramerate).BeginInit();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)displayBox).BeginInit();
@@ -65,7 +75,7 @@ namespace BM_Converter
             panel1.Dock = DockStyle.Top;
             panel1.Location = new System.Drawing.Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(824, 65);
+            panel1.Size = new System.Drawing.Size(1044, 65);
             panel1.TabIndex = 1;
             // 
             // checkBoxCommonColours
@@ -92,7 +102,7 @@ namespace BM_Converter
             // 
             // btnExit
             // 
-            btnExit.Location = new System.Drawing.Point(722, 14);
+            btnExit.Location = new System.Drawing.Point(942, 14);
             btnExit.Name = "btnExit";
             btnExit.Size = new System.Drawing.Size(76, 34);
             btnExit.TabIndex = 1;
@@ -162,6 +172,8 @@ namespace BM_Converter
             // 
             // panel2
             // 
+            panel2.Controls.Add(labelImageSize);
+            panel2.Controls.Add(groupUv);
             panel2.Controls.Add(btnCreateBM);
             panel2.Controls.Add(label1);
             panel2.Controls.Add(numericFramerate);
@@ -176,13 +188,76 @@ namespace BM_Converter
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new System.Drawing.Point(0, 65);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(824, 719);
+            panel2.Size = new System.Drawing.Size(1044, 879);
             panel2.TabIndex = 5;
+            // 
+            // groupUv
+            // 
+            groupUv.Controls.Add(btnPreviewUv);
+            groupUv.Controls.Add(label4);
+            groupUv.Controls.Add(numericUvHeight);
+            groupUv.Controls.Add(label3);
+            groupUv.Controls.Add(numericUvWidth);
+            groupUv.Location = new System.Drawing.Point(436, 137);
+            groupUv.Name = "groupUv";
+            groupUv.Size = new System.Drawing.Size(425, 105);
+            groupUv.TabIndex = 13;
+            groupUv.TabStop = false;
+            groupUv.Text = "3DO UV dimensions";
+            groupUv.Visible = false;
+            // 
+            // btnPreviewUv
+            // 
+            btnPreviewUv.Location = new System.Drawing.Point(303, 36);
+            btnPreviewUv.Name = "btnPreviewUv";
+            btnPreviewUv.Size = new System.Drawing.Size(96, 40);
+            btnPreviewUv.TabIndex = 4;
+            btnPreviewUv.Text = "Preview";
+            btnPreviewUv.UseVisualStyleBackColor = true;
+            btnPreviewUv.Click += btnPreviewUv_Click;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(152, 32);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(59, 15);
+            label4.TabIndex = 3;
+            label4.Text = "UV height";
+            // 
+            // numericUvHeight
+            // 
+            numericUvHeight.Location = new System.Drawing.Point(152, 60);
+            numericUvHeight.Maximum = new decimal(new int[] { 2048, 0, 0, 0 });
+            numericUvHeight.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUvHeight.Name = "numericUvHeight";
+            numericUvHeight.Size = new System.Drawing.Size(120, 23);
+            numericUvHeight.TabIndex = 2;
+            numericUvHeight.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(18, 32);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(55, 15);
+            label3.TabIndex = 1;
+            label3.Text = "UV width";
+            // 
+            // numericUvWidth
+            // 
+            numericUvWidth.Location = new System.Drawing.Point(18, 60);
+            numericUvWidth.Maximum = new decimal(new int[] { 2048, 0, 0, 0 });
+            numericUvWidth.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUvWidth.Name = "numericUvWidth";
+            numericUvWidth.Size = new System.Drawing.Size(120, 23);
+            numericUvWidth.TabIndex = 0;
+            numericUvWidth.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // btnCreateBM
             // 
             btnCreateBM.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            btnCreateBM.Location = new System.Drawing.Point(681, 47);
+            btnCreateBM.Location = new System.Drawing.Point(901, 47);
             btnCreateBM.Name = "btnCreateBM";
             btnCreateBM.Size = new System.Drawing.Size(118, 49);
             btnCreateBM.TabIndex = 12;
@@ -210,7 +285,7 @@ namespace BM_Converter
             // checkBoxCompressed
             // 
             checkBoxCompressed.AutoSize = true;
-            checkBoxCompressed.Location = new System.Drawing.Point(481, 173);
+            checkBoxCompressed.Location = new System.Drawing.Point(901, 173);
             checkBoxCompressed.Name = "checkBoxCompressed";
             checkBoxCompressed.Size = new System.Drawing.Size(92, 19);
             checkBoxCompressed.TabIndex = 9;
@@ -226,7 +301,7 @@ namespace BM_Converter
             groupBox1.Controls.Add(radioBtnOpaque);
             groupBox1.Location = new System.Drawing.Point(280, 13);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(372, 110);
+            groupBox1.Size = new System.Drawing.Size(410, 110);
             groupBox1.TabIndex = 6;
             groupBox1.TabStop = false;
             groupBox1.Text = "Transparency";
@@ -237,7 +312,7 @@ namespace BM_Converter
             comboBoxTransparentColour.Items.AddRange(new object[] { "Black (RGB 0,0,0)", "Alpha 0", "Alpha < 128" });
             comboBoxTransparentColour.Location = new System.Drawing.Point(156, 65);
             comboBoxTransparentColour.Name = "comboBoxTransparentColour";
-            comboBoxTransparentColour.Size = new System.Drawing.Size(190, 23);
+            comboBoxTransparentColour.Size = new System.Drawing.Size(229, 23);
             comboBoxTransparentColour.TabIndex = 8;
             // 
             // label2
@@ -287,9 +362,9 @@ namespace BM_Converter
             displayBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             displayBox.BackColor = System.Drawing.Color.DarkGray;
             displayBox.BorderStyle = BorderStyle.Fixed3D;
-            displayBox.Location = new System.Drawing.Point(280, 216);
+            displayBox.Location = new System.Drawing.Point(280, 265);
             displayBox.Name = "displayBox";
-            displayBox.Size = new System.Drawing.Size(519, 488);
+            displayBox.Size = new System.Drawing.Size(739, 599);
             displayBox.TabIndex = 8;
             displayBox.TabStop = false;
             // 
@@ -317,9 +392,9 @@ namespace BM_Converter
             // 
             listBoxImages.FormattingEnabled = true;
             listBoxImages.ItemHeight = 15;
-            listBoxImages.Location = new System.Drawing.Point(11, 216);
+            listBoxImages.Location = new System.Drawing.Point(11, 301);
             listBoxImages.Name = "listBoxImages";
-            listBoxImages.Size = new System.Drawing.Size(228, 379);
+            listBoxImages.Size = new System.Drawing.Size(228, 409);
             listBoxImages.TabIndex = 5;
             listBoxImages.SelectedIndexChanged += listBoxImages_SelectedIndexChanged;
             // 
@@ -330,14 +405,23 @@ namespace BM_Converter
             saveBMDialog.Title = "Save BM";
             saveBMDialog.FileOk += saveBMDialog_FileOk;
             // 
+            // labelImageSize
+            // 
+            labelImageSize.AutoSize = true;
+            labelImageSize.Location = new System.Drawing.Point(12, 265);
+            labelImageSize.Name = "labelImageSize";
+            labelImageSize.Size = new System.Drawing.Size(62, 15);
+            labelImageSize.TabIndex = 14;
+            labelImageSize.Text = "Image size";
+            // 
             // CreateBMWindow
             // 
-            ClientSize = new System.Drawing.Size(824, 784);
+            ClientSize = new System.Drawing.Size(1044, 944);
             ControlBox = false;
             Controls.Add(panel2);
             Controls.Add(panel1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new System.Drawing.Size(840, 800);
+            MinimumSize = new System.Drawing.Size(1060, 960);
             Name = "CreateBMWindow";
             Text = "Create BM";
             FormClosing += Form2_FormClosing;
@@ -349,6 +433,10 @@ namespace BM_Converter
             groupTypeBM.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
+            groupUv.ResumeLayout(false);
+            groupUv.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUvHeight).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUvWidth).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericFramerate).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
@@ -383,5 +471,12 @@ namespace BM_Converter
         private CheckBox checkBoxCommonColours;
         private ComboBox comboBoxTransparentColour;
         private Label label2;
+        private GroupBox groupUv;
+        private Label label3;
+        private NumericUpDown numericUvWidth;
+        private Label label4;
+        private NumericUpDown numericUvHeight;
+        private Button btnPreviewUv;
+        private Label labelImageSize;
     }
 }

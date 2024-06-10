@@ -46,6 +46,13 @@ namespace BM_Converter
             this.SourceImages.ForEach(b => b.Dispose());
         }
 
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        #region Pal
+
         private void btnLoadPal_Click(object sender, EventArgs e)
         {
             openPALDialog.InitialDirectory = this.palPath ?? openPALDialog.InitialDirectory;
@@ -82,10 +89,9 @@ namespace BM_Converter
             }
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        #endregion
+
+        #region BM options
 
         // BM Options --------------------------------------------------------------------------------------------------------
 
@@ -103,6 +109,9 @@ namespace BM_Converter
             checkBoxCompressed.Enabled = true;
             numericFramerate.Enabled = false;
             radioBtnWeapon.Enabled = true;
+            groupUv.Enabled = this.SourceImages.Count == 1;
+            groupUv.Visible = this.SourceImages.Count == 1;
+
         }
 
         private void radioBtnMultiBM_CheckedChanged(object sender, EventArgs e)
@@ -113,6 +122,8 @@ namespace BM_Converter
             numericFramerate.Value = 0;
             radioBtnOpaque.Checked = true;
             radioBtnWeapon.Enabled = false;
+            groupUv.Enabled = false;
+            groupUv.Visible = false;
         }
 
         private void radioBtnOpaque_CheckedChanged(object sender, EventArgs e)
@@ -124,6 +135,15 @@ namespace BM_Converter
                 comboBoxTransparentColour.SelectedIndex = 0;
             }
         }
+
+        private void btnPreviewUv_Click(object sender, EventArgs e)
+        {
+            // to do
+        }
+
+        #endregion
+
+        #region Add and remove images
 
         // Add & remove image ------------------------------------------------------------------------------------
         private void btnAddImage_Click(object sender, EventArgs e)
@@ -176,13 +196,28 @@ namespace BM_Converter
             {
                 MessageBox.Show($"{failedImages} images failed to load.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            // If there is only 1 source image, set the UV dimensions to the image dimensions
+            this.groupUv.Enabled = this.SourceImages.Count == 1 && this.radioBtnSingleBM.Checked;
+            this.groupUv.Visible = this.SourceImages.Count == 1 && this.radioBtnSingleBM.Checked;
+            if (this.SourceImages.Count == 1)
+            {
+                this.numericUvWidth.Value = this.SourceImages[0].Width;
+                this.numericUvHeight.Value = this.SourceImages[0].Height;
+            }
         }
 
         private void listBoxImages_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listBoxImages.SelectedIndex >= 0)
             {
-                displayBox.Image = SourceImages[listBoxImages.SelectedIndex];
+                var img = SourceImages[listBoxImages.SelectedIndex];
+                this.displayBox.Image = img;
+                this.labelImageSize.Text = $"Image size {img.Width} x {img.Height}";
+            }
+            else
+            {
+                this.labelImageSize.Text = $"Image size";
             }
         }
 
@@ -200,8 +235,15 @@ namespace BM_Converter
                 {
                     listBoxImages.SelectedIndex = idx - 1;
                 }
+
+                this.groupUv.Enabled = this.SourceImages.Count == 1 && this.radioBtnSingleBM.Checked;
+                this.groupUv.Visible = this.SourceImages.Count == 1 && this.radioBtnSingleBM.Checked;
             }
         }
+
+        #endregion
+
+        #region Create BM
 
         // Create BM ------------------------------------------------------------------------
         private void btnCreateBM_Click(object sender, EventArgs e)
@@ -253,12 +295,11 @@ namespace BM_Converter
                     break;
             }
 
-            // New feature - Bulk convert single BMs
+            // Bulk convert single BMs
             if (!radioBtnMultiBM.Checked && this.SourceImages.Count > 1)
             {
                 var failed = 0;
 
-                // Bulk convert!
                 for (int i = 0; i < this.SourceImages.Count; i++)
                 {
                     var dir = Path.GetDirectoryName(saveBMDialog.FileName);
@@ -281,7 +322,7 @@ namespace BM_Converter
                 return;
             }
 
-            DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, transparentColour, (byte)numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
+            DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, transparentColour, (byte)numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked, ((int)this.numericUvWidth.Value, (int)this.numericUvHeight.Value));
 
             if (newBM.SaveToFile(saveBMDialog.FileName))
             {
@@ -294,5 +335,7 @@ namespace BM_Converter
 
             this.savePath = Path.GetDirectoryName(saveBMDialog.FileName);
         }
+
+        #endregion
     }
 }

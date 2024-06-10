@@ -122,20 +122,20 @@ namespace BM_Converter
                 s[0] = Path.GetFileName(path);
                 s[2] = $"SizeX: {BM.SizeX}";
                 s[3] = $"SizeY: {BM.SizeY}";
-                s[4] = $"Compressed: {BM.compressed}";
-                s[5] = $"Transparency: {transparency}";
+                s[4] = $"UV width: {BM.UvWidth}";
+                s[5] = $"UV height: {BM.UvHeight}";
+                s[6] = $"Compressed: {BM.compressed}";
+                s[7] = $"Transparency: {transparency}";
 
                 if (BM.IsMultiBM)
                 {
-                    s[6] = $"Number of sub BMs: {BM.NumImages}";
-                    s[7] = $"Frame rate: {BM.FrameRate}";
-                    //s[8] = $"{BM.SecondByte}";
+                    s[9] = $"Number of sub BMs: {BM.NumImages}";
+                    s[10] = $"Frame rate: {BM.FrameRate}";
+                    //s[11] = $"{BM.SecondByte}";
                 }
 
-                s[10] = $"UV width: {BM.idemX.ToString()}";
-                s[11] = $"UV height: {BM.idemY.ToString()}";
-                s[12] = $"logSizeY: {BM.logSizeY.ToString()}";
-                s[13] = $"DataSize: {BM.DataSize.ToString()}";
+                s[12] = $"logSizeY: {BM.logSizeY}";
+                s[13] = $"DataSize: {BM.DataSize}";
                 textBoxBMInfo.Lines = s;
 
                 this.GenerateImages();

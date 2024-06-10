@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Runtime.CompilerServices;
 
 namespace BM_Converter
 {
@@ -13,8 +11,8 @@ namespace BM_Converter
         public byte[] FileId { get; set; }      // header
         public ushort SizeX { get; set; }
         public ushort SizeY { get; set; }
-        public ushort idemX { get; set; }
-        public ushort idemY { get; set; }
+        public ushort UvWidth { get; set; }
+        public ushort UvHeight { get; set; }
         public byte transparent { get; set; }
         public byte logSizeY { get; set; }
         public short compressed { get; set; }
@@ -62,8 +60,8 @@ namespace BM_Converter
                     {
                         this.SizeX = reader.ReadUInt16();
                         this.SizeY = reader.ReadUInt16();
-                        this.idemX = reader.ReadUInt16();
-                        this.idemY = reader.ReadUInt16();
+                        this.UvWidth = reader.ReadUInt16();
+                        this.UvHeight = reader.ReadUInt16();
                         this.transparent = reader.ReadByte();
                         this.logSizeY = reader.ReadByte();
                         this.compressed = reader.ReadInt16();
@@ -77,7 +75,7 @@ namespace BM_Converter
                         {
                             // multi BM !
                             this.IsMultiBM = true;
-                            this.NumImages = this.idemY;
+                            this.NumImages = this.UvHeight;
                             this.fileLength = this.SizeY + 32;
 
                             this.FrameRate = reader.ReadByte();
@@ -265,8 +263,8 @@ namespace BM_Converter
                     foreach (byte b in this.FileId) writer.Write(b);
                     writer.Write(this.SizeX);
                     writer.Write(this.SizeY);
-                    writer.Write(this.idemX);
-                    writer.Write(this.idemY);
+                    writer.Write(this.UvWidth);
+                    writer.Write(this.UvHeight);
                     writer.Write(this.transparent);
                     writer.Write(this.logSizeY);
                     writer.Write(this.compressed);

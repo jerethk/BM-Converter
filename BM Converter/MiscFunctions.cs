@@ -17,7 +17,7 @@ namespace BM_Converter
         }
         
         // Builds a BM object from source images
-        public static DFBM BuildBM(bool multiBM, DFPal pal, List<Bitmap> SourceImages, char transparency, string transparentColour, byte FRate, bool includeIlluminated, bool commonColoursOnly, bool compress)
+        public static DFBM BuildBM(bool multiBM, DFPal pal, List<Bitmap> SourceImages, char transparency, string transparentColour, byte FRate, bool includeIlluminated, bool commonColoursOnly, bool compress, (int uvWidth, int uvHeight)? uvDimensions = null)
         {
             DFBM newBM = new DFBM();
 
@@ -47,8 +47,8 @@ namespace BM_Converter
                 // Create BM header. The FileID is automatically created by the object constructor
                 newBM.SizeX = (ushort)source.Width;
                 newBM.SizeY = (ushort)source.Height;
-                newBM.idemX = newBM.SizeX;
-                newBM.idemY = newBM.SizeY;
+                newBM.UvWidth = uvDimensions != null ? (ushort)uvDimensions.Value.uvWidth : newBM.SizeX;
+                newBM.UvHeight = uvDimensions != null ? (ushort)uvDimensions.Value.uvHeight : newBM.SizeY;
                 newBM.transparent = trn;                
 
                 if (IsPowerOfTwo(newBM.SizeY))
@@ -91,8 +91,8 @@ namespace BM_Converter
                 newBM.NumImages = SourceImages.Count;
                 
                 newBM.SizeX = 1;
-                newBM.idemX = 0xfffe;
-                newBM.idemY = (ushort)newBM.NumImages;
+                newBM.UvWidth = 0xfffe;
+                newBM.UvHeight = (ushort)newBM.NumImages;
                 newBM.transparent = trn;
                 newBM.compressed = 0;
                 newBM.DataSize = 0;

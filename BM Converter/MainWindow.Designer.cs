@@ -163,6 +163,7 @@ namespace BM_Converter
             textBoxSubBMInfo.Multiline = true;
             textBoxSubBMInfo.Name = "textBoxSubBMInfo";
             textBoxSubBMInfo.ReadOnly = true;
+            textBoxSubBMInfo.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             textBoxSubBMInfo.Size = new System.Drawing.Size(212, 142);
             textBoxSubBMInfo.TabIndex = 4;
             // 
@@ -201,7 +202,7 @@ namespace BM_Converter
             textBoxBMInfo.Multiline = true;
             textBoxBMInfo.Name = "textBoxBMInfo";
             textBoxBMInfo.ReadOnly = true;
-            textBoxBMInfo.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            textBoxBMInfo.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             textBoxBMInfo.Size = new System.Drawing.Size(212, 149);
             textBoxBMInfo.TabIndex = 0;
             textBoxBMInfo.WordWrap = false;
