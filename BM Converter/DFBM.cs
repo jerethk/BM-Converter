@@ -13,9 +13,9 @@ namespace BM_Converter
         public ushort SizeY { get; set; }
         public ushort UvWidth { get; set; }
         public ushort UvHeight { get; set; }
-        public byte transparent { get; set; }
+        public byte Transparency { get; set; }
         public byte logSizeY { get; set; }
-        public short compressed { get; set; }
+        public short Compressed { get; set; }
         public int DataSize { get; set; }
         public byte[] pad { get; set; }
 
@@ -62,9 +62,9 @@ namespace BM_Converter
                         this.SizeY = reader.ReadUInt16();
                         this.UvWidth = reader.ReadUInt16();
                         this.UvHeight = reader.ReadUInt16();
-                        this.transparent = reader.ReadByte();
+                        this.Transparency = reader.ReadByte();
                         this.logSizeY = reader.ReadByte();
-                        this.compressed = reader.ReadInt16();
+                        this.Compressed = reader.ReadInt16();
                         this.DataSize = reader.ReadInt32();
                         this.pad = reader.ReadBytes(12);
 
@@ -100,7 +100,7 @@ namespace BM_Converter
                                 newSubBM.pad1 = reader.ReadBytes(3);
                                 newSubBM.u1 = reader.ReadBytes(3);
                                 newSubBM.pad2 = reader.ReadBytes(5);
-                                newSubBM.transparent = reader.ReadByte();
+                                newSubBM.Transparency = reader.ReadByte();
                                 newSubBM.pad3 = reader.ReadBytes(3);
 
                                 newSubBM.PixelData = new byte[newSubBM.SizeX, newSubBM.SizeY];
@@ -121,7 +121,7 @@ namespace BM_Converter
                             // single BM
                             this.PixelData = new byte[this.SizeX, this.SizeY];
 
-                            if (this.compressed == 0)
+                            if (this.Compressed == 0)
                             {
                                 // Uncompressed BM
                                 for (int x = 0; x < this.SizeX; x++)
@@ -145,11 +145,11 @@ namespace BM_Converter
                                 }
                             }
 
-                            if (this.compressed == 1)
+                            if (this.Compressed == 1)
                             {
                                 UncompressRLE();
                             }
-                            else if (this.compressed == 2)
+                            else if (this.Compressed == 2)
                             {
                                 UncompressRLE0();
                             }
@@ -199,25 +199,25 @@ namespace BM_Converter
         }
 
         // Static method to convert a Bitmap object into a BM image
-        public static byte[,] BitmaptoBM(Bitmap bitmap, DFPal pal, bool includeIlluminated, bool commonColoursOnly, string transparentColour)
+        public static byte[,] BitmaptoBM(Bitmap bitmap, DFPal pal, bool includeIlluminated, bool commonColoursOnly, TransparentColour transparentColour)
         {
             bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
-            Byte[,] PixelArray = new byte[bitmap.Width, bitmap.Height];
+            var PixelArray = new byte[bitmap.Width, bitmap.Height];
 
             // current options for transparent colour are black (RGB 0,0,0) and alpha 0
             Func<Color, bool> isTransparentColour;
             switch (transparentColour)
             {
-                case "black":
+                case TransparentColour.Black:
                     isTransparentColour = colour => colour.R == 0 && colour.G == 0 && colour.B == 0;
                     break;
 
-                case "alpha0":
+                case TransparentColour.Alpha0:
                     isTransparentColour = colour => colour.A == 0;
                     break;
 
-                case "alpha127":
+                case TransparentColour.Alpha127:
                     isTransparentColour = colour => colour.A < 128;
                     break;
 
@@ -265,9 +265,9 @@ namespace BM_Converter
                     writer.Write(this.SizeY);
                     writer.Write(this.UvWidth);
                     writer.Write(this.UvHeight);
-                    writer.Write(this.transparent);
+                    writer.Write(this.Transparency);
                     writer.Write(this.logSizeY);
-                    writer.Write(this.compressed);
+                    writer.Write(this.Compressed);
                     writer.Write(this.DataSize);
                     foreach (byte b in this.pad) writer.Write(b);
 
@@ -275,7 +275,7 @@ namespace BM_Converter
                     {
                         // single BM image
 
-                        if (this.compressed == 0)
+                        if (this.Compressed == 0)
                         {
                             // uncompressed BM
                             for (int x = 0; x < this.SizeX; x++)
@@ -286,7 +286,7 @@ namespace BM_Converter
                                 }
                             }
                         }
-                        else if (this.compressed == 1 || this.compressed == 2)
+                        else if (this.Compressed == 1 || this.Compressed == 2)
                         {
                             // compressed BM
                             writer.Write(this.CompressedData);
@@ -312,7 +312,7 @@ namespace BM_Converter
                             foreach (byte b in sub.pad1) writer.Write(b);
                             foreach (byte b in sub.u1) writer.Write(b);
                             foreach (byte b in sub.pad2) writer.Write(b);
-                            writer.Write(sub.transparent);
+                            writer.Write(sub.Transparency);
                             foreach (byte b in sub.pad3) writer.Write(b);
 
                             //Sub BM image
@@ -572,7 +572,7 @@ namespace BM_Converter
         public byte[] pad1 { get; set; }
         public byte[] u1 { get; set; }
         public byte[] pad2 { get; set; }
-        public byte transparent { get; set; }
+        public byte Transparency { get; set; }
         public byte[] pad3 { get; set; }
         public byte[,] PixelData { get; set; }
 

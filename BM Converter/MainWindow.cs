@@ -102,7 +102,7 @@ namespace BM_Converter
 
                 // Display Info
                 string transparency;
-                switch (BM.transparent)
+                switch (BM.Transparency)
                 {
                     case 0x36:
                         transparency = "Non-transparent";
@@ -124,7 +124,7 @@ namespace BM_Converter
                 s[3] = $"SizeY: {BM.SizeY}";
                 s[4] = $"UV width: {BM.UvWidth}";
                 s[5] = $"UV height: {BM.UvHeight}";
-                s[6] = $"Compressed: {BM.compressed}";
+                s[6] = $"Compressed: {BM.Compressed}";
                 s[7] = $"Transparency: {transparency}";
 
                 if (BM.IsMultiBM)
@@ -170,7 +170,7 @@ namespace BM_Converter
             this.images.Clear();
             if (!BM.IsMultiBM)
             {
-                Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette, BM.transparent == 0x3E || BM.transparent == 0x08);
+                Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette, BM.Transparency == 0x3E || BM.Transparency == 0x08);
                 this.images.Add(newBitmap);
                 this.displayBox.Image = images[0];
             }
@@ -178,7 +178,7 @@ namespace BM_Converter
             {
                 for (int i = 0; i < BM.NumImages; i++)
                 {
-                    Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette, BM.transparent == 0x3E || BM.transparent == 0x08);
+                    Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette, BM.Transparency == 0x3E || BM.Transparency == 0x08);
                     this.images.Add(newBitmap);
                 }
             }
@@ -227,7 +227,7 @@ namespace BM_Converter
             int a = selectedSubBM;
 
             string transparency;
-            switch (BM.SubBMs[a].transparent)
+            switch (BM.SubBMs[a].Transparency)
             {
                 case 0x36:
                     transparency = "Non-transparent";
@@ -341,7 +341,7 @@ namespace BM_Converter
                         }
                         else
                         {
-                            Bitmap bitmap = DFBM.BMtoBitmap(ConvertingBM.SizeX, ConvertingBM.SizeY, ConvertingBM.PixelData, palette, ConvertingBM.transparent == 0x3E || ConvertingBM.transparent == 0x08);
+                            Bitmap bitmap = DFBM.BMtoBitmap(ConvertingBM.SizeX, ConvertingBM.SizeY, ConvertingBM.PixelData, palette, ConvertingBM.Transparency == 0x3E || ConvertingBM.Transparency == 0x08);
 
                             try
                             {

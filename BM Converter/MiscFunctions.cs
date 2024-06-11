@@ -15,22 +15,32 @@ namespace BM_Converter
             double remainder = log % 1;
             return remainder == 0 ? true : false;
         }
-        
+
         // Builds a BM object from source images
-        public static DFBM BuildBM(bool multiBM, DFPal pal, List<Bitmap> SourceImages, char transparency, string transparentColour, byte FRate, bool includeIlluminated, bool commonColoursOnly, bool compress, (int uvWidth, int uvHeight)? uvDimensions = null)
+        public static DFBM BuildBM(
+            bool multiBM,
+            DFPal pal,
+            List<Bitmap> SourceImages,
+            char transparency,
+            TransparentColour transparentColour,
+            byte FRate,
+            bool includeIlluminated,
+            bool commonColoursOnly,
+            bool compress,
+            (int uvWidth, int uvHeight)? uvDimensions = null)
         {
             DFBM newBM = new DFBM();
 
             byte trn;
             switch (transparency)
             {
-                case 'o':
+                case TransparencyOptions.Opaque:
                     trn = 0x36;
                     break;
-                case 't':
+                case TransparencyOptions.Transparent:
                     trn = 0x3E;
                     break;
-                case 'w':
+                case TransparencyOptions.Weapon:
                     trn = 0x08;
                     break;
                 default:
@@ -49,7 +59,7 @@ namespace BM_Converter
                 newBM.SizeY = (ushort)source.Height;
                 newBM.UvWidth = uvDimensions != null ? (ushort)uvDimensions.Value.uvWidth : newBM.SizeX;
                 newBM.UvHeight = uvDimensions != null ? (ushort)uvDimensions.Value.uvHeight : newBM.SizeY;
-                newBM.transparent = trn;                
+                newBM.Transparency = trn;                
 
                 if (IsPowerOfTwo(newBM.SizeY))
                 {
@@ -66,20 +76,20 @@ namespace BM_Converter
 
                 if (compress)
                 {
-                    if (transparency == 'o')
+                    if (transparency == TransparencyOptions.Opaque)
                     {
-                        newBM.compressed = 1;   // RLE compression for non-transparent texture
+                        newBM.Compressed = 1;   // RLE compression for non-transparent texture
                         newBM.CompressRLE();
                     }
                     else
                     {
-                        newBM.compressed = 2;   // RLE0 compression for transparent texture
+                        newBM.Compressed = 2;   // RLE0 compression for transparent texture
                         newBM.CompressRLE0();
                     }
                 }
                 else
                 {
-                    newBM.compressed = 0;
+                    newBM.Compressed = 0;
                     newBM.DataSize = newBM.SizeX * newBM.SizeY;
                 }
 
@@ -93,8 +103,8 @@ namespace BM_Converter
                 newBM.SizeX = 1;
                 newBM.UvWidth = 0xfffe;
                 newBM.UvHeight = (ushort)newBM.NumImages;
-                newBM.transparent = trn;
-                newBM.compressed = 0;
+                newBM.Transparency = trn;
+                newBM.Compressed = 0;
                 newBM.DataSize = 0;
                 newBM.FrameRate = FRate;
                 newBM.SecondByte = 2;
@@ -110,7 +120,7 @@ namespace BM_Converter
                     newSubBM.idemX = newSubBM.SizeX;
                     newSubBM.idemY = newSubBM.SizeY;
                     newSubBM.DataSize = newSubBM.SizeX * newSubBM.SizeY;
-                    newSubBM.transparent = trn;
+                    newSubBM.Transparency = trn;
 
                     if (IsPowerOfTwo (newSubBM.SizeY))
                     {
@@ -306,5 +316,19 @@ namespace BM_Converter
                 return false;
             }
         }
+    }
+
+    public static class TransparencyOptions
+    {
+        public const char Opaque = 'o';
+        public const char Transparent = 't';
+        public const char Weapon = 'w';
+    }
+
+    public enum TransparentColour
+    {
+        Alpha0,
+        Alpha127,
+        Black,
     }
 }

@@ -269,29 +269,33 @@ namespace BM_Converter
         private void saveBMDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // pass transparency info as a char
-            char transparency = 'o';    // default
+            char transparency;
             if (radioBtnTransparent.Checked)
             {
-                transparency = 't';
+                transparency = TransparencyOptions.Transparent;
             }
             else if (radioBtnWeapon.Checked)
             {
-                transparency = 'w';
+                transparency = TransparencyOptions.Weapon;
+            }
+            else
+            {
+                transparency = TransparencyOptions.Opaque;
             }
 
-            string transparentColour;
+            TransparentColour transparentColour;
             switch (comboBoxTransparentColour.SelectedIndex)
             {
                 case 1:
-                    transparentColour = "alpha0";
+                    transparentColour = TransparentColour.Alpha0;
                     break;
 
                 case 2:
-                    transparentColour = "alpha127";
+                    transparentColour = TransparentColour.Alpha127;
                     break;
 
                 default:
-                    transparentColour = "black";
+                    transparentColour = TransparentColour.Black;
                     break;
             }
 

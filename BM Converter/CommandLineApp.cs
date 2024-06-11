@@ -90,7 +90,7 @@ namespace BM_Converter
                         new Bitmap(Image.FromFile(pngPath))
                     };
 
-                    var BM = MiscFunctions.BuildBM(false, pal, source, transparency, "alpha0", 0, useFullbrights, universalColours, compressed);
+                    var BM = MiscFunctions.BuildBM(false, pal, source, transparency, TransparentColour.Alpha0, 0, useFullbrights, universalColours, compressed);
                     var destination = $"{outputPath}\\{outputFilename}.bm";
                     var succeeds = BM.SaveToFile(destination);
 
