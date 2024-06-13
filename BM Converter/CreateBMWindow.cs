@@ -138,7 +138,20 @@ namespace BM_Converter
 
         private void btnPreviewUv_Click(object sender, EventArgs e)
         {
-            // to do
+            if (listBoxImages.SelectedIndex < 0 || SourceImages[listBoxImages.SelectedIndex] == null)
+            {
+                return;
+            }
+            
+            var uvPreviewWindow = new UvPreviewWindow(
+                (int)this.numericUvWidth.Value,
+                (int)this.numericUvHeight.Value,
+                SourceImages[listBoxImages.SelectedIndex]);
+            uvPreviewWindow.ShowDialog();
+
+            this.numericUvWidth.Value = uvPreviewWindow.FinalValues.uvWidth;
+            this.numericUvHeight.Value = uvPreviewWindow.FinalValues.uvHeight;
+            uvPreviewWindow.Dispose();
         }
 
         #endregion
