@@ -34,6 +34,7 @@
             label3 = new System.Windows.Forms.Label();
             numericUvWidth = new System.Windows.Forms.NumericUpDown();
             panel1 = new System.Windows.Forms.Panel();
+            labelImageSize = new System.Windows.Forms.Label();
             btnDiscard = new System.Windows.Forms.Button();
             btnAccept = new System.Windows.Forms.Button();
             panel2 = new System.Windows.Forms.Panel();
@@ -63,6 +64,7 @@
             numericUvHeight.Size = new System.Drawing.Size(120, 23);
             numericUvHeight.TabIndex = 6;
             numericUvHeight.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUvHeight.ValueChanged += numericUvHeight_ValueChanged;
             // 
             // label3
             // 
@@ -82,9 +84,11 @@
             numericUvWidth.Size = new System.Drawing.Size(120, 23);
             numericUvWidth.TabIndex = 4;
             numericUvWidth.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUvWidth.ValueChanged += numericUvWidth_ValueChanged;
             // 
             // panel1
             // 
+            panel1.Controls.Add(labelImageSize);
             panel1.Controls.Add(btnDiscard);
             panel1.Controls.Add(btnAccept);
             panel1.Controls.Add(numericUvWidth);
@@ -96,6 +100,15 @@
             panel1.Name = "panel1";
             panel1.Size = new System.Drawing.Size(984, 110);
             panel1.TabIndex = 8;
+            // 
+            // labelImageSize
+            // 
+            labelImageSize.AutoSize = true;
+            labelImageSize.Location = new System.Drawing.Point(326, 51);
+            labelImageSize.Name = "labelImageSize";
+            labelImageSize.Size = new System.Drawing.Size(66, 15);
+            labelImageSize.TabIndex = 10;
+            labelImageSize.Text = "Image Size:";
             // 
             // btnDiscard
             // 
@@ -125,7 +138,7 @@
             panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             panel2.Location = new System.Drawing.Point(0, 110);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(984, 851);
+            panel2.Size = new System.Drawing.Size(984, 691);
             panel2.TabIndex = 9;
             // 
             // displayBox
@@ -134,7 +147,7 @@
             displayBox.BackColor = System.Drawing.Color.LightGray;
             displayBox.Location = new System.Drawing.Point(19, 23);
             displayBox.Name = "displayBox";
-            displayBox.Size = new System.Drawing.Size(937, 804);
+            displayBox.Size = new System.Drawing.Size(937, 644);
             displayBox.TabIndex = 0;
             displayBox.TabStop = false;
             displayBox.Resize += displayBox_Resize;
@@ -143,13 +156,13 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(984, 961);
+            ClientSize = new System.Drawing.Size(984, 801);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new System.Drawing.Size(1000, 1000);
+            MinimumSize = new System.Drawing.Size(1000, 840);
             Name = "UvPreviewWindow";
-            Text = "Preview 3DO UV dimensions";
+            Text = "3DO UV dimensions";
             Shown += UvPreviewWindow_Shown;
             ((System.ComponentModel.ISupportInitialize)numericUvHeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUvWidth).EndInit();
@@ -171,5 +184,6 @@
         private System.Windows.Forms.Button btnDiscard;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox displayBox;
+        private System.Windows.Forms.Label labelImageSize;
     }
 }
