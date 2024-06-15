@@ -347,7 +347,7 @@ namespace BM_Converter
             MainMenuStrip = menuStrip1;
             MinimumSize = new System.Drawing.Size(880, 720);
             Name = "MainWindow";
-            Text = "BM Converter (version 2.2)";
+            Text = "BM Converter (version 2.3)";
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)displayBox).EndInit();

@@ -64,7 +64,7 @@ namespace BM_Converter
         {
             if (!bm.IsMultiBM)
             {
-                var newBitmap = DFBM.BMtoBitmap(bm.SizeX, bm.SizeY, bm.PixelData, new DFPal(), bm.Transparency == 0x3E || bm.Transparency == 0x08);
+                var newBitmap = DFBM.BMtoBitmap(bm.SizeX, bm.SizeY, bm.PixelData, new DFPal(), bm.IsTransparentOrWeapon());
                 this.bmImages.Add(newBitmap);
                 this.listBoxBmImages.Items.Add(0);
             }
@@ -72,7 +72,7 @@ namespace BM_Converter
             {
                 for (int i = 0; i < bm.NumImages; i++)
                 {
-                    var newBitmap = DFBM.BMtoBitmap(bm.SubBMs[i].SizeX, bm.SubBMs[i].SizeY, bm.SubBMs[i].PixelData, new DFPal(), bm.Transparency == 0x3E || bm.Transparency == 0x08);
+                    var newBitmap = DFBM.BMtoBitmap(bm.SubBMs[i].SizeX, bm.SubBMs[i].SizeY, bm.SubBMs[i].PixelData, new DFPal(), bm.SubBMs[i].IsTransparent());
                     this.bmImages.Add(newBitmap);
                     this.listBoxBmImages.Items.Add(i);
                 }

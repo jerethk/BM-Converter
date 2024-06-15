@@ -171,7 +171,7 @@ namespace BM_Converter
             this.images.Clear();
             if (!BM.IsMultiBM)
             {
-                Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette, BM.Transparency == 0x3E || BM.Transparency == 0x08);
+                Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette, BM.IsTransparentOrWeapon());
                 this.images.Add(newBitmap);
                 this.displayBox.Image = images[0];
             }
@@ -179,7 +179,7 @@ namespace BM_Converter
             {
                 for (int i = 0; i < BM.NumImages; i++)
                 {
-                    Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette, BM.Transparency == 0x3E || BM.Transparency == 0x08);
+                    Bitmap newBitmap = DFBM.BMtoBitmap(BM.SubBMs[i].SizeX, BM.SubBMs[i].SizeY, BM.SubBMs[i].PixelData, palette, BM.SubBMs[i].IsTransparent());
                     this.images.Add(newBitmap);
                 }
             }
@@ -376,7 +376,7 @@ namespace BM_Converter
                         }
                         else
                         {
-                            Bitmap bitmap = DFBM.BMtoBitmap(ConvertingBM.SizeX, ConvertingBM.SizeY, ConvertingBM.PixelData, palette, ConvertingBM.Transparency == 0x3E || ConvertingBM.Transparency == 0x08);
+                            Bitmap bitmap = DFBM.BMtoBitmap(ConvertingBM.SizeX, ConvertingBM.SizeY, ConvertingBM.PixelData, palette, ConvertingBM.IsTransparentOrWeapon());
 
                             try
                             {
