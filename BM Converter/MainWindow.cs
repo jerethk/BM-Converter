@@ -193,6 +193,27 @@ namespace BM_Converter
             else displayBox.SizeMode = PictureBoxSizeMode.Normal;
         }
 
+        private void btnLighting_Click(object sender, EventArgs e)
+        {
+            if (this.BM == null || this.BM.NumImages == 0)
+            {
+                return;
+            }
+            
+            var response = this.openCMPDialog.ShowDialog();
+            if (response == DialogResult.OK)
+            {
+                var cmp = new DFCmp();
+                if (!cmp.LoadFromFile(openCMPDialog.FileName))
+                {
+                    return;
+                }
+
+                var lightingViewerWindow = new LightingViewer(this.palette, cmp, this.BM, this.selectedSubBM);
+                lightingViewerWindow.ShowDialog();
+            }
+        }
+
         // Multi BM Interface ------------------------------------------------------------
         private void btnPrevSub_Click(object sender, EventArgs e)
         {

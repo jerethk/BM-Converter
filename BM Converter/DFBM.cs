@@ -337,6 +337,11 @@ namespace BM_Converter
             return success;
         }
 
+        public bool IsTransparentOrWeapon()
+        {
+            return this.Transparency == 0x3E || this.Transparency == 0x08;
+        }
+
         // Uncompress image encoded with RLE method (header.compressed == 1)
         private void UncompressRLE()
         {
@@ -582,6 +587,11 @@ namespace BM_Converter
             u1 = new byte[3];
             pad2 = new byte[5];
             pad3 = new byte[3];
+        }
+
+        public bool IsTransparent()
+        {
+            return this.Transparency == 0x3E || this.Transparency == 0x08;
         }
     }
 }

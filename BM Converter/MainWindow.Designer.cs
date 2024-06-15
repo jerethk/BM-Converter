@@ -34,6 +34,7 @@ namespace BM_Converter
             OpenBMDialog = new System.Windows.Forms.OpenFileDialog();
             SavePngDialog = new System.Windows.Forms.SaveFileDialog();
             panel2 = new System.Windows.Forms.Panel();
+            btnLighting = new System.Windows.Forms.Button();
             comboBoxImageVersion = new System.Windows.Forms.ComboBox();
             checkBoxZoom = new System.Windows.Forms.CheckBox();
             btnNextSub = new System.Windows.Forms.Button();
@@ -60,6 +61,7 @@ namespace BM_Converter
             MenuCreateBm = new System.Windows.Forms.ToolStripMenuItem();
             MenuCreateRaw = new System.Windows.Forms.ToolStripMenuItem();
             MenuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            openCMPDialog = new System.Windows.Forms.OpenFileDialog();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)displayBox).BeginInit();
             menuStrip1.SuspendLayout();
@@ -88,6 +90,7 @@ namespace BM_Converter
             // panel2
             // 
             panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            panel2.Controls.Add(btnLighting);
             panel2.Controls.Add(comboBoxImageVersion);
             panel2.Controls.Add(checkBoxZoom);
             panel2.Controls.Add(btnNextSub);
@@ -101,15 +104,25 @@ namespace BM_Converter
             panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             panel2.Location = new System.Drawing.Point(0, 24);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(784, 577);
+            panel2.Size = new System.Drawing.Size(864, 657);
             panel2.TabIndex = 1;
+            // 
+            // btnLighting
+            // 
+            btnLighting.Location = new System.Drawing.Point(296, 14);
+            btnLighting.Name = "btnLighting";
+            btnLighting.Size = new System.Drawing.Size(152, 36);
+            btnLighting.TabIndex = 10;
+            btnLighting.Text = "View lighting";
+            btnLighting.UseVisualStyleBackColor = true;
+            btnLighting.Click += btnLighting_Click;
             // 
             // comboBoxImageVersion
             // 
             comboBoxImageVersion.Enabled = false;
             comboBoxImageVersion.FormattingEnabled = true;
             comboBoxImageVersion.Items.AddRange(new object[] { "Original texture", "Remastered texture", "Remastered texture - no alpha", "Remaster - alpha channel" });
-            comboBoxImageVersion.Location = new System.Drawing.Point(501, 13);
+            comboBoxImageVersion.Location = new System.Drawing.Point(570, 13);
             comboBoxImageVersion.Name = "comboBoxImageVersion";
             comboBoxImageVersion.Size = new System.Drawing.Size(266, 23);
             comboBoxImageVersion.TabIndex = 9;
@@ -118,7 +131,7 @@ namespace BM_Converter
             // checkBoxZoom
             // 
             checkBoxZoom.AutoSize = true;
-            checkBoxZoom.Location = new System.Drawing.Point(247, 57);
+            checkBoxZoom.Location = new System.Drawing.Point(247, 74);
             checkBoxZoom.Name = "checkBoxZoom";
             checkBoxZoom.Size = new System.Drawing.Size(86, 19);
             checkBoxZoom.TabIndex = 8;
@@ -129,7 +142,7 @@ namespace BM_Converter
             // btnNextSub
             // 
             btnNextSub.Enabled = false;
-            btnNextSub.Location = new System.Drawing.Point(128, 265);
+            btnNextSub.Location = new System.Drawing.Point(128, 286);
             btnNextSub.Name = "btnNextSub";
             btnNextSub.Size = new System.Drawing.Size(28, 29);
             btnNextSub.TabIndex = 7;
@@ -140,7 +153,7 @@ namespace BM_Converter
             // btnPrevSub
             // 
             btnPrevSub.Enabled = false;
-            btnPrevSub.Location = new System.Drawing.Point(84, 265);
+            btnPrevSub.Location = new System.Drawing.Point(84, 286);
             btnPrevSub.Name = "btnPrevSub";
             btnPrevSub.Size = new System.Drawing.Size(28, 29);
             btnPrevSub.TabIndex = 6;
@@ -151,7 +164,7 @@ namespace BM_Converter
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(13, 265);
+            label2.Location = new System.Drawing.Point(13, 286);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(56, 15);
             label2.TabIndex = 5;
@@ -159,12 +172,12 @@ namespace BM_Converter
             // 
             // textBoxSubBMInfo
             // 
-            textBoxSubBMInfo.Location = new System.Drawing.Point(13, 300);
+            textBoxSubBMInfo.Location = new System.Drawing.Point(13, 321);
             textBoxSubBMInfo.Multiline = true;
             textBoxSubBMInfo.Name = "textBoxSubBMInfo";
             textBoxSubBMInfo.ReadOnly = true;
             textBoxSubBMInfo.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            textBoxSubBMInfo.Size = new System.Drawing.Size(212, 142);
+            textBoxSubBMInfo.Size = new System.Drawing.Size(212, 154);
             textBoxSubBMInfo.TabIndex = 4;
             // 
             // displayBox
@@ -172,16 +185,16 @@ namespace BM_Converter
             displayBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             displayBox.BackColor = System.Drawing.Color.DarkGray;
             displayBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            displayBox.Location = new System.Drawing.Point(247, 82);
+            displayBox.Location = new System.Drawing.Point(247, 103);
             displayBox.Name = "displayBox";
-            displayBox.Size = new System.Drawing.Size(518, 464);
+            displayBox.Size = new System.Drawing.Size(598, 523);
             displayBox.TabIndex = 3;
             displayBox.TabStop = false;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(13, 64);
+            label1.Location = new System.Drawing.Point(13, 85);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(52, 15);
             label1.TabIndex = 2;
@@ -198,7 +211,7 @@ namespace BM_Converter
             // 
             // textBoxBMInfo
             // 
-            textBoxBMInfo.Location = new System.Drawing.Point(13, 82);
+            textBoxBMInfo.Location = new System.Drawing.Point(13, 103);
             textBoxBMInfo.Multiline = true;
             textBoxBMInfo.Name = "textBoxBMInfo";
             textBoxBMInfo.ReadOnly = true;
@@ -226,7 +239,7 @@ namespace BM_Converter
             menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuFile, MenuExport, MenuCreate, MenuAbout });
             menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new System.Drawing.Size(784, 24);
+            menuStrip1.Size = new System.Drawing.Size(864, 24);
             menuStrip1.TabIndex = 2;
             // 
             // MenuFile
@@ -318,16 +331,21 @@ namespace BM_Converter
             MenuAbout.Text = "About";
             MenuAbout.Click += MenuAbout_Click;
             // 
+            // openCMPDialog
+            // 
+            openCMPDialog.Filter = "Dark Forces CMP|*.cmp";
+            openCMPDialog.Title = "Open CMP file";
+            // 
             // MainWindow
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(784, 601);
+            ClientSize = new System.Drawing.Size(864, 681);
             Controls.Add(panel2);
             Controls.Add(menuStrip1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
-            MinimumSize = new System.Drawing.Size(800, 640);
+            MinimumSize = new System.Drawing.Size(880, 720);
             Name = "MainWindow";
             Text = "BM Converter (version 2.2)";
             panel2.ResumeLayout(false);
@@ -370,6 +388,8 @@ namespace BM_Converter
         private System.Windows.Forms.ToolStripMenuItem MenuBulkConvert;
         private System.Windows.Forms.ToolStripMenuItem MenuCreateBm;
         private System.Windows.Forms.ToolStripMenuItem MenuCreateRaw;
+        private System.Windows.Forms.Button btnLighting;
+        private System.Windows.Forms.OpenFileDialog openCMPDialog;
     }
 }
 
