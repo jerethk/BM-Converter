@@ -33,6 +33,7 @@
             numericLight = new System.Windows.Forms.NumericUpDown();
             displayBox = new System.Windows.Forms.PictureBox();
             checkBoxZoom = new System.Windows.Forms.CheckBox();
+            btnChangeCmp = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)numericLight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)displayBox).BeginInit();
             SuspendLayout();
@@ -62,14 +63,14 @@
             displayBox.BackColor = System.Drawing.Color.Silver;
             displayBox.Location = new System.Drawing.Point(25, 64);
             displayBox.Name = "displayBox";
-            displayBox.Size = new System.Drawing.Size(652, 541);
+            displayBox.Size = new System.Drawing.Size(652, 583);
             displayBox.TabIndex = 2;
             displayBox.TabStop = false;
             // 
             // checkBoxZoom
             // 
             checkBoxZoom.AutoSize = true;
-            checkBoxZoom.Location = new System.Drawing.Point(557, 18);
+            checkBoxZoom.Location = new System.Drawing.Point(552, 21);
             checkBoxZoom.Name = "checkBoxZoom";
             checkBoxZoom.Size = new System.Drawing.Size(86, 19);
             checkBoxZoom.TabIndex = 3;
@@ -77,11 +78,22 @@
             checkBoxZoom.UseVisualStyleBackColor = true;
             checkBoxZoom.CheckedChanged += checkBoxZoom_CheckedChanged;
             // 
+            // btnChangeCmp
+            // 
+            btnChangeCmp.Location = new System.Drawing.Point(273, 14);
+            btnChangeCmp.Name = "btnChangeCmp";
+            btnChangeCmp.Size = new System.Drawing.Size(141, 30);
+            btnChangeCmp.TabIndex = 4;
+            btnChangeCmp.Text = "Change CMP";
+            btnChangeCmp.UseVisualStyleBackColor = true;
+            btnChangeCmp.Click += btnChangeCmp_Click;
+            // 
             // LightingViewer
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(704, 681);
+            Controls.Add(btnChangeCmp);
             Controls.Add(checkBoxZoom);
             Controls.Add(displayBox);
             Controls.Add(numericLight);
@@ -103,5 +115,6 @@
         private System.Windows.Forms.NumericUpDown numericLight;
         private System.Windows.Forms.PictureBox displayBox;
         private System.Windows.Forms.CheckBox checkBoxZoom;
+        private System.Windows.Forms.Button btnChangeCmp;
     }
 }

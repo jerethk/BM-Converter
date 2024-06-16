@@ -21,6 +21,7 @@ namespace BM_Converter
         private string bmPath;
         private string exportPath;
         private int selectedSubBM = 0;
+        private DFCmp cmp;
 
         public MainWindow(string[] args)
         {
@@ -200,18 +201,31 @@ namespace BM_Converter
                 return;
             }
             
-            var response = this.openCMPDialog.ShowDialog();
-            if (response == DialogResult.OK)
+            if (this.cmp == null)
             {
-                var cmp = new DFCmp();
-                if (!cmp.LoadFromFile(openCMPDialog.FileName))
+                var dialogResult = this.openCMPDialog.ShowDialog();
+                if (dialogResult == DialogResult.OK)
                 {
-                    return;
-                }
+                    var cmp = new DFCmp();
+                    if (!cmp.LoadFromFile(openCMPDialog.FileName))
+                    {
+                        return;
+                    }
 
-                var lightingViewerWindow = new LightingViewer(this.palette, cmp, this.BM, this.selectedSubBM);
-                lightingViewerWindow.ShowDialog();
+                    this.cmp = cmp;
+                }
             }
+
+            if (this.cmp == null)
+            {
+                MessageBox.Show("No CMP loaded.", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            var lightingViewerWindow = new LightingViewer(this.palette, this.cmp, this.BM, this.selectedSubBM, this.openCMPDialog);
+            lightingViewerWindow.ShowDialog(this);
+            this.cmp = lightingViewerWindow.Cmp;
+            lightingViewerWindow.Dispose();
         }
 
         // Multi BM Interface ------------------------------------------------------------
