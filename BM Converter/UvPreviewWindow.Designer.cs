@@ -37,12 +37,12 @@
             labelImageSize = new System.Windows.Forms.Label();
             btnDiscard = new System.Windows.Forms.Button();
             btnAccept = new System.Windows.Forms.Button();
-            panel2 = new System.Windows.Forms.Panel();
+            panelDisplay = new System.Windows.Forms.Panel();
             displayBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)numericUvHeight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUvWidth).BeginInit();
             panel1.SuspendLayout();
-            panel2.SuspendLayout();
+            panelDisplay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)displayBox).BeginInit();
             SuspendLayout();
             // 
@@ -130,45 +130,46 @@
             btnAccept.UseVisualStyleBackColor = true;
             btnAccept.Click += btnAccept_Click;
             // 
-            // panel2
+            // panelDisplay
             // 
-            panel2.AutoScroll = true;
-            panel2.BackColor = System.Drawing.SystemColors.Control;
-            panel2.Controls.Add(displayBox);
-            panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel2.Location = new System.Drawing.Point(0, 110);
-            panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(984, 691);
-            panel2.TabIndex = 9;
+            panelDisplay.AutoScroll = true;
+            panelDisplay.BackColor = System.Drawing.SystemColors.Control;
+            panelDisplay.Controls.Add(displayBox);
+            panelDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+            panelDisplay.Location = new System.Drawing.Point(0, 110);
+            panelDisplay.Name = "panelDisplay";
+            panelDisplay.Size = new System.Drawing.Size(984, 691);
+            panelDisplay.TabIndex = 9;
+            panelDisplay.Scroll += panelDisplay_Scroll;
+            panelDisplay.Paint += panelDisplay_Paint;
             // 
             // displayBox
             // 
-            displayBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             displayBox.BackColor = System.Drawing.Color.LightGray;
-            displayBox.Location = new System.Drawing.Point(19, 23);
+            displayBox.Location = new System.Drawing.Point(12, 10);
             displayBox.Name = "displayBox";
-            displayBox.Size = new System.Drawing.Size(937, 644);
+            displayBox.Size = new System.Drawing.Size(960, 669);
             displayBox.TabIndex = 0;
             displayBox.TabStop = false;
-            displayBox.Resize += displayBox_Resize;
             // 
             // UvPreviewWindow
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(984, 801);
-            Controls.Add(panel2);
+            Controls.Add(panelDisplay);
             Controls.Add(panel1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MinimumSize = new System.Drawing.Size(1000, 840);
             Name = "UvPreviewWindow";
             Text = "3DO UV dimensions";
             Shown += UvPreviewWindow_Shown;
+            Resize += UvPreviewWindow_Resize;
             ((System.ComponentModel.ISupportInitialize)numericUvHeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUvWidth).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            panel2.ResumeLayout(false);
+            panelDisplay.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)displayBox).EndInit();
             ResumeLayout(false);
         }
@@ -182,7 +183,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnAccept;
         private System.Windows.Forms.Button btnDiscard;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panelDisplay;
         private System.Windows.Forms.PictureBox displayBox;
         private System.Windows.Forms.Label labelImageSize;
     }

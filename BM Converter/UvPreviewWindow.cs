@@ -35,19 +35,19 @@ namespace BM_Converter
         {
             // for some reason there needs to be a delay before the graphic can be drawn
             await Task.Delay(100);
-            this.Redraw();
+            this.RepositionGraphic();
         }
 
         private void numericUvWidth_ValueChanged(object sender, EventArgs e)
         {
             this.uvWidth = (int)this.numericUvWidth.Value;
-            this.Redraw();
+            this.RepositionGraphic();
         }
 
         private void numericUvHeight_ValueChanged(object sender, EventArgs e)
         {
             this.uvHeight = (int)this.numericUvHeight.Value;
-            this.Redraw();
+            this.RepositionGraphic();
         }
 
         private void btnDiscard_Click(object sender, EventArgs e)
@@ -61,8 +61,22 @@ namespace BM_Converter
             this.Close();
         }
 
-        private void displayBox_Resize(object sender, EventArgs e)
+        private void UvPreviewWindow_Resize(object sender, EventArgs e)
         {
+            this.RepositionGraphic();
+        }
+
+        private void panelDisplay_Scroll(object sender, ScrollEventArgs e)
+        {
+            this.Redraw();
+        }
+
+        private void RepositionGraphic()
+        {
+            this.displayBox.Width = Math.Max(this.uvWidth + margin * 2, this.panelDisplay.Width - 20);
+            this.displayBox.Height = Math.Max(this.uvHeight + margin * 2, this.panelDisplay.Height - 20);
+
+            this.graphics.Clear(Color.LightGray);
             this.graphics.Dispose();
             this.graphics = this.displayBox.CreateGraphics();
             this.Redraw();
@@ -72,10 +86,7 @@ namespace BM_Converter
         {
             int xTiles = this.uvWidth / this.sourceImage.Width + 1;
             int yTiles = this.uvHeight / this.sourceImage.Height + 1;
-
             (int x, int y) origin = (margin, this.displayBox.Height - margin);
-
-            this.graphics.Clear(Color.LightGray);
 
             for (int x = 0; x < xTiles; x++)
             {
@@ -90,6 +101,12 @@ namespace BM_Converter
 
             var pen = new Pen(Color.Red, 2);
             this.graphics.DrawRectangle(pen, origin.x, origin.y - this.uvHeight, this.uvWidth, this.uvHeight);
+        }
+
+        private async void panelDisplay_Paint(object sender, PaintEventArgs e)
+        {
+            await Task.Delay(100);
+            this.Redraw();
         }
     }
 }
