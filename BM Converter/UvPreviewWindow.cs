@@ -19,13 +19,14 @@ namespace BM_Converter
 
         public UvPreviewWindow(int uvWidth, int uvHeight, Bitmap image)
         {
-            InitializeComponent();
-
             this.FinalValues = (uvWidth, uvHeight);
-            this.graphics = this.displayBox.CreateGraphics();
             this.sourceImage = image;
             this.uvWidth = uvWidth;
             this.uvHeight = uvHeight;
+
+            InitializeComponent();
+
+            this.graphics = this.displayBox.CreateGraphics();
             this.numericUvWidth.Value = this.uvWidth;
             this.numericUvHeight.Value = this.uvHeight;
             this.labelImageSize.Text = $"Image Size: {image.Width} x {image.Height}";
@@ -76,8 +77,8 @@ namespace BM_Converter
             this.displayBox.Width = Math.Max(this.uvWidth + margin * 2, this.panelDisplay.Width - 20);
             this.displayBox.Height = Math.Max(this.uvHeight + margin * 2, this.panelDisplay.Height - 20);
 
-            this.graphics.Clear(Color.LightGray);
-            this.graphics.Dispose();
+            this.graphics?.Clear(Color.LightGray);
+            this.graphics?.Dispose();
             this.graphics = this.displayBox.CreateGraphics();
             this.Redraw();
         }
