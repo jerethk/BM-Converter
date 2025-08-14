@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BM_Converter.Types;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -90,7 +91,13 @@ namespace BM_Converter
                         new Bitmap(Image.FromFile(pngPath))
                     };
 
-                    var BM = MiscFunctions.BuildBM(false, pal, source, transparency, TransparentColour.Alpha0, 0, useFullbrights, universalColours, compressed);
+                    var palOptions = new PaletteOptions()
+                    {
+                        includeFullbrights = useFullbrights,
+                        commonColoursOnly = universalColours,
+                    };
+
+                    var BM = MiscFunctions.BuildBM(false, pal, source, transparency, TransparentColour.Alpha0, 0, palOptions, compressed);
                     var destination = $"{outputPath}\\{outputFilename}.bm";
                     var succeeds = BM.SaveToFile(destination);
 

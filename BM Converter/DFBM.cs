@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
+using BM_Converter.Types;
 
 namespace BM_Converter
 {
@@ -199,7 +200,7 @@ namespace BM_Converter
         }
 
         // Static method to convert a Bitmap object into a BM image
-        public static byte[,] BitmaptoBM(Bitmap bitmap, DFPal pal, bool includeIlluminated, bool commonColoursOnly, TransparentColour transparentColour)
+        public static byte[,] BitmaptoBM(Bitmap bitmap, DFPal pal, PaletteOptions palOptions, TransparentColour transparentColour)
         {
             bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
@@ -239,7 +240,7 @@ namespace BM_Converter
                     }
                     else
                     {
-                        palIndex = MiscFunctions.MatchPixeltoPal(pixelColour, pal, includeIlluminated, commonColoursOnly);
+                        palIndex = MiscFunctions.MatchPixeltoPal(pixelColour, pal, palOptions);
                     }
 
                     PixelArray[x, y] = palIndex;

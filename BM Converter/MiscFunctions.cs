@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BM_Converter.Types;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -24,8 +25,7 @@ namespace BM_Converter
             char transparency,
             TransparentColour transparentColour,
             byte FRate,
-            bool includeIlluminated,
-            bool commonColoursOnly,
+            PaletteOptions palOptions,
             bool compress,
             (int uvWidth, int uvHeight)? uvDimensions = null)
         {
@@ -72,7 +72,7 @@ namespace BM_Converter
                 }
 
                 // Create BM image data
-                newBM.PixelData = DFBM.BitmaptoBM(source, pal, includeIlluminated, commonColoursOnly, transparentColour);
+                newBM.PixelData = DFBM.BitmaptoBM(source, pal, palOptions, transparentColour);
 
                 if (compress)
                 {
@@ -131,7 +131,7 @@ namespace BM_Converter
                         newSubBM.logSizeY = 0;
                     }
 
-                    newSubBM.PixelData = DFBM.BitmaptoBM(SourceImages[i], pal, includeIlluminated, commonColoursOnly, transparentColour);
+                    newSubBM.PixelData = DFBM.BitmaptoBM(SourceImages[i], pal, palOptions, transparentColour);
                     newBM.SubBMs.Add(newSubBM);
                 }
 
@@ -153,28 +153,34 @@ namespace BM_Converter
         }
 
         // Color matches to the PAL using Euclidean distance technique
-        public static byte MatchPixeltoPal(Color pixelColour, DFPal palette, bool includeIlluminatedColours, bool commonColoursOnly)
+        public static byte MatchPixeltoPal(Color pixelColour, DFPal palette, PaletteOptions palOptions)
         {
             int sourceRed = pixelColour.R;
             int sourceGreen = pixelColour.G;
             int sourceBlue = pixelColour.B;
 
-            int startColour;
-            if (includeIlluminatedColours)
-            {
-                startColour = 1;        // first 32 colours are always bright / illuminated
-            }
-            else
-            {
-                startColour = 32;
-            }
-
             double smallestDistance = 500;
             int bestMatch = 0;
 
-            for (int i = startColour; i <= 255; i++)
+            for (int i = 1; i <= 255; i++)
             {
-                if (commonColoursOnly && i >= 208 && i <= 254) continue;    // colours 208-254 are different in different PALs
+                if (!palOptions.includeFullbrights &&
+                    i >= 1 && i <= 23)
+                {
+                    continue;
+                }
+
+                if (!palOptions.includeHudColours &&
+                    i >= 24 && i <= 31)
+                {
+                    continue;
+                }
+
+                if (palOptions.commonColoursOnly &&
+                    i >= 208 && i <= 254)
+                {
+                    continue;      // colours 208-254 are different in different PALs
+                }
 
                 int deltaRed = sourceRed - palette.Colours[i].R;
                 int deltaGreen = sourceGreen - palette.Colours[i].G;
@@ -316,19 +322,5 @@ namespace BM_Converter
                 return false;
             }
         }
-    }
-
-    public static class TransparencyOptions
-    {
-        public const char Opaque = 'o';
-        public const char Transparent = 't';
-        public const char Weapon = 'w';
-    }
-
-    public enum TransparentColour
-    {
-        Alpha0,
-        Alpha127,
-        Black,
     }
 }

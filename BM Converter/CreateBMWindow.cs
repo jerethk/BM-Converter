@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BM_Converter.Types;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -312,6 +313,12 @@ namespace BM_Converter
                     break;
             }
 
+            var palOptions = new PaletteOptions()
+            {
+                includeFullbrights = checkBoxIncludeIlluminated.Checked,
+                commonColoursOnly = checkBoxCommonColours.Checked,
+            };
+
             // Bulk convert single BMs
             if (!radioBtnMultiBM.Checked && this.SourceImages.Count > 1)
             {
@@ -323,7 +330,7 @@ namespace BM_Converter
                     var filename = Path.GetFileNameWithoutExtension((string)listBoxImages.Items[i]);
                     var source = new List<Bitmap>() { this.SourceImages[i] };
 
-                    var BM = MiscFunctions.BuildBM(false, this.palette, source, transparency, transparentColour, (byte)numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked);
+                    var BM = MiscFunctions.BuildBM(false, this.palette, source, transparency, transparentColour, (byte)numericFramerate.Value, palOptions, checkBoxCompressed.Checked);
 
                     if (!BM.SaveToFile($"{dir}\\{filename}.bm"))
                     {
@@ -339,7 +346,7 @@ namespace BM_Converter
                 return;
             }
 
-            DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, transparentColour, (byte)numericFramerate.Value, checkBoxIncludeIlluminated.Checked, checkBoxCommonColours.Checked, checkBoxCompressed.Checked, ((int)this.numericUvWidth.Value, (int)this.numericUvHeight.Value));
+            DFBM newBM = MiscFunctions.BuildBM(radioBtnMultiBM.Checked, palette, SourceImages, transparency, transparentColour, (byte)numericFramerate.Value, palOptions, checkBoxCompressed.Checked, ((int)this.numericUvWidth.Value, (int)this.numericUvHeight.Value));
 
             if (newBM.SaveToFile(saveBMDialog.FileName))
             {

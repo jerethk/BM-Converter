@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BM_Converter
+namespace BM_Converter.Types
 {
     internal struct Texel
     {
