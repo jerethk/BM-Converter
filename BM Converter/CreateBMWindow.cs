@@ -12,6 +12,9 @@ namespace BM_Converter
     {
         private List<Bitmap> SourceImages;
         private DFPal palette;
+
+        private ColourOptionsDialog colourOptionsDialog = new();
+
         private string palPath;
         private string loadPath;
         private string savePath;
@@ -78,7 +81,7 @@ namespace BM_Converter
         {
             if (checkBoxIncludeIlluminated.Checked)
             {
-                MessageBox.Show("Glow-in-dark colours (1-31) will be included when performing colour matching.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // MessageBox.Show("Glow-in-dark colours (1-31) will be included when performing colour matching.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -86,7 +89,7 @@ namespace BM_Converter
         {
             if (checkBoxCommonColours.Checked)
             {
-                MessageBox.Show("Only common PAL colours (excluding 208-254) will be used for colour matching. This makes your texture suitable for use with all PALs.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // MessageBox.Show("Only common PAL colours (excluding 208-254) will be used for colour matching. This makes your texture suitable for use with all PALs.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -262,6 +265,11 @@ namespace BM_Converter
         // Create BM ------------------------------------------------------------------------
         private void btnCreateBM_Click(object sender, EventArgs e)
         {
+            if (SourceImages.Count == 0)
+            {
+                return;
+            }
+
             if (this.SourceImages.Count > 1 && radioBtnSingleBM.Checked)
             {
                 var response = MessageBox.Show("You have added multiple images. They will each be converted into a BM. Confirm?", "Multiple images", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
@@ -271,13 +279,21 @@ namespace BM_Converter
                 }
             }
 
-            if (SourceImages.Count > 0)
+            this.colourOptionsDialog.SetValues(this.checkBoxIncludeIlluminated.Checked, this.checkBoxCommonColours.Checked);
+            var result = this.colourOptionsDialog.ShowDialog();
+
+            if (result == DialogResult.Cancel)
             {
-                var fn = Path.GetFileNameWithoutExtension((string)listBoxImages.Items[0]);
-                saveBMDialog.InitialDirectory = this.savePath ?? saveBMDialog.InitialDirectory;
-                saveBMDialog.FileName = fn;
-                saveBMDialog.ShowDialog();
+                return;
             }
+
+            this.checkBoxIncludeIlluminated.Checked = this.colourOptionsDialog.UseFullBrightColours;
+            this.checkBoxCommonColours.Checked = this.colourOptionsDialog.CommonColoursOnly;
+
+            var fn = Path.GetFileNameWithoutExtension((string)listBoxImages.Items[0]);
+            saveBMDialog.InitialDirectory = this.savePath ?? saveBMDialog.InitialDirectory;
+            saveBMDialog.FileName = fn;
+            saveBMDialog.ShowDialog();
         }
 
         private void saveBMDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
@@ -315,8 +331,9 @@ namespace BM_Converter
 
             var palOptions = new PaletteOptions()
             {
-                includeFullbrights = checkBoxIncludeIlluminated.Checked,
-                commonColoursOnly = checkBoxCommonColours.Checked,
+                includeFullbrights = this.colourOptionsDialog.UseFullBrightColours,
+                commonColoursOnly = this.colourOptionsDialog.CommonColoursOnly,
+                includeHudColours = this.colourOptionsDialog.UseHudColours,
             };
 
             // Bulk convert single BMs
