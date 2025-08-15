@@ -331,9 +331,10 @@ namespace BM_Converter
 
             var palOptions = new PaletteOptions()
             {
-                includeFullbrights = this.colourOptionsDialog.UseFullBrightColours,
-                commonColoursOnly = this.colourOptionsDialog.CommonColoursOnly,
-                includeHudColours = this.colourOptionsDialog.UseHudColours,
+                IncludeFullbrights = this.colourOptionsDialog.UseFullBrightColours,
+                CommonColoursOnly = this.colourOptionsDialog.CommonColoursOnly,
+                IncludeHudColours = this.colourOptionsDialog.UseHudColours,
+                ColoursToExclude = this.colourOptionsDialog.ColoursToExclude,
             };
 
             // Bulk convert single BMs

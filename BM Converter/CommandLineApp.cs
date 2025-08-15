@@ -93,8 +93,8 @@ namespace BM_Converter
 
                     var palOptions = new PaletteOptions()
                     {
-                        includeFullbrights = useFullbrights,
-                        commonColoursOnly = universalColours,
+                        IncludeFullbrights = useFullbrights,
+                        CommonColoursOnly = universalColours,
                     };
 
                     var BM = MiscFunctions.BuildBM(false, pal, source, transparency, TransparentColour.Alpha0, 0, palOptions, compressed);

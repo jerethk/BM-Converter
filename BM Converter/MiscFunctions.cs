@@ -164,22 +164,27 @@ namespace BM_Converter
 
             for (int i = 1; i <= 255; i++)
             {
-                if (!palOptions.includeFullbrights &&
+                if (!palOptions.IncludeFullbrights &&
                     i >= 1 && i <= 23)
                 {
                     continue;
                 }
 
-                if (!palOptions.includeHudColours &&
+                if (!palOptions.IncludeHudColours &&
                     i >= 24 && i <= 31)
                 {
                     continue;
                 }
 
-                if (palOptions.commonColoursOnly &&
+                if (palOptions.CommonColoursOnly &&
                     i >= 208 && i <= 254)
                 {
                     continue;      // colours 208-254 are different in different PALs
+                }
+
+                if (palOptions.ColoursToExclude.Contains(i))
+                {
+                    continue;
                 }
 
                 int deltaRed = sourceRed - palette.Colours[i].R;

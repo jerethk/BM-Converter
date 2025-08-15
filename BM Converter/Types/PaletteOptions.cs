@@ -9,12 +9,15 @@ namespace BM_Converter.Types
     public sealed class PaletteOptions
     {
         // Include colours 1-23
-        public bool includeFullbrights { get; set; }
+        public bool IncludeFullbrights { get; set; }
 
         // Include colours 24-31
-        public bool includeHudColours { get; set; }
+        public bool IncludeHudColours { get; set; }
 
         // Exclude colours 208-255
-        public bool commonColoursOnly { get; set; }
+        public bool CommonColoursOnly { get; set; }
+
+        // User defined colours to exclude
+        public List<int> ColoursToExclude { get; set; }
     }
 }

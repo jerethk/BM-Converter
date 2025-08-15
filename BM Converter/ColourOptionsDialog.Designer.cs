@@ -85,6 +85,7 @@
             textBoxExclude.Name = "textBoxExclude";
             textBoxExclude.Size = new System.Drawing.Size(647, 27);
             textBoxExclude.TabIndex = 4;
+            textBoxExclude.Validating += textBoxExclude_Validating;
             // 
             // label2
             // 
