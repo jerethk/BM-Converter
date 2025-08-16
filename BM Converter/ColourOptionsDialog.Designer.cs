@@ -37,6 +37,9 @@
             label3 = new System.Windows.Forms.Label();
             btnProceed = new System.Windows.Forms.Button();
             btnCancel = new System.Windows.Forms.Button();
+            pictureBoxPal = new System.Windows.Forms.PictureBox();
+            labelColour = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxPal).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -108,7 +111,7 @@
             // btnProceed
             // 
             btnProceed.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            btnProceed.Location = new System.Drawing.Point(164, 323);
+            btnProceed.Location = new System.Drawing.Point(164, 341);
             btnProceed.Name = "btnProceed";
             btnProceed.Size = new System.Drawing.Size(115, 43);
             btnProceed.TabIndex = 7;
@@ -119,7 +122,7 @@
             // btnCancel
             // 
             btnCancel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            btnCancel.Location = new System.Drawing.Point(406, 323);
+            btnCancel.Location = new System.Drawing.Point(406, 341);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new System.Drawing.Size(115, 43);
             btnCancel.TabIndex = 8;
@@ -127,12 +130,33 @@
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
+            // pictureBoxPal
+            // 
+            pictureBoxPal.BackColor = System.Drawing.Color.Black;
+            pictureBoxPal.Location = new System.Drawing.Point(796, 19);
+            pictureBoxPal.Name = "pictureBoxPal";
+            pictureBoxPal.Size = new System.Drawing.Size(512, 512);
+            pictureBoxPal.TabIndex = 9;
+            pictureBoxPal.TabStop = false;
+            pictureBoxPal.MouseMove += pictureBoxPal_MouseMove;
+            // 
+            // labelColour
+            // 
+            labelColour.AutoSize = true;
+            labelColour.Location = new System.Drawing.Point(796, 545);
+            labelColour.Name = "labelColour";
+            labelColour.Size = new System.Drawing.Size(53, 20);
+            labelColour.TabIndex = 10;
+            labelColour.Text = "Colour";
+            // 
             // ColourOptionsDialog
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(706, 403);
+            ClientSize = new System.Drawing.Size(1328, 597);
             ControlBox = false;
+            Controls.Add(labelColour);
+            Controls.Add(pictureBoxPal);
             Controls.Add(btnCancel);
             Controls.Add(btnProceed);
             Controls.Add(label3);
@@ -146,6 +170,7 @@
             ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Colour Options";
+            ((System.ComponentModel.ISupportInitialize)pictureBoxPal).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -161,5 +186,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnProceed;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.PictureBox pictureBoxPal;
+        private System.Windows.Forms.Label labelColour;
     }
 }

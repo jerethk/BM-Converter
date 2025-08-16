@@ -279,7 +279,7 @@ namespace BM_Converter
                 }
             }
 
-            this.colourOptionsDialog.SetValues(this.checkBoxIncludeIlluminated.Checked, this.checkBoxCommonColours.Checked);
+            this.colourOptionsDialog.SetValues(this.checkBoxIncludeIlluminated.Checked, this.checkBoxCommonColours.Checked, this.palette);
             var result = this.colourOptionsDialog.ShowDialog();
 
             if (result == DialogResult.Cancel)

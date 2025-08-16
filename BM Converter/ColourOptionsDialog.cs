@@ -18,6 +18,8 @@ namespace BM_Converter
         public bool UseHudColours { get; set; }
         public List<int> ColoursToExclude { get; set; }
 
+        private DFPal pal;
+        private static readonly int ColourRectSize = 32;
 
         public ColourOptionsDialog()
         {
@@ -25,10 +27,43 @@ namespace BM_Converter
             this.ColoursToExclude = new();
         }
 
-        public void SetValues(bool fullbright, bool commonColours)
+        public void SetValues(bool fullbright, bool commonColours, DFPal pal)
         {
             this.checkBoxFullbright.Checked = fullbright;
             this.checkBoxCommon.Checked = commonColours;
+            this.pal = pal;
+
+            this.DrawPal();
+        }
+
+        private async void DrawPal()
+        {
+            if (this.pal == null) { return; }
+
+            // there needs to be a delay before the graphic can be drawn
+            await Task.Delay(100);
+
+            Graphics gra = this.pictureBoxPal.CreateGraphics();
+            var brush = new SolidBrush(Color.Black);
+
+            for (var y = 0; y < 16; y++)
+            {
+                for (var x = 0; x < 16; x++)
+                {
+                    var colour = this.pal.Colours[y * 16 + x];
+                    brush.Color = Color.FromArgb(255, colour.R, colour.G, colour.B);
+                    gra.FillRectangle(brush, x * ColourRectSize, y * ColourRectSize, ColourRectSize, ColourRectSize);
+                }
+            }
+        }
+
+        private void pictureBoxPal_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (this.pal == null) { return; }
+
+            var colourIndex = (e.Y / ColourRectSize) * 16 + (e.X / ColourRectSize);
+            var colour = this.pal.Colours[colourIndex];
+            this.labelColour.Text = $"Colour {colourIndex}: R{colour.R}, G{colour.G}, B{colour.B}";
         }
 
         private void textBoxExclude_Validating(object sender, CancelEventArgs e)
@@ -107,7 +142,7 @@ namespace BM_Converter
                     {
                         return false;   // this shouldn't happen, but just in case....
                     }
-                    
+
                     int startRange;
                     int endRange;
                     if (Int32.TryParse(splitItem[0], out startRange) && Int32.TryParse(splitItem[1], out endRange))
