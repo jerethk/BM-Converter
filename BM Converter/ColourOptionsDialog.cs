@@ -19,6 +19,7 @@ namespace BM_Converter
         public List<int> ColoursToExclude { get; set; }
 
         private DFPal pal;
+        private Graphics gra;
         private static readonly int ColourRectSize = 32;
 
         public ColourOptionsDialog()
@@ -27,32 +28,30 @@ namespace BM_Converter
             this.ColoursToExclude = new();
         }
 
-        public void SetValues(bool fullbright, bool commonColours, DFPal pal)
+        public async void SetValues(bool fullbright, bool commonColours, DFPal pal)
         {
             this.checkBoxFullbright.Checked = fullbright;
             this.checkBoxCommon.Checked = commonColours;
             this.pal = pal;
-
-            this.DrawPal();
-        }
-
-        private async void DrawPal()
-        {
-            if (this.pal == null) { return; }
+            this.gra = this.pictureBoxPal.CreateGraphics();
 
             // there needs to be a delay before the graphic can be drawn
             await Task.Delay(100);
+            this.DrawPal();
+        }
 
-            Graphics gra = this.pictureBoxPal.CreateGraphics();
+        private void DrawPal()
+        {
+            if (this.pal == null) { return; }
+
             var brush = new SolidBrush(Color.Black);
-
             for (var y = 0; y < 16; y++)
             {
                 for (var x = 0; x < 16; x++)
                 {
                     var colour = this.pal.Colours[y * 16 + x];
                     brush.Color = Color.FromArgb(255, colour.R, colour.G, colour.B);
-                    gra.FillRectangle(brush, x * ColourRectSize, y * ColourRectSize, ColourRectSize, ColourRectSize);
+                    this.gra.FillRectangle(brush, x * ColourRectSize, y * ColourRectSize, ColourRectSize, ColourRectSize);
                 }
             }
         }
@@ -61,7 +60,11 @@ namespace BM_Converter
         {
             if (this.pal == null) { return; }
 
-            var colourIndex = (e.Y / ColourRectSize) * 16 + (e.X / ColourRectSize);
+            var xPos = e.X / ColourRectSize;
+            var yPos = e.Y / ColourRectSize;
+            if (xPos < 0 || yPos < 0 || xPos > 15 || yPos > 15) { return; }
+
+            var colourIndex = yPos * 16 + xPos;
             var colour = this.pal.Colours[colourIndex];
             this.labelColour.Text = $"Colour {colourIndex}: R{colour.R}, G{colour.G}, B{colour.B}";
         }
@@ -160,6 +163,11 @@ namespace BM_Converter
 
             this.ColoursToExclude = coloursToExclude.Distinct().Where(c => c < 256).ToList();
             return true;
+        }
+
+        private void ColourOptionsDialog_Paint(object sender, PaintEventArgs e)
+        {
+            this.DrawPal();
         }
     }
 }

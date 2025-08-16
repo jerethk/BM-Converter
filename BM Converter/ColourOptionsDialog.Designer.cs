@@ -48,7 +48,7 @@
             label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             label1.Location = new System.Drawing.Point(31, 31);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(200, 20);
+            label1.Size = new System.Drawing.Size(156, 15);
             label1.TabIndex = 0;
             label1.Text = "Please confirm PAL options";
             // 
@@ -57,7 +57,7 @@
             checkBoxFullbright.AutoSize = true;
             checkBoxFullbright.Location = new System.Drawing.Point(31, 74);
             checkBoxFullbright.Name = "checkBoxFullbright";
-            checkBoxFullbright.Size = new System.Drawing.Size(222, 24);
+            checkBoxFullbright.Size = new System.Drawing.Size(178, 19);
             checkBoxFullbright.TabIndex = 1;
             checkBoxFullbright.Text = "Use full-bright colours (1-23)";
             checkBoxFullbright.UseVisualStyleBackColor = true;
@@ -67,7 +67,7 @@
             checkBoxCommon.AutoSize = true;
             checkBoxCommon.Location = new System.Drawing.Point(31, 120);
             checkBoxCommon.Name = "checkBoxCommon";
-            checkBoxCommon.Size = new System.Drawing.Size(405, 24);
+            checkBoxCommon.Size = new System.Drawing.Size(327, 19);
             checkBoxCommon.TabIndex = 2;
             checkBoxCommon.Text = "Only use common PAL colours (exclude colours 208-254)";
             checkBoxCommon.UseVisualStyleBackColor = true;
@@ -77,7 +77,7 @@
             checkBoxHud.AutoSize = true;
             checkBoxHud.Location = new System.Drawing.Point(31, 167);
             checkBoxHud.Name = "checkBoxHud";
-            checkBoxHud.Size = new System.Drawing.Size(195, 24);
+            checkBoxHud.Size = new System.Drawing.Size(155, 19);
             checkBoxHud.TabIndex = 3;
             checkBoxHud.Text = "Use HUD colours (24-31)";
             checkBoxHud.UseVisualStyleBackColor = true;
@@ -86,7 +86,7 @@
             // 
             textBoxExclude.Location = new System.Drawing.Point(31, 241);
             textBoxExclude.Name = "textBoxExclude";
-            textBoxExclude.Size = new System.Drawing.Size(647, 27);
+            textBoxExclude.Size = new System.Drawing.Size(647, 23);
             textBoxExclude.TabIndex = 4;
             textBoxExclude.Validating += textBoxExclude_Validating;
             // 
@@ -95,7 +95,7 @@
             label2.AutoSize = true;
             label2.Location = new System.Drawing.Point(31, 218);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(154, 20);
+            label2.Size = new System.Drawing.Size(124, 15);
             label2.TabIndex = 5;
             label2.Text = "Exclude these colours:";
             // 
@@ -104,7 +104,7 @@
             label3.AutoSize = true;
             label3.Location = new System.Drawing.Point(31, 271);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(507, 20);
+            label3.Size = new System.Drawing.Size(399, 15);
             label3.TabIndex = 6;
             label3.Text = "Example: 40-55, 68, 101 will exclude colours 40 to 55 (inclusive), 68 and 101";
             // 
@@ -132,8 +132,11 @@
             // 
             // pictureBoxPal
             // 
-            pictureBoxPal.BackColor = System.Drawing.Color.Black;
-            pictureBoxPal.Location = new System.Drawing.Point(796, 19);
+            pictureBoxPal.BackColor = System.Drawing.SystemColors.Control;
+            pictureBoxPal.Location = new System.Drawing.Point(737, 22);
+            pictureBoxPal.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            pictureBoxPal.MaximumSize = new System.Drawing.Size(512, 512);
+            pictureBoxPal.MinimumSize = new System.Drawing.Size(512, 512);
             pictureBoxPal.Name = "pictureBoxPal";
             pictureBoxPal.Size = new System.Drawing.Size(512, 512);
             pictureBoxPal.TabIndex = 9;
@@ -143,17 +146,17 @@
             // labelColour
             // 
             labelColour.AutoSize = true;
-            labelColour.Location = new System.Drawing.Point(796, 545);
+            labelColour.Location = new System.Drawing.Point(737, 549);
             labelColour.Name = "labelColour";
-            labelColour.Size = new System.Drawing.Size(53, 20);
+            labelColour.Size = new System.Drawing.Size(43, 15);
             labelColour.TabIndex = 10;
             labelColour.Text = "Colour";
             // 
             // ColourOptionsDialog
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1328, 597);
+            ClientSize = new System.Drawing.Size(1274, 605);
             ControlBox = false;
             Controls.Add(labelColour);
             Controls.Add(pictureBoxPal);
@@ -166,10 +169,13 @@
             Controls.Add(checkBoxCommon);
             Controls.Add(checkBoxFullbright);
             Controls.Add(label1);
+            Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            MinimumSize = new System.Drawing.Size(1290, 644);
             Name = "ColourOptionsDialog";
             ShowIcon = false;
             ShowInTaskbar = false;
             Text = "Colour Options";
+            Paint += ColourOptionsDialog_Paint;
             ((System.ComponentModel.ISupportInitialize)pictureBoxPal).EndInit();
             ResumeLayout(false);
             PerformLayout();
