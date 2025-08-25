@@ -14,6 +14,7 @@ namespace BM_Converter
     public partial class ColourOptionsDialog : Form
     {
         public bool UseFullBrightColours { get; set; }
+        public bool FullBrightByAlpha { get; set; }
         public bool CommonColoursOnly { get; set; }
         public bool UseHudColours { get; set; }
         public List<int> ColoursToExclude { get; set; }
@@ -69,6 +70,22 @@ namespace BM_Converter
             this.labelColour.Text = $"Colour {colourIndex}: R{colour.R}, G{colour.G}, B{colour.B}";
         }
 
+        private void checkBoxFullbright_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.checkBoxFullbright.Checked)
+            {
+                this.checkBoxFullbrightByAlpha.Checked = false;
+            }
+        }
+
+        private void checkBoxFullbrightByAlpha_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.checkBoxFullbrightByAlpha.Checked)
+            {
+                this.checkBoxFullbright.Checked = false;
+            }
+        }
+
         private void textBoxExclude_Validating(object sender, CancelEventArgs e)
         {
             var sanitisedText = string.Empty;
@@ -98,6 +115,7 @@ namespace BM_Converter
             }
 
             this.UseFullBrightColours = this.checkBoxFullbright.Checked;
+            this.FullBrightByAlpha = this.checkBoxFullbrightByAlpha.Checked;
             this.CommonColoursOnly = this.checkBoxCommon.Checked;
             this.UseHudColours = this.checkBoxHud.Checked;
 

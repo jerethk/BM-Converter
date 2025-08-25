@@ -8,8 +8,8 @@
 	<ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
     <ApplicationIcon>kylekatarn_pre_talay_vbn_icon.ico</ApplicationIcon>
     <AssemblyName>BMConverter</AssemblyName>
-    <VersionPrefix>2.4.2</VersionPrefix>  
-    <FileVersion>2.4.2</FileVersion>
+    <VersionPrefix>2.4.3</VersionPrefix>  
+    <FileVersion>2.4.3</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

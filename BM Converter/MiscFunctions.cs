@@ -158,13 +158,30 @@ namespace BM_Converter
             int sourceRed = pixelColour.R;
             int sourceGreen = pixelColour.G;
             int sourceBlue = pixelColour.B;
+            int sourceAlpha = pixelColour.A;
 
             double smallestDistance = 500;
             int bestMatch = 0;
 
             for (int i = 1; i <= 255; i++)
             {
-                if (!palOptions.IncludeFullbrights &&
+                if (palOptions.FullbrightByAlpha)
+                {
+                    // Alpha 1-254, skip non-fullbrights
+                    if (sourceAlpha > 0 && sourceAlpha < 255
+                        && (i < 1 || i > 23))
+                    {
+                        continue;
+                    }
+
+                    // Alpha 255, skip fullbrights
+                    if (sourceAlpha == 255
+                        && (i >= 1 && i <= 23))
+                    {
+                        continue;
+                    }
+                }
+                else if (!palOptions.IncludeFullbrights &&
                     i >= 1 && i <= 23)
                 {
                     continue;

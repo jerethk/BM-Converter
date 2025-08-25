@@ -332,6 +332,7 @@ namespace BM_Converter
             var palOptions = new PaletteOptions()
             {
                 IncludeFullbrights = this.colourOptionsDialog.UseFullBrightColours,
+                FullbrightByAlpha = this.colourOptionsDialog.FullBrightByAlpha,
                 CommonColoursOnly = this.colourOptionsDialog.CommonColoursOnly,
                 IncludeHudColours = this.colourOptionsDialog.UseHudColours,
                 ColoursToExclude = this.colourOptionsDialog.ColoursToExclude,
