@@ -20,7 +20,6 @@ namespace BM_Converter
         public List<int> ColoursToExclude { get; set; }
 
         private DFPal pal;
-        private Graphics gra;
         private static readonly int ColourRectSize = 32;
 
         public ColourOptionsDialog()
@@ -29,15 +28,12 @@ namespace BM_Converter
             this.ColoursToExclude = new();
         }
 
-        public async void SetValues(bool fullbright, bool commonColours, DFPal pal)
+        public void SetValues(bool fullbright, bool commonColours, DFPal pal)
         {
             this.checkBoxFullbright.Checked = fullbright;
             this.checkBoxCommon.Checked = commonColours;
             this.pal = pal;
-            this.gra = this.pictureBoxPal.CreateGraphics();
 
-            // there needs to be a delay before the graphic can be drawn
-            await Task.Delay(100);
             this.DrawPal();
         }
 
@@ -45,14 +41,15 @@ namespace BM_Converter
         {
             if (this.pal == null) { return; }
 
-            var brush = new SolidBrush(Color.Black);
+            using var gra = this.pictureBoxPal.CreateGraphics();
+            using var brush = new SolidBrush(Color.Black);
             for (var y = 0; y < 16; y++)
             {
                 for (var x = 0; x < 16; x++)
                 {
                     var colour = this.pal.Colours[y * 16 + x];
                     brush.Color = Color.FromArgb(255, colour.R, colour.G, colour.B);
-                    this.gra.FillRectangle(brush, x * ColourRectSize, y * ColourRectSize, ColourRectSize, ColourRectSize);
+                    gra.FillRectangle(brush, x * ColourRectSize, y * ColourRectSize, ColourRectSize, ColourRectSize);
                 }
             }
         }
