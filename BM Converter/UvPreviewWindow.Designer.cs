@@ -140,8 +140,6 @@
             panelDisplay.Name = "panelDisplay";
             panelDisplay.Size = new System.Drawing.Size(984, 691);
             panelDisplay.TabIndex = 9;
-            panelDisplay.Scroll += panelDisplay_Scroll;
-            panelDisplay.Paint += panelDisplay_Paint;
             // 
             // displayBox
             // 
@@ -151,6 +149,7 @@
             displayBox.Size = new System.Drawing.Size(960, 669);
             displayBox.TabIndex = 0;
             displayBox.TabStop = false;
+            displayBox.Paint += DisplayBox_Paint;
             // 
             // UvPreviewWindow
             // 
