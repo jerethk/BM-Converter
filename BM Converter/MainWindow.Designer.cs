@@ -34,9 +34,10 @@ namespace BM_Converter
             OpenBMDialog = new System.Windows.Forms.OpenFileDialog();
             SavePngDialog = new System.Windows.Forms.SaveFileDialog();
             panel2 = new System.Windows.Forms.Panel();
+            label3 = new System.Windows.Forms.Label();
+            comboBoxZoom = new System.Windows.Forms.ComboBox();
             btnLighting = new System.Windows.Forms.Button();
             comboBoxImageVersion = new System.Windows.Forms.ComboBox();
-            checkBoxZoom = new System.Windows.Forms.CheckBox();
             btnNextSub = new System.Windows.Forms.Button();
             btnPrevSub = new System.Windows.Forms.Button();
             label2 = new System.Windows.Forms.Label();
@@ -90,9 +91,10 @@ namespace BM_Converter
             // panel2
             // 
             panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            panel2.Controls.Add(label3);
+            panel2.Controls.Add(comboBoxZoom);
             panel2.Controls.Add(btnLighting);
             panel2.Controls.Add(comboBoxImageVersion);
-            panel2.Controls.Add(checkBoxZoom);
             panel2.Controls.Add(btnNextSub);
             panel2.Controls.Add(btnPrevSub);
             panel2.Controls.Add(label2);
@@ -106,6 +108,25 @@ namespace BM_Converter
             panel2.Name = "panel2";
             panel2.Size = new System.Drawing.Size(864, 657);
             panel2.TabIndex = 1;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(247, 73);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(39, 15);
+            label3.TabIndex = 12;
+            label3.Text = "Zoom";
+            // 
+            // comboBoxZoom
+            // 
+            comboBoxZoom.FormattingEnabled = true;
+            comboBoxZoom.Items.AddRange(new object[] { "100%", "200%", "300%", "400%" });
+            comboBoxZoom.Location = new System.Drawing.Point(296, 70);
+            comboBoxZoom.Name = "comboBoxZoom";
+            comboBoxZoom.Size = new System.Drawing.Size(136, 23);
+            comboBoxZoom.TabIndex = 11;
+            comboBoxZoom.SelectedIndexChanged += ComboBoxZoom_SelectedIndexChanged;
             // 
             // btnLighting
             // 
@@ -127,17 +148,6 @@ namespace BM_Converter
             comboBoxImageVersion.Size = new System.Drawing.Size(266, 23);
             comboBoxImageVersion.TabIndex = 9;
             comboBoxImageVersion.SelectedIndexChanged += comboBoxImageVersion_SelectedIndexChanged;
-            // 
-            // checkBoxZoom
-            // 
-            checkBoxZoom.AutoSize = true;
-            checkBoxZoom.Location = new System.Drawing.Point(247, 74);
-            checkBoxZoom.Name = "checkBoxZoom";
-            checkBoxZoom.Size = new System.Drawing.Size(86, 19);
-            checkBoxZoom.TabIndex = 8;
-            checkBoxZoom.Text = "Zoom to fit";
-            checkBoxZoom.UseVisualStyleBackColor = true;
-            checkBoxZoom.CheckedChanged += checkBoxZoom_CheckedChanged;
             // 
             // btnNextSub
             // 
@@ -190,6 +200,7 @@ namespace BM_Converter
             displayBox.Size = new System.Drawing.Size(598, 523);
             displayBox.TabIndex = 3;
             displayBox.TabStop = false;
+            displayBox.Paint += DisplayBox_Paint;
             // 
             // label1
             // 
@@ -370,7 +381,6 @@ namespace BM_Converter
         private System.Windows.Forms.TextBox textBoxSubBMInfo;
         private System.Windows.Forms.Button btnNextSub;
         private System.Windows.Forms.Button btnPrevSub;
-        private System.Windows.Forms.CheckBox checkBoxZoom;
         private System.Windows.Forms.OpenFileDialog openBulkDialog;
         private System.Windows.Forms.OpenFileDialog openRawLocationDialog;
         private System.Windows.Forms.ComboBox comboBoxImageVersion;
@@ -390,6 +400,8 @@ namespace BM_Converter
         private System.Windows.Forms.ToolStripMenuItem MenuCreateRaw;
         private System.Windows.Forms.Button btnLighting;
         private System.Windows.Forms.OpenFileDialog openCMPDialog;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBoxZoom;
     }
 }
 

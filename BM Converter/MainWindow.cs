@@ -16,11 +16,14 @@ namespace BM_Converter
         private List<Bitmap> remasterNoAlphaImages;
         private List<Bitmap> remasterAlphaImages;
         private List<Bitmap> remasterCombinedImages;
+        private Bitmap displayImage;
+
         private string remasterPath;
         private string palPath;
         private string bmPath;
         private string exportPath;
         private int selectedSubBM = 0;
+        private float zoomFactor = 1.0f;
         private DFCmp cmp;
 
         public MainWindow(string[] args)
@@ -39,6 +42,8 @@ namespace BM_Converter
                 // Attempt to load file that has been passed in from command line
                 this.LoadBM(args[0]);
             }
+
+            this.comboBoxZoom.SelectedIndex = 0;
         }
 
         private void MenuAbout_Click(object sender, EventArgs e)
@@ -60,13 +65,7 @@ namespace BM_Converter
                 if (BM.PixelData != null || BM.SubBMs != null)
                 {
                     this.GenerateImages();
-                    displayBox.Image = images[0];
-
-                    if (BM.IsMultiBM)
-                    {
-                        this.UpdateSubBMInfo();
-                    }
-
+                    this.UpdateDisplay();
                 }
 
                 MessageBox.Show("PAL Loaded.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -141,20 +140,20 @@ namespace BM_Converter
 
                 this.GenerateImages();
 
-                // Set up multi BM interface
-                selectedSubBM = 0;
+                this.selectedSubBM = 0;
                 if (BM.IsMultiBM)
                 {
+                    // Set up multi BM interface
                     btnPrevSub.Enabled = true;
                     btnNextSub.Enabled = true;
-                    displayBox.Image = images[0];
-                    UpdateSubBMInfo();
+                    this.UpdateSubBMInfoAndDisplay();
                 }
                 else
                 {
                     btnPrevSub.Enabled = false;
                     btnNextSub.Enabled = false;
                     textBoxSubBMInfo.Text = null;
+                    this.UpdateDisplay();
                 }
 
                 MenuExportBm.Enabled = true;
@@ -173,7 +172,6 @@ namespace BM_Converter
             {
                 Bitmap newBitmap = DFBM.BMtoBitmap(BM.SizeX, BM.SizeY, BM.PixelData, palette, BM.IsTransparentOrWeapon());
                 this.images.Add(newBitmap);
-                this.displayBox.Image = images[0];
             }
             else
             {
@@ -185,13 +183,18 @@ namespace BM_Converter
             }
         }
 
-        private void checkBoxZoom_CheckedChanged(object sender, EventArgs e)
+        private void ComboBoxZoom_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (checkBoxZoom.Checked)
+            this.zoomFactor = comboBoxZoom.SelectedIndex switch
             {
-                displayBox.SizeMode = PictureBoxSizeMode.Zoom;
-            }
-            else displayBox.SizeMode = PictureBoxSizeMode.Normal;
+                0 => 1.0f,
+                1 => 2.0f,
+                2 => 3.0f,
+                3 => 4.0f,
+                _ => 1.0f,
+            };
+
+            this.displayBox.Invalidate();
         }
 
         private void btnLighting_Click(object sender, EventArgs e)
@@ -200,7 +203,7 @@ namespace BM_Converter
             {
                 return;
             }
-            
+
             if (this.cmp == null)
             {
                 var dialogResult = this.openCMPDialog.ShowDialog();
@@ -239,7 +242,7 @@ namespace BM_Converter
                     selectedSubBM = BM.NumImages - 1;
                 }
 
-                UpdateSubBMInfo();
+                this.UpdateSubBMInfoAndDisplay();
             }
         }
 
@@ -253,11 +256,11 @@ namespace BM_Converter
                     selectedSubBM = 0;
                 }
 
-                UpdateSubBMInfo();
+                this.UpdateSubBMInfoAndDisplay();
             }
         }
 
-        private void UpdateSubBMInfo()
+        private void UpdateSubBMInfoAndDisplay()
         {
             int a = selectedSubBM;
 
@@ -290,7 +293,7 @@ namespace BM_Converter
             s[8] = $"DataSize: {BM.SubBMs[a].DataSize}";
             textBoxSubBMInfo.Lines = s;
 
-            this.UpdateDisplayBox();
+            this.UpdateDisplay();
         }
 
         // Export -------------------------------------------------------------------------------
@@ -524,37 +527,50 @@ namespace BM_Converter
 
         private void comboBoxImageVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.UpdateDisplayBox();
+            this.UpdateDisplay();
         }
 
-        private void UpdateDisplayBox()
+        private void UpdateDisplay()
         {
             switch (comboBoxImageVersion.SelectedIndex)
             {
                 case 1:
-                    this.displayBox.Image = this.remasterCombinedImages.Count > this.selectedSubBM
+                    this.displayImage = this.remasterCombinedImages.Count > this.selectedSubBM
                         ? this.remasterCombinedImages[this.selectedSubBM]
                         : null;
-                    return;
+                    break;
 
                 case 2:
-                    this.displayBox.Image = this.remasterNoAlphaImages.Count > this.selectedSubBM
+                    this.displayImage = this.remasterNoAlphaImages.Count > this.selectedSubBM
                         ? this.remasterNoAlphaImages[this.selectedSubBM]
                         : null;
-                    return;
+                    break;
 
                 case 3:
-                    this.displayBox.Image = this.remasterAlphaImages.Count > this.selectedSubBM
+                    this.displayImage = this.remasterAlphaImages.Count > this.selectedSubBM
                         ? this.remasterAlphaImages[this.selectedSubBM]
                         : null;
-                    return;
+                    break;
 
                 default:
-                    this.displayBox.Image = this.images.Count > this.selectedSubBM
+                    this.displayImage = this.images.Count > this.selectedSubBM
                         ? this.images[this.selectedSubBM]
                         : null;
-                    return;
+                    break;
             }
+
+            this.displayBox.Invalidate();
+        }
+
+        private void DisplayBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (this.displayImage == null)
+            {
+                return;
+            }
+
+            e.Graphics.Clear(Color.DarkGray);
+            e.Graphics.DrawImage(this.displayImage, 0, 0, this.displayImage.Width * this.zoomFactor, this.displayImage.Height * this.zoomFactor);
         }
 
         private void MenuExportHighRes_Click(object sender, EventArgs e)
