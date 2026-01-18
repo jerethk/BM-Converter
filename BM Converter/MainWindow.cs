@@ -296,6 +296,51 @@ namespace BM_Converter
             this.UpdateDisplay();
         }
 
+        // Display -------------------------------------------------------------------------------
+
+        private void UpdateDisplay()
+        {
+            switch (comboBoxImageVersion.SelectedIndex)
+            {
+                case 1:
+                    this.displayImage = this.remasterCombinedImages.Count > this.selectedSubBM
+                        ? this.remasterCombinedImages[this.selectedSubBM]
+                        : null;
+                    break;
+
+                case 2:
+                    this.displayImage = this.remasterNoAlphaImages.Count > this.selectedSubBM
+                        ? this.remasterNoAlphaImages[this.selectedSubBM]
+                        : null;
+                    break;
+
+                case 3:
+                    this.displayImage = this.remasterAlphaImages.Count > this.selectedSubBM
+                        ? this.remasterAlphaImages[this.selectedSubBM]
+                        : null;
+                    break;
+
+                default:
+                    this.displayImage = this.images.Count > this.selectedSubBM
+                        ? this.images[this.selectedSubBM]
+                        : null;
+                    break;
+            }
+
+            this.displayBox.Invalidate();
+        }
+
+        private void DisplayBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (this.displayImage == null)
+            {
+                return;
+            }
+
+            e.Graphics.Clear(Color.DarkGray);
+            e.Graphics.DrawImage(this.displayImage, 0, 0, this.displayImage.Width * this.zoomFactor, this.displayImage.Height * this.zoomFactor);
+        }
+
         // Export -------------------------------------------------------------------------------
         private void MenuExportBm_Click(object sender, EventArgs e)
         {
@@ -530,49 +575,6 @@ namespace BM_Converter
             this.UpdateDisplay();
         }
 
-        private void UpdateDisplay()
-        {
-            switch (comboBoxImageVersion.SelectedIndex)
-            {
-                case 1:
-                    this.displayImage = this.remasterCombinedImages.Count > this.selectedSubBM
-                        ? this.remasterCombinedImages[this.selectedSubBM]
-                        : null;
-                    break;
-
-                case 2:
-                    this.displayImage = this.remasterNoAlphaImages.Count > this.selectedSubBM
-                        ? this.remasterNoAlphaImages[this.selectedSubBM]
-                        : null;
-                    break;
-
-                case 3:
-                    this.displayImage = this.remasterAlphaImages.Count > this.selectedSubBM
-                        ? this.remasterAlphaImages[this.selectedSubBM]
-                        : null;
-                    break;
-
-                default:
-                    this.displayImage = this.images.Count > this.selectedSubBM
-                        ? this.images[this.selectedSubBM]
-                        : null;
-                    break;
-            }
-
-            this.displayBox.Invalidate();
-        }
-
-        private void DisplayBox_Paint(object sender, PaintEventArgs e)
-        {
-            if (this.displayImage == null)
-            {
-                return;
-            }
-
-            e.Graphics.Clear(Color.DarkGray);
-            e.Graphics.DrawImage(this.displayImage, 0, 0, this.displayImage.Width * this.zoomFactor, this.displayImage.Height * this.zoomFactor);
-        }
-
         private void MenuExportHighRes_Click(object sender, EventArgs e)
         {
             if (this.remasterNoAlphaImages.Count == 0 || this.remasterCombinedImages.Count == 0)
@@ -681,6 +683,14 @@ namespace BM_Converter
         {
             var createRawWindow = new CreateRawWindow(this.BM);
             createRawWindow.Show();
+        }
+
+        // Browse GOB  -------------------------------------------------------------------------
+
+        private void MenuBrowseGob_Click(object sender, EventArgs e)
+        {
+            var gobWindow = new GobBrowserWindow(this.palette);
+            gobWindow.ShowDialog();
         }
     }
 }

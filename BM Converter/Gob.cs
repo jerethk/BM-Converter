@@ -53,6 +53,22 @@ namespace BM_Converter
             }
         }
 
+        public static List<GobIndexEntry> GetGobIndex(string filename)
+        {
+            try
+            {
+                using (var gobReader = new BinaryReader(File.Open(filename, FileMode.Open, FileAccess.Read)))
+                {
+                    return GetGobIndex(gobReader);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error reading GOB.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<GobIndexEntry>();
+            }
+        }
+
         private static List<GobIndexEntry> GetGobIndex(BinaryReader gobReader)
         {
             var gobMagic = gobReader.ReadBytes(4);
@@ -93,7 +109,7 @@ namespace BM_Converter
         }
     }
 
-    public class GobIndexEntry
+    public record GobIndexEntry
     {
         public int Address { get; set; }
 

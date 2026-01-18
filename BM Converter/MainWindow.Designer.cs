@@ -52,6 +52,7 @@ namespace BM_Converter
             MenuFile = new System.Windows.Forms.ToolStripMenuItem();
             MenuLoadPal = new System.Windows.Forms.ToolStripMenuItem();
             MenuLoadBm = new System.Windows.Forms.ToolStripMenuItem();
+            MenuBrowseGob = new System.Windows.Forms.ToolStripMenuItem();
             MenuRawLocation = new System.Windows.Forms.ToolStripMenuItem();
             MenuExport = new System.Windows.Forms.ToolStripMenuItem();
             MenuExportBm = new System.Windows.Forms.ToolStripMenuItem();
@@ -255,7 +256,7 @@ namespace BM_Converter
             // 
             // MenuFile
             // 
-            MenuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuLoadPal, MenuLoadBm, MenuRawLocation });
+            MenuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MenuLoadPal, MenuLoadBm, MenuBrowseGob, MenuRawLocation });
             MenuFile.Name = "MenuFile";
             MenuFile.Size = new System.Drawing.Size(37, 20);
             MenuFile.Text = "File";
@@ -273,6 +274,13 @@ namespace BM_Converter
             MenuLoadBm.Size = new System.Drawing.Size(193, 22);
             MenuLoadBm.Text = "Load BM";
             MenuLoadBm.Click += MenuLoadBm_Click;
+            // 
+            // MenuBrowseGob
+            // 
+            MenuBrowseGob.Name = "MenuBrowseGob";
+            MenuBrowseGob.Size = new System.Drawing.Size(193, 22);
+            MenuBrowseGob.Text = "Browse GOB";
+            MenuBrowseGob.Click += MenuBrowseGob_Click;
             // 
             // MenuRawLocation
             // 
@@ -402,6 +410,7 @@ namespace BM_Converter
         private System.Windows.Forms.OpenFileDialog openCMPDialog;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBoxZoom;
+        private System.Windows.Forms.ToolStripMenuItem MenuBrowseGob;
     }
 }
 
