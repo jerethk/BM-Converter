@@ -48,7 +48,26 @@ namespace BM_Converter
 
             try
             {
-                using (BinaryReader reader = new BinaryReader(File.Open(FileName, FileMode.Open)))
+                using (var fileStream = File.Open(FileName, FileMode.Open, FileAccess.Read))
+                {
+                    result = this.LoadFromStream(fileStream);
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
+            return result;
+        }
+
+        public bool LoadFromStream(Stream stream)
+        {
+            bool result = false;
+
+            try
+            {
+                using (BinaryReader reader = new BinaryReader(stream))
                 {
                     this.FileId = reader.ReadBytes(4);
 

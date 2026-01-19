@@ -22,6 +22,7 @@ namespace BM_Converter
         private string palPath;
         private string bmPath;
         private string exportPath;
+        private string bmFileName;
         private int selectedSubBM = 0;
         private float zoomFactor = 1.0f;
         private DFCmp cmp;
@@ -40,7 +41,7 @@ namespace BM_Converter
             if (args.Length > 0)
             {
                 // Attempt to load file that has been passed in from command line
-                this.LoadBM(args[0]);
+                this.LoadBMFromFile(args[0]);
             }
 
             this.comboBoxZoom.SelectedIndex = 0;
@@ -82,86 +83,92 @@ namespace BM_Converter
         private void MenuLoadBm_Click(object sender, EventArgs e)
         {
             OpenBMDialog.InitialDirectory = this.bmPath ?? OpenBMDialog.InitialDirectory;
-            OpenBMDialog.ShowDialog();
+            var dialogResult = OpenBMDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                this.LoadBMFromFile(OpenBMDialog.FileName);
+            }
         }
 
-        private void OpenBMDialog_FileOk(object sender, CancelEventArgs e)
+        private void LoadBMFromFile(string path)
         {
-            LoadBM(OpenBMDialog.FileName);
-        }
+            var bm = new DFBM();
 
-        private void LoadBM(string path)
-        {
-            if (!BM.LoadFromFile(path))
+            if (!bm.LoadFromFile(path))
             {
                 MessageBox.Show("Error loading BM file. Please check that it is a valid DF BM file and not open in another program.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else // successful load!
             {
-                OpenBMDialog.FileName = path;
-
-                // Display Info
-                string transparency;
-                switch (BM.Transparency)
-                {
-                    case 0x36:
-                        transparency = "Non-transparent";
-                        break;
-                    case 0x3E:
-                        transparency = "Transparent";
-                        break;
-                    case 0x08:
-                        transparency = "Weapon";
-                        break;
-                    default:
-                        transparency = "Error - unknown";
-                        break;
-                }
-
-                string[] s = new string[18];
-                s[0] = Path.GetFileName(path);
-                s[2] = $"SizeX: {BM.SizeX}";
-                s[3] = $"SizeY: {BM.SizeY}";
-                s[4] = $"UV width: {BM.UvWidth}";
-                s[5] = $"UV height: {BM.UvHeight}";
-                s[6] = $"Compressed: {BM.Compressed}";
-                s[7] = $"Transparency: {transparency}";
-
-                if (BM.IsMultiBM)
-                {
-                    s[9] = $"Number of sub BMs: {BM.NumImages}";
-                    s[10] = $"Frame rate: {BM.FrameRate}";
-                    //s[11] = $"{BM.SecondByte}";
-                }
-
-                s[12] = $"logSizeY: {BM.logSizeY}";
-                s[13] = $"DataSize: {BM.DataSize}";
-                textBoxBMInfo.Lines = s;
-
-                this.GenerateImages();
-
-                this.selectedSubBM = 0;
-                if (BM.IsMultiBM)
-                {
-                    // Set up multi BM interface
-                    btnPrevSub.Enabled = true;
-                    btnNextSub.Enabled = true;
-                    this.UpdateSubBMInfoAndDisplay();
-                }
-                else
-                {
-                    btnPrevSub.Enabled = false;
-                    btnNextSub.Enabled = false;
-                    textBoxSubBMInfo.Text = null;
-                    this.UpdateDisplay();
-                }
-
-                MenuExportBm.Enabled = true;
+                this.BM = bm;
+                this.bmFileName = path;
                 this.bmPath = Path.GetDirectoryName(path);
 
-                this.comboBoxImageVersion.SelectedIndex = 0;
-                this.loadRemasterImages(Path.GetFileNameWithoutExtension(path));
+                this.SetupBM(Path.GetFileName(path));
             }
+        }   
+        
+        private void SetupBM(string bmFileName)
+        {
+            // Display Info
+            string transparency;
+            switch (this.BM.Transparency)
+            {
+                case 0x36:
+                    transparency = "Non-transparent";
+                    break;
+                case 0x3E:
+                    transparency = "Transparent";
+                    break;
+                case 0x08:
+                    transparency = "Weapon";
+                    break;
+                default:
+                    transparency = "Error - unknown";
+                    break;
+            }
+
+            string[] s = new string[18];
+            s[0] = bmFileName;
+            s[2] = $"SizeX: {this.BM.SizeX}";
+            s[3] = $"SizeY: {this.BM.SizeY}";
+            s[4] = $"UV width: {this.BM.UvWidth}";
+            s[5] = $"UV height: {this.BM.UvHeight}";
+            s[6] = $"Compressed: {this.BM.Compressed}";
+            s[7] = $"Transparency: {transparency}";
+
+            if (this.BM.IsMultiBM)
+            {
+                s[9] = $"Number of sub BMs: {this.BM.NumImages}";
+                s[10] = $"Frame rate: {this.BM.FrameRate}";
+                //s[11] = $"{BM.SecondByte}";
+            }
+
+            s[12] = $"logSizeY: {this.BM.logSizeY}";
+            s[13] = $"DataSize: {this.BM.DataSize}";
+            textBoxBMInfo.Lines = s;
+
+            this.GenerateImages();
+
+            this.selectedSubBM = 0;
+            if (this.BM.IsMultiBM)
+            {
+                // Set up multi BM interface
+                btnPrevSub.Enabled = true;
+                btnNextSub.Enabled = true;
+                this.UpdateSubBMInfoAndDisplay();
+            }
+            else
+            {
+                btnPrevSub.Enabled = false;
+                btnNextSub.Enabled = false;
+                textBoxSubBMInfo.Text = null;
+                this.UpdateDisplay();
+            }
+
+            this.MenuExportBm.Enabled = true;
+            this.comboBoxImageVersion.SelectedIndex = 0;
+            this.loadRemasterImages(Path.GetFileNameWithoutExtension(bmFileName));
         }
 
         private void GenerateImages()
@@ -350,7 +357,7 @@ namespace BM_Converter
             }
 
             SavePngDialog.InitialDirectory = this.exportPath ?? Path.GetDirectoryName(this.OpenBMDialog.FileName);
-            SavePngDialog.FileName = Path.GetFileNameWithoutExtension(OpenBMDialog.FileName);
+            SavePngDialog.FileName = Path.GetFileNameWithoutExtension(this.bmFileName);
             var dialogResult = SavePngDialog.ShowDialog();
 
             if (dialogResult != DialogResult.OK)
@@ -481,9 +488,9 @@ namespace BM_Converter
             this.comboBoxImageVersion.Enabled = true;
             this.comboBoxImageVersion.SelectedIndex = 0;
 
-            if (this.BM != null && !string.IsNullOrEmpty(this.OpenBMDialog.FileName))
+            if (this.BM != null && !string.IsNullOrEmpty(this.bmFileName))
             {
-                this.loadRemasterImages(Path.GetFileNameWithoutExtension(this.OpenBMDialog.FileName));
+                this.loadRemasterImages(Path.GetFileNameWithoutExtension(this.bmFileName));
             }
         }
 
@@ -588,7 +595,7 @@ namespace BM_Converter
             }
 
             SavePngDialog.InitialDirectory = this.exportPath ?? Path.GetDirectoryName(this.OpenBMDialog.FileName);
-            SavePngDialog.FileName = Path.GetFileNameWithoutExtension(OpenBMDialog.FileName);
+            SavePngDialog.FileName = Path.GetFileNameWithoutExtension(this.bmFileName);
             var dialogResult = SavePngDialog.ShowDialog();
 
             if (dialogResult != DialogResult.OK)
@@ -690,7 +697,16 @@ namespace BM_Converter
         private void MenuBrowseGob_Click(object sender, EventArgs e)
         {
             var gobWindow = new GobBrowserWindow(this.palette);
-            gobWindow.ShowDialog();
+            gobWindow.ShowDialog(this);
+
+            if (gobWindow.LoadIntoMainWindow)
+            {
+                this.BM = gobWindow.BM;
+                this.bmFileName = gobWindow.BmName;
+                this.SetupBM(gobWindow.BmName);
+            }
+
+            gobWindow.Dispose();
         }
     }
 }

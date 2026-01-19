@@ -81,7 +81,6 @@ namespace BM_Converter
             OpenBMDialog.DefaultExt = "bm";
             OpenBMDialog.Filter = "Dark Forces BM file|*.bm";
             OpenBMDialog.Title = "Open BM";
-            OpenBMDialog.FileOk += OpenBMDialog_FileOk;
             // 
             // SavePngDialog
             // 

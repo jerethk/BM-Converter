@@ -17,7 +17,7 @@ public partial class GobBrowserWindow : Form
     {
         InitializeComponent();
     }
-    
+
     public GobBrowserWindow(DFPal pal) : this()
     {
         this.pal = pal;
@@ -26,6 +26,10 @@ public partial class GobBrowserWindow : Form
     private DFPal pal;
     private string currentGobPath;
     private List<GobIndexEntry> bmList;
+
+    public DFBM BM { get; private set; }
+    public string BmName { get; private set; }
+    public bool LoadIntoMainWindow { get; private set; }
 
     private void GobBrowserWindow_Shown(object sender, EventArgs e)
     {
@@ -67,5 +71,80 @@ public partial class GobBrowserWindow : Form
             this.listBoxBMs.DataSource = this.bmList;
             this.listBoxBMs.DisplayMember = nameof(GobIndexEntry.NameString);
         }
+    }
+
+    private void ListBoxBMs_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (listBoxBMs.SelectedIndex < 0)
+        {
+            return;
+        }
+
+        if (!File.Exists(this.currentGobPath))
+        {
+            MessageBox.Show("GOB file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+
+        var bmFileName = (listBoxBMs.SelectedItem as GobIndexEntry).NameString;
+        if (string.IsNullOrEmpty(bmFileName))
+        {
+            return;
+        }
+
+        var bmFile = Gob.GetFileFromGob(this.currentGobPath, bmFileName);
+        if (bmFile == null || bmFile.Length == 0)
+        {
+            return;
+        }
+
+        var bm = new DFBM();
+
+        using (var stream = new MemoryStream(bmFile))
+        {
+            if (!bm.LoadFromStream(stream))
+            {
+                MessageBox.Show("Error reading BM.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        this.BM = bm;
+        this.BmName = bmFileName;
+
+        var bitmap = bm.IsMultiBM
+            ? DFBM.BMtoBitmap(
+                bm.SubBMs[0].SizeX,
+                bm.SubBMs[0].SizeY,
+                bm.SubBMs[0].PixelData,
+                this.pal,
+                bm.SubBMs[0].IsTransparent())
+            : DFBM.BMtoBitmap(
+                bm.SizeX,
+                bm.SizeY,
+                bm.PixelData,
+                this.pal,
+                bm.IsTransparentOrWeapon());
+
+        if (bitmap != null)
+        {
+            this.displayBox.Image = bitmap;
+        }
+    }
+
+    private void BtnClose_Click(object sender, EventArgs e)
+    {
+        this.Close();
+    }
+
+    private void BtnLoadBm_Click(object sender, EventArgs e)
+    {
+        if (this.BM == null)
+        {
+            return;
+        }
+        
+        this.LoadIntoMainWindow = true;
+        this.Close();
     }
 }
