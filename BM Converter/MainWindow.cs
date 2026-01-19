@@ -168,7 +168,7 @@ namespace BM_Converter
 
             this.MenuExportBm.Enabled = true;
             this.comboBoxImageVersion.SelectedIndex = 0;
-            this.loadRemasterImages(Path.GetFileNameWithoutExtension(bmFileName));
+            this.LoadRemasterImages(Path.GetFileNameWithoutExtension(bmFileName));
         }
 
         private void GenerateImages()
@@ -485,20 +485,20 @@ namespace BM_Converter
 
             MessageBox.Show($"High res (DF Remaster) images will automatically be loaded from [{this.remasterPath}] when you open a BM.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            this.comboBoxImageVersion.Enabled = true;
             this.comboBoxImageVersion.SelectedIndex = 0;
 
             if (this.BM != null && !string.IsNullOrEmpty(this.bmFileName))
             {
-                this.loadRemasterImages(Path.GetFileNameWithoutExtension(this.bmFileName));
+                this.LoadRemasterImages(Path.GetFileNameWithoutExtension(this.bmFileName));
             }
         }
 
-        private void loadRemasterImages(string bmFilenameWithoutExtension)
+        private void LoadRemasterImages(string bmFilenameWithoutExtension)
         {
             this.remasterNoAlphaImages.Clear();
             this.remasterAlphaImages.Clear();
             this.remasterCombinedImages.Clear();
+            this.comboBoxImageVersion.Enabled = false;
 
             if (string.IsNullOrEmpty(this.remasterPath) || string.IsNullOrEmpty(bmFilenameWithoutExtension))
             {
@@ -575,6 +575,8 @@ namespace BM_Converter
                     dataPosition += imageDataSize;
                 }
             }
+
+            this.comboBoxImageVersion.Enabled = true;
         }
 
         private void comboBoxImageVersion_SelectedIndexChanged(object sender, EventArgs e)
